@@ -1,0 +1,116 @@
+buildscript {
+    repositories {
+        //maven { url "http://maven.oschina.net/content/groups/public/" }
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.1.8'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+compileJava.options.encoding = 'UTF-8'
+
+war {
+    baseName = 'smartremote_manager'
+}
+
+gretty {
+    servletContainer = 'jetty9'
+    managedClassReload = true
+    contextPath = "/"
+    fileLogEnabled = false
+    loggingLevel = "ALL"
+}
+
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"
+    }
+}
+uploadArchives {
+	repositories {
+	   flatDir {
+		   dirs 'repos'
+	   }
+	}
+}
+repositories {
+    mavenLocal()
+    //maven {
+        //url "http://maven.oschina.net/content/groups/public/"
+    //}
+    mavenCentral()
+}
+
+configurations {
+    compile.exclude module: "commons-logging"
+    providedRuntime
+    providedCompile
+}
+
+
+loadConfiguration()
+def loadConfiguration() {
+    def environment = hasProperty('env') ? env : 'dev'
+    sourceSets.main.resources.srcDirs = [ 'src/main/resources/global' ]
+    //setProperty 'environment', environment
+    if (environment.equals('prod'))
+        sourceSets.main.resources.srcDirs 'src/main/resources/prod'
+    else if (environment.equals('dev'))
+        sourceSets.main.resources.srcDirs 'src/main/resources/dev'
+    else if(environment.equals('win'))
+    		sourceSets.main.resources.srcDirs 'src/main/resources/win'
+    else
+        sourceSets.main.resources.srcDirs 'src/main/resources/local'
+}
+
+dependencies {
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+   // compile 'jstl:jstl:1.2'
+   // compile 'javax.servlet.jsp.jstl:jstl-api:1.2'
+    compile 'org.springframework:spring-webmvc:4.0.8.RELEASE'
+
+    compile 'mysql:mysql-connector-java:5.1.33'
+    compile 'com.alibaba:druid:1.0.12'
+    compile 'org.springframework.data:spring-data-jpa:1.7.1.RELEASE'
+    compile 'org.hibernate:hibernate-entitymanager:4.3.6.Final'
+    //compile 'com.zaxxer:HikariCP:2.2.5'
+
+    compile 'org.apache.tiles:tiles-servlet:3.0.5'
+    compile 'org.apache.tiles:tiles-jsp:3.0.5'
+
+    compile 'org.apache.shiro:shiro-spring:1.2.3'
+
+    compile 'joda-time:joda-time:2.5'
+    compile 'joda-time:joda-time-jsptags:1.1.1'
+    compile 'org.jadira.usertype:usertype.core:3.2.0.GA'
+
+    //compile 'org.slf4j:slf4j-log4j12:1.7.7'
+    compile 'ch.qos.logback:logback-classic:1.1.2'
+    compile 'org.redisson:redisson:1.2.1'
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.4'
+    compile 'joda-time:joda-time:2.7'
+
+    testCompile("junit:junit")
+    
+    compile 'org.apache.httpcomponents:httpclient:4.5'
+    
+    
+
+    compile 'com.qiniu:qiniu-java-sdk:7.0.+'
+
+    compile 'mysql:mysql-connector-java:5.1.33'
+    compile 'com.alibaba:druid:1.0.12'
+    
+    compile fileTree(dir:'lib',include:'*.jar')
+   
+
+    
+}
