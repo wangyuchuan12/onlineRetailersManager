@@ -24,6 +24,35 @@ public class GroupPartakeDeliver {
     @Column(name = "refund_sign_time")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime refundSignTime;
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Column(name="sign_time")
+    private DateTime signTime;
+    @Column(name="device_time")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime deviceTime;
+    
+    
+    @Column
+    private String remarks;
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+    public DateTime getDeviceTime() {
+        return deviceTime;
+    }
+    public void setDeviceTime(DateTime deviceTime) {
+        this.deviceTime = deviceTime;
+    }
+    public DateTime getSignTime() {
+        return signTime;
+    }
+    public void setSignTime(DateTime signTime) {
+        this.signTime = signTime;
+    }
     public String getId() {
         return id;
     }

@@ -12,15 +12,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class OrderRecord {
     @Id
     private String id;
+    //处理方式
+  //1申请退款 2 退款发货 3 退款签收 4 发货 5 发货签收
     @Column
     private int way;
-    @Column(name="order_id")
-    private String orderId;
-    @Column(name="logistics_order")
-    private String logisticsOrder;
+    @Column(name="group_partake_id")
+    private String groupPartakeId;
     @Column
     private String remark;
-    
     @Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -29,17 +28,12 @@ public class OrderRecord {
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
     private DateTime updateAt;
-    public String getLogisticsOrder() {
-        return logisticsOrder;
+    
+    public String getGroupPartakeId() {
+        return groupPartakeId;
     }
-    public void setLogisticsOrder(String logisticsOrder) {
-        this.logisticsOrder = logisticsOrder;
-    }
-    public String getOrderId() {
-        return orderId;
-    }
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setGroupPartakeId(String groupPartakeId) {
+        this.groupPartakeId = groupPartakeId;
     }
     public String getId() {
         return id;

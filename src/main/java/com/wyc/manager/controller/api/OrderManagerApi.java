@@ -13,16 +13,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.wyc.defineBean.MySimpleDateFormat;
 import com.wyc.domain.Customer;
+import com.wyc.domain.CustomerAddress;
 import com.wyc.domain.Good;
 import com.wyc.domain.GoodOrder;
 import com.wyc.domain.GroupPartake;
+import com.wyc.domain.GroupPartakeDeliver;
+import com.wyc.domain.GroupPartakePayment;
 import com.wyc.domain.OrderDetail;
 import com.wyc.domain.OrderRecord;
+import com.wyc.service.CustomerAddressService;
 import com.wyc.service.CustomerService;
 import com.wyc.service.GoodOrderService;
 import com.wyc.service.GoodService;
+import com.wyc.service.GroupPartakeDeliverService;
+import com.wyc.service.GroupPartakePaymentService;
 import com.wyc.service.GroupPartakeService;
 import com.wyc.service.OrderDetailService;
 import com.wyc.service.OrderRecordService;
@@ -51,15 +58,102 @@ public class OrderManagerApi {
     private TokenService tokenService;
     @Autowired
     private GroupPartakeService groupPartakeService;
+    @Autowired
+    private MySimpleDateFormat dateFormat;
+    @Autowired
+    private GroupPartakeDeliverService groupPartakeDeliverService;
+    @Autowired
+    private GroupPartakePaymentService groupPartakePaymentService;
+    @Autowired
+    private CustomerAddressService customerAddressService;
     final static Logger logger = LoggerFactory.getLogger(OrderManagerApi.class);
     @RequestMapping("/manager/api/order_handle")
     public Object orderHandle(HttpServletRequest httpServletRequest)throws Exception{
-        return null;
+        String groupPartakeId = httpServletRequest.getParameter("group_partake_id");
+        GroupPartake groupPartake = groupPartakeService.findOne(groupPartakeId);
+        String remarks = httpServletRequest.getParameter("remarks");
+        groupPartake.setRemarks(remarks);
+        groupPartakeService.save(groupPartake);
+        String way = httpServletRequest.getParameter("way");
+        String logisticsNo = httpServletRequest.getParameter("logistics_no");
+        
+        GroupPartakePayment groupPartakePayment = groupPartakePaymentService.findByGroupPartakeId(groupPartakeId);
+        GroupPartakeDeliver groupPartakeDeliver = groupPartakeDeliverService.findByGroupPartakeId(groupPartakeId);
+        groupPartakePayment.setRemarks(remarks);
+        groupPartakeDeliver.setRemarks(remarks);
+        if(way.equals("apply_refund")){
+            groupPartakePayment.setStatus(2);
+            groupPartakePayment.setRefundTime(new DateTime());
+            
+            groupPartakePaymentService.save(groupPartakePayment);
+            OrderRecord orderRecord = new OrderRecord();
+            orderRecord.setGroupPartakeId(groupPartakeId);
+            orderRecord.setRemark("申请退款,内容："+remarks);
+            orderRecord.setWay(1);
+            orderRecordService.add(orderRecord);
+        }else if (way.equals("refund_deliver")) {
+            groupPartakeDeliver.setStatus(1);
+            groupPartakeDeliver.setRefundDeviveryTime(new DateTime());
+            groupPartakeDeliverService.save(groupPartakeDeliver);
+            OrderRecord orderRecord = new OrderRecord();
+            orderRecord.setGroupPartakeId(groupPartakeId);
+            orderRecord.setRemark("退款发货，物流单号："+logisticsNo+",内容："+remarks);
+            orderRecord.setWay(2);
+            orderRecordService.add(orderRecord);
+        }else if (way.equals("refund_sign")) {
+            groupPartakeDeliver.setRefundSignTime(new DateTime());
+            groupPartakeDeliver.setStatus(2);
+            groupPartakeDeliverService.save(groupPartakeDeliver);
+            OrderRecord orderRecord = new OrderRecord();
+            orderRecord.setGroupPartakeId(groupPartakeId);
+            orderRecord.setRemark("退款签收,内容："+remarks);
+            orderRecord.setWay(3);
+            orderRecordService.add(orderRecord);
+        }else if (way.equals("deliver")) {
+            
+            groupPartakeDeliver.setStatus(1);
+            groupPartakeDeliver.setDeviceTime(new DateTime());
+            groupPartakeDeliverService.save(groupPartakeDeliver);
+            OrderRecord orderRecord = new OrderRecord();
+            orderRecord.setGroupPartakeId(groupPartakeId);
+            orderRecord.setRemark("发货,物流单号："+logisticsNo+",内容："+remarks);
+            orderRecord.setWay(4);
+            orderRecordService.add(orderRecord);
+        }else if (way.equals("deliver_sign")) {
+            groupPartakeDeliver.setStatus(2);
+            groupPartakeDeliver.setSignTime(new DateTime());
+            groupPartakeDeliverService.save(groupPartakeDeliver);
+            OrderRecord orderRecord = new OrderRecord();
+            orderRecord.setGroupPartakeId(groupPartakeId);
+            orderRecord.setRemark("发货签收，内容："+remarks);
+            orderRecord.setWay(5);
+            orderRecordService.add(orderRecord);
+        }
+        return "{success:true}";
     }
     
     @RequestMapping("/manager/api/order_list")
     public Object orderList(HttpServletRequest httpServletRequest){
-       return null;
+       Map<String, Object> response = new HashMap<String, Object>();
+       List<Map<String, String>> responseGoodOrders = new ArrayList<Map<String,String>>(); 
+       Iterable<GoodOrder> goodOrders = goodOrderService.findAllOrderByCreateTimeDesc();
+       
+       for(GoodOrder goodOrder:goodOrders){
+           Map<String, String> responseGoodOrder = new HashMap<String, String>();
+           responseGoodOrder.put("id", goodOrder.getId());
+           responseGoodOrder.put("status", goodOrder.getStatus()+"");
+           responseGoodOrder.put("good_id", goodOrder.getGoodId());
+           Good good = goodService.findOne(goodOrder.getGoodId());
+           responseGoodOrder.put("good_name", good.getName());
+           responseGoodOrder.put("flow_price", goodOrder.getFlowPrice()+"");
+           responseGoodOrder.put("good_price", goodOrder.getGoodPrice()+"");
+           responseGoodOrder.put("created_at", dateFormat.format(goodOrder.getCreateAt().toDate()));
+           responseGoodOrder.put("type", goodOrder.getType()+"");
+           responseGoodOrders.add(responseGoodOrder);
+           
+       }
+       response.put("root",responseGoodOrders);
+       return response;
     }
     
     @RequestMapping("/manager/api/get_customerinfo_by_order")
@@ -92,21 +186,37 @@ public class OrderManagerApi {
     }
     @RequestMapping("/manager/api/get_orderdetail_by_order")
     public Object orderDetail(HttpServletRequest httpServletRequest){
-        String orderId = httpServletRequest.getParameter("order_id");
-        Iterable<OrderRecord> orderRecords = orderRecordService.findAllByOrderId(orderId);
-        List<Map<String, Object>> responseOrderRecords = new ArrayList<Map<String,Object>>();
-        for(OrderRecord orderRecord:orderRecords){
-            Map<String, Object> responseOrderRecord = new HashMap<String, Object>();
-            responseOrderRecord.put("createAt", mySimpleDateFormat.format(orderRecord.getCreateAt().toDate()));
-            responseOrderRecord.put("id", orderRecord.getId());
-            responseOrderRecord.put("logisticsOrder", orderRecord.getLogisticsOrder());
-            responseOrderRecord.put("orderId", orderRecord.getOrderId());
-            responseOrderRecord.put("remark", orderRecord.getRemark());
-            responseOrderRecord.put("way", orderRecord.getWay());
-            responseOrderRecords.add(responseOrderRecord);
-        }
+        
+        //fields:['id',"orderId","logisticsOrder","customerName","phoneNumber","payStatus","deliverStatus","remarks"]
         Map<String, Object> response = new HashMap<String, Object>();
-        response.put("root", responseOrderRecords);
+        List<Map<String, String>> responseOrderDetails = new ArrayList<Map<String,String>>();
+        String orderId = httpServletRequest.getParameter("order_id");
+        GoodOrder goodOrder = goodOrderService.findOne(orderId);
+        OrderDetail orderDetail = orderDetailService.findByOrderId(goodOrder.getId());
+        Iterable<GroupPartake> groupPartakes = groupPartakeService.findAllByOrderIdOrderByDateTimeAsc(orderId);
+        for(GroupPartake groupPartake:groupPartakes){
+            GroupPartakeDeliver groupPartakeDeliver = groupPartakeDeliverService.findByGroupPartakeId(groupPartake.getId());
+            GroupPartakePayment groupPartakePayment = groupPartakePaymentService.findByGroupPartakeId(groupPartake.getId());
+            Customer customer = customerService.findOne(groupPartake.getCustomerid());
+            Map<String, String> responseOrderDetail = new HashMap<String, String>();
+            responseOrderDetail.put("id", groupPartake.getId());
+            responseOrderDetail.put("orderId", goodOrder.getId());
+            responseOrderDetail.put("remarks", groupPartake.getRemarks());
+            if(groupPartakeDeliver!=null){
+                responseOrderDetail.put("logisticsOrder",groupPartakeDeliver.getLogisticsNo());
+                responseOrderDetail.put("deliverStatus", groupPartakeDeliver.getStatus()+"");
+            }
+            CustomerAddress customerAddress = customerAddressService.findOne(groupPartake.getCustomerAddress());
+            responseOrderDetail.put("customerName", customerAddress.getName());
+            responseOrderDetail.put("phoneNumber", customerAddress.getPhonenumber());
+            responseOrderDetail.put("address", customerAddress.getContent());
+            if(groupPartakePayment!=null){
+                responseOrderDetail.put("payStatus", groupPartakePayment.getStatus()+"");
+            }
+           
+            responseOrderDetails.add(responseOrderDetail);
+        }
+        response.put("root", responseOrderDetails);
         return response;
     }
     
@@ -119,40 +229,37 @@ public class OrderManagerApi {
         logger.debug("the groupid is {}"+groupId);
         List<Map<String, Object>> responseGroupDetails = new ArrayList<Map<String,Object>>();
         Map<String, Object> response = new HashMap<String, Object>();
-        
-        if(groupId!=null){
-            Iterable<GroupPartake> groupPartakes = groupPartakeService.findAllByGroupIdOrderByRoleAsc(groupId);
-            for(GroupPartake groupPartake:groupPartakes){
-                Map<String, Object> responseGroupDetail = new HashMap<String, Object>();
-                String customerId = groupPartake.getCustomerid();
-                Customer customer = customerService.findOne(customerId);
-                String openId = customer.getOpenId();
-                UserInfo userInfo = userInfoService.findByOpenid(openId);
-                responseGroupDetail.put("datetime", mySimpleDateFormat.format(groupPartake.getDateTime().toDate()));
-                responseGroupDetail.put("id", groupPartake.getId());
-                responseGroupDetail.put("role", groupPartake.getRole());
-                responseGroupDetail.put("orderId", orderId);
-                responseGroupDetail.put("defaultAdress", customer.getDefaultAddress());
-                responseGroupDetail.put("phonenumber", customer.getPhonenumber());
-                responseGroupDetail.put("city", userInfo.getCity());
-                
-                responseGroupDetail.put("country", userInfo.getCountry());
-                responseGroupDetail.put("groupid", userInfo.getGroupid());
-                responseGroupDetail.put("headimgurl", userInfo.getHeadimgurl());
-                responseGroupDetail.put("language", userInfo.getLanguage());
-                responseGroupDetail.put("userinfoId", userInfo.getId());
-                responseGroupDetail.put("nickname", userInfo.getNickname());
-                responseGroupDetail.put("province", userInfo.getProvince());
-                responseGroupDetail.put("remark", userInfo.getRemark());
-                responseGroupDetail.put("sex", userInfo.getSex());
-                responseGroupDetail.put("subscribe", userInfo.getSubscribe());
-                responseGroupDetail.put("subscribeTime", userInfo.getSubscribe_time());
-                responseGroupDetail.put("token", userInfo.getToken());
-                responseGroupDetail.put("unionid", userInfo.getUnionid());
-                responseGroupDetail.put("type",groupPartake.getType());
-                responseGroupDetails.add(responseGroupDetail);
-            }
-        }
+        Iterable<GroupPartake> groupPartakes = groupPartakeService.findAllByOrderIdOrderByDateTimeAsc(orderId);
+        for(GroupPartake groupPartake:groupPartakes){
+            Map<String, Object> responseGroupDetail = new HashMap<String, Object>();
+            String customerId = groupPartake.getCustomerid();
+            Customer customer = customerService.findOne(customerId);
+            String openId = customer.getOpenId();
+            UserInfo userInfo = userInfoService.findByOpenid(openId);
+            responseGroupDetail.put("datetime", mySimpleDateFormat.format(groupPartake.getDateTime().toDate()));
+            responseGroupDetail.put("id", groupPartake.getId());
+            responseGroupDetail.put("role", groupPartake.getRole());
+            responseGroupDetail.put("orderId", orderId);
+            responseGroupDetail.put("defaultAdress", customer.getDefaultAddress());
+            responseGroupDetail.put("phonenumber", customer.getPhonenumber());
+            responseGroupDetail.put("city", userInfo.getCity());
+            
+            responseGroupDetail.put("country", userInfo.getCountry());
+            responseGroupDetail.put("groupid", userInfo.getGroupid());
+            responseGroupDetail.put("headimgurl", userInfo.getHeadimgurl());
+            responseGroupDetail.put("language", userInfo.getLanguage());
+            responseGroupDetail.put("userinfoId", userInfo.getId());
+            responseGroupDetail.put("nickname", userInfo.getNickname());
+            responseGroupDetail.put("province", userInfo.getProvince());
+            responseGroupDetail.put("remark", userInfo.getRemark());
+            responseGroupDetail.put("sex", userInfo.getSex());
+            responseGroupDetail.put("subscribe", userInfo.getSubscribe());
+            responseGroupDetail.put("subscribeTime", userInfo.getSubscribe_time());
+            responseGroupDetail.put("token", userInfo.getToken());
+            responseGroupDetail.put("unionid", userInfo.getUnionid());
+            responseGroupDetail.put("type",groupPartake.getType());
+            responseGroupDetails.add(responseGroupDetail);
+         }
         response.put("root",responseGroupDetails);
         return response;
     }

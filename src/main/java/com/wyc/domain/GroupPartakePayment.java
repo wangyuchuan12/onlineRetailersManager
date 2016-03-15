@@ -27,12 +27,22 @@ public class GroupPartakePayment {
     @Column(name="pay_time")
     private DateTime payTime;
     
-    //0表示未付款 1已付款 2已退款
+    //0表示未付款 1已付款 2已退款 
     @Column
     private int status;
     
     @Column(name="group_partake_id")
     private String groupPartakeId;
+    
+    @Column
+    private String remarks;
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 
     public String getId() {
         return id;

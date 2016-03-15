@@ -25,7 +25,7 @@ public class OrderRecordService {
         return orderRecordRespository.save(orderRecord);
     }
 
-    public Iterable<OrderRecord> findAllByOrderId(String orderId) {
-        return orderRecordRespository.findAllByOrderId(orderId);
+    public Iterable<OrderRecord> findAllByGroupPartakeId(String groupPartakeId) {
+        return orderRecordRespository.findAllByGroupPartakeId(groupPartakeId);
     }
 }

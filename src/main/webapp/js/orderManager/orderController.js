@@ -283,7 +283,7 @@ var OrderController = Ext.extend(Ext.util.Observable,{
 			});
 		});
 		
-		orderMainGrid.on("orderDetailClick",function(){
+		orderMainGrid.on("orderHandleClick",function(){
 			orderDetailGridWin.show();
 			var selectionModel = orderMainGrid.getSelectionModel();
 			var record = selectionModel.getSelected();
@@ -295,6 +295,7 @@ var OrderController = Ext.extend(Ext.util.Observable,{
 				}
 			});
 		});
+		
 		
 		
 		orderMainGrid.on("groupInfoClick",function(){

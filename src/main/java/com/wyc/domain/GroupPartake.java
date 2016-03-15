@@ -23,7 +23,8 @@ public class GroupPartake {
     private int type;
     //1团长 ， 2，沙发 3普通人
     private int role;
-    
+    @Column
+    private  String remarks;
     //参加时间
     @Column(name = "date_time")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -38,6 +39,12 @@ public class GroupPartake {
     
     
     
+    public String getRemarks() {
+        return remarks;
+    }
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
     public String getCustomerAddress() {
         return customerAddress;
     }
