@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -14,6 +15,7 @@ public class GoodImg {
     @Id
     private String id;
     @Column(name = "good_id")
+    @Index(name="good_id")
     private String goodId;
     @Column(name = "img_id")
     private String imgId;

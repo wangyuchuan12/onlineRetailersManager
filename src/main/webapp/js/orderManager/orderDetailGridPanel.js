@@ -16,9 +16,7 @@ var OrderDetailGridPanel = Ext.extend(Ext.grid.GridPanel,{
 			tbar:["-",
 			      {text:"申请退款",handler:function(){outThis.fireEvent("applyRefund",outThis.getSelected());}},
 			      "-",
-			      {text:"退款发货",handler:function(){outThis.fireEvent("refundDeliver",outThis.getSelected());}},
-			      "-",
-			      {text:"退款签收",handler:function(){outThis.fireEvent("refundSign",outThis.getSelected());}},
+			      {text:"退款处理",handler:function(){outThis.fireEvent("refundComplete",outThis.getSelected());}},
 			      "-",
 			      {text:"发货",handler:function(){outThis.fireEvent("deliver",outThis.getSelected());}},
 			      "-",
@@ -37,6 +35,8 @@ var OrderDetailGridPanel = Ext.extend(Ext.grid.GridPanel,{
 							return "已付款";
 						}else if (payStatus==2) {
 							return "已退款";
+						}else if (payStatus==3) {
+							return "退款已处理";
 						}
 					 }},
 					 {header:"物流状态",renderer:function(status){

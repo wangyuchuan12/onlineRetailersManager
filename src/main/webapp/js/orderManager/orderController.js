@@ -109,7 +109,7 @@ var OrderController = Ext.extend(Ext.util.Observable,{
 		var orderDetailGridWin = new Ext.Window({
 			closeAction:"hide",
 			layout:"fit",
-			width:1600,
+			width:1000,
 			height:500,
 			title:"订单明细",
 			items:[orderDetailGridPanel]

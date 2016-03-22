@@ -91,28 +91,21 @@ public class OrderManagerApi {
             orderRecord.setRemark("申请退款,内容："+remarks);
             orderRecord.setWay(1);
             orderRecordService.add(orderRecord);
-        }else if (way.equals("refund_deliver")) {
-            groupPartakeDeliver.setStatus(1);
-            groupPartakeDeliver.setRefundDeviveryTime(new DateTime());
-            groupPartakeDeliverService.save(groupPartakeDeliver);
+        }else if (way.equals("refund_complete")) {
+            groupPartakePayment.setStatus(3);
+            groupPartakePayment.setRefundTime(new DateTime());
+            
+            groupPartakePaymentService.save(groupPartakePayment);
             OrderRecord orderRecord = new OrderRecord();
             orderRecord.setGroupPartakeId(groupPartakeId);
-            orderRecord.setRemark("退款发货，物流单号："+logisticsNo+",内容："+remarks);
-            orderRecord.setWay(2);
-            orderRecordService.add(orderRecord);
-        }else if (way.equals("refund_sign")) {
-            groupPartakeDeliver.setRefundSignTime(new DateTime());
-            groupPartakeDeliver.setStatus(2);
-            groupPartakeDeliverService.save(groupPartakeDeliver);
-            OrderRecord orderRecord = new OrderRecord();
-            orderRecord.setGroupPartakeId(groupPartakeId);
-            orderRecord.setRemark("退款签收,内容："+remarks);
-            orderRecord.setWay(3);
+            orderRecord.setRemark("退款处理,内容："+remarks);
+            orderRecord.setWay(1);
             orderRecordService.add(orderRecord);
         }else if (way.equals("deliver")) {
             
             groupPartakeDeliver.setStatus(1);
             groupPartakeDeliver.setDeviceTime(new DateTime());
+            groupPartakeDeliver.setLogisticsNo(logisticsNo);
             groupPartakeDeliverService.save(groupPartakeDeliver);
             OrderRecord orderRecord = new OrderRecord();
             orderRecord.setGroupPartakeId(groupPartakeId);

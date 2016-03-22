@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -16,6 +17,7 @@ public class CustomerAddress {
     @Column(name = "city")
     private String city;
     @Column(name = "customer_id")
+    @Index(name="customer_id")
     private String customerId;
     //1家里 2表示公司
     @Column(name = "type")
