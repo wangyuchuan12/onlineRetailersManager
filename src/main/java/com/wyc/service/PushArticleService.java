@@ -16,4 +16,14 @@ public class PushArticleService {
             int notSentStatus, DateTime dateTime) {
         return pushArticleRepository.findAllByStatusAndPushTimeLessThan(notSentStatus,dateTime);
     }
+
+	public PushArticle findOne(String id) {
+		return pushArticleRepository.findOne(id);
+	}
+
+	public PushArticle save(PushArticle pushArticle) {
+		pushArticle.setUpdateAt(new DateTime());
+		return pushArticleRepository.save(pushArticle);
+		
+	}
 }

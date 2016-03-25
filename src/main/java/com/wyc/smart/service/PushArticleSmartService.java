@@ -31,6 +31,7 @@ public class PushArticleSmartService {
             Map<String, Object> responseAtricle = new HashMap<String, Object>();
             responseAtricle.put("touser", pushArticle.getTouser());
             responseAtricle.put("msgtype", pushArticle.getMsgtype());
+            responseAtricle.put("id",pushArticle.getId());
             if(pushArticle.getMsgtype().equals("text")){
                 Map<String, String> content = new HashMap<String, String>();
                 TextArticleItem textArticleItem = textArticleItemService.findByArticleId(pushArticle.getId());
