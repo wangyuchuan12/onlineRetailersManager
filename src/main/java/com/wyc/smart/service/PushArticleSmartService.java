@@ -25,7 +25,7 @@ public class PushArticleSmartService {
     private TextArticleItemService textArticleItemService;
     
     public List<Map<String, Object>> getAllNotSendJsonStr(){
-        Iterable<PushArticle> notSendArticles = pushArticleService.findAllByStatusAndPushTimeGreaterThan(PushArticle.NOT_SENT_STATUS,new DateTime());
+        Iterable<PushArticle> notSendArticles = pushArticleService.findAllByStatusAndPushTimeLessThan(PushArticle.NOT_SENT_STATUS,new DateTime());
         List<Map<String, Object>> responseAtricles = new ArrayList<Map<String,Object>>();
         for(PushArticle pushArticle:notSendArticles){
             Map<String, Object> responseAtricle = new HashMap<String, Object>();

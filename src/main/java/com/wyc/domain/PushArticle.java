@@ -20,7 +20,7 @@ public class PushArticle {
     @Column
     private String msgtype;
     @Column
-    private String from;
+    private String fromUser;
     @Column(name="push_time")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime pushTime;
@@ -52,13 +52,14 @@ public class PushArticle {
     public void setMsgtype(String msgtype) {
         this.msgtype = msgtype;
     }
-    public String getFrom() {
-        return from;
-    }
-    public void setFrom(String from) {
-        this.from = from;
-    }
-    public DateTime getPushTime() {
+    
+    public String getFromUser() {
+		return fromUser;
+	}
+	public void setFromUser(String fromUser) {
+		this.fromUser = fromUser;
+	}
+	public DateTime getPushTime() {
         return pushTime;
     }
     public void setPushTime(DateTime pushTime) {

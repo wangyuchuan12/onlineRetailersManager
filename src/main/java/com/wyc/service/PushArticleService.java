@@ -12,8 +12,8 @@ public class PushArticleService {
     @Autowired
     private PushArticleRepository pushArticleRepository;
 
-    public Iterable<PushArticle> findAllByStatusAndPushTimeGreaterThan(
+    public Iterable<PushArticle> findAllByStatusAndPushTimeLessThan(
             int notSentStatus, DateTime dateTime) {
-        return pushArticleRepository.findAllByStatusAndPushTimeGreaterThan(notSentStatus,dateTime);
+        return pushArticleRepository.findAllByStatusAndPushTimeLessThan(notSentStatus,dateTime);
     }
 }

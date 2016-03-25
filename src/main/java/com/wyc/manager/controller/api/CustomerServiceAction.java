@@ -13,6 +13,7 @@ import com.wyc.domain.GoodType;
 import com.wyc.manager.domain.Article;
 import com.wyc.manager.service.SendMessageService;
 import com.wyc.service.GoodTypeService;
+import com.wyc.smart.service.PushArticleSmartService;
 
 @RestController
 public class CustomerServiceAction {
@@ -20,6 +21,13 @@ public class CustomerServiceAction {
     private SendMessageService sendMessageService;
     @Autowired
     private GoodTypeService goodTypeService;
+    @Autowired
+    private PushArticleSmartService pushArticleSmartService;
+    
+    @RequestMapping("/manager/api/customer_service/test")
+    public Object test(HttpServletRequest httpServletRequest)throws Exception{
+    	return pushArticleSmartService.getAllNotSendJsonStr();
+    }
     @RequestMapping("/manager/api/customer_service/spread")
     public Object spread(HttpServletRequest httpServletRequest)throws Exception{
         String openid = httpServletRequest.getParameter("openid");

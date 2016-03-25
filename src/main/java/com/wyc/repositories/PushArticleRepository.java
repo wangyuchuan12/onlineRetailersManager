@@ -7,7 +7,7 @@ import com.wyc.domain.PushArticle;
 
 public interface PushArticleRepository extends CrudRepository<PushArticle, String>{
 
-    Iterable<PushArticle> findAllByStatusAndPushTimeGreaterThan(
+    Iterable<PushArticle> findAllByStatusAndPushTimeLessThan(
             int notSentStatus, DateTime dateTime);
 
 }
