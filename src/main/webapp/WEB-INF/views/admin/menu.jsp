@@ -10,7 +10,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<c:url value="/admin/"/>">微纳-后台管理系统</a>
+        <a class="navbar-brand" href="<c:url value="/admin/"/>">晨曦家园后台管理系统</a>
 
         <a class="navbar-brand" ></a>
         <a class="navbar-brand" ></a>
@@ -35,58 +35,52 @@
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
-                <li>
-                    <a class="" href="<c:url value="/statistics/data_type"/>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                </li>
-                 <li>
-                    <a class="" href="<c:url value="/statistics/sp"/>"><i class="fa fa-hdd-o fa-fw"></i> 机顶盒</a>
-                </li>
-                <li>
-                    <a class="" href="<c:url value="/statistics/tv"/>"><i class="fa fa-laptop fa-fw"></i> 电视</a>
-                </li>
-                <li>
-                    <a class="" href="<c:url value="/statistics/netbox"/>"><i class="fa fa-inbox fa-fw"></i> 网络盒子</a>
-                </li>
-                <li>
-                    <a class="" href="<c:url value="/statistics/air"/>"><i class="fa fa-crosshairs fa-fw"></i> 空调</a>
-                </li>
-                
-                <li>
-                    <a class="" href="<c:url value="/statistics/fan"/>"><i class="fa fa-crosshairs fa-fw"></i> 风扇</a>
-                </li>
                 <shiro:hasRole name="god">
                 <li>
-                    <a href="#"><i class="fa fa-plus fa-fw"></i>添加遥控器信息<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-plus fa-fw"></i>系统管理<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="<c:url value="/remote_info/type_list"/>">遥控器数据格式</a>
+                            <a href="<c:url value="/remote_info/type_list"/>">系统处理类</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/remote_info/code_list"/>">遥控器数据协议格式</a>
+                            <a href="<c:url value="/remote_info/code_list"/>">支付活动管理</a>
                         </li>
                         
                         <li>
-                            <a href="<c:url value="/remote_info/codec_list"/>">遥控器编码格式</a>
+                            <a href="<c:url value="/remote_info/codec_list"/>">商品类别</a>
                         </li>
                         
                         <li>
-                            <a href="<c:url value="/remote_info/key_list"/>">遥控器按键定义</a>
+                            <a href="<c:url value="/remote_info/key_list"/>">广告栏</a>
                         </li>
+                        
+                        <li>
+                            <a href="<c:url value="/remote_info/key_list"/>">流动栏</a>
+                        </li>
+                        
+                        <li>
+                            <a href="<c:url value="/remote_info/key_list"/>">商家管理</a>
+                        </li>
+                        
+                        
+                        
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
                 </shiro:hasRole>
+                
                 <li>
-                     <a href="<c:url value="/remote_manager/list_view"/>"><i class="fa fa-database fa-fw"></i>遥控器数据管理</a>
+                     <a href="<c:url value="/remote_manager/list_view"/>"><i class="fa fa-database fa-fw"></i>商品管理</a>
                 </li>
-                <shiro:hasRole name="god">
-	                <li>
-	                     <a href="<c:url value="/apply_manager/list_view"/>"><i class="fa fa-edit fa-fw"></i>申请管理</a>
-	                </li>
-                </shiro:hasRole>
+                
                 <li>
-                     <a href="<c:url value="#"/>"><i class="fa fa-male fa-fw"></i>API授权管理</a>
+                     <a href="<c:url value="/remote_manager/list_view"/>"><i class="fa fa-database fa-fw"></i>订单管理</a>
                 </li>
+                
+                <li>
+                     <a href="<c:url value="/remote_manager/list_view"/>"><i class="fa fa-database fa-fw"></i>组团管理</a>
+                </li>
+                
             </ul>
         </div>
     </div>

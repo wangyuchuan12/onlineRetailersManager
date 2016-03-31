@@ -47,5 +47,9 @@ public class GoodService {
         goodRepository.save(good);
         
     }
+
+    public Iterable<Good> findAllByAdminId(String adminId) {
+        return goodRepository.findAllByAdminId(adminId);
+    }
     
 }

@@ -39,6 +39,8 @@ public class Good {
     //商品主题图片，这里指向了Resource表
     @Column(name = "head_img")
     private String headImg;
+    @Column(name="good_info_head_img")
+    private String goodInfoHeadImg;
     //商品说明
     @Column(length=5000)
     private String instruction;
@@ -64,6 +66,22 @@ public class Good {
     private int status;
     @Column
     private int rank;
+    @Column(name="time_long")
+    private int timeLong = 24;
+    
+    @Column(name="good_type")
+    private String goodType;
+    @Column
+    private String notice;
+    @Column(name="is_display_main")
+    private boolean isDisplayMain=false;
+    @Column
+    private Long stock=0L;
+    
+    @Column(name="sales_volume")
+    private Long salesVolume=0L;
+    @Column(name="admin_id")
+    private String adminId;
     @Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime createAt;
@@ -72,6 +90,54 @@ public class Good {
     private DateTime updateAt;
     
     
+    public String getAdminId() {
+        return adminId;
+    }
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
+    }
+    public Long getStock() {
+        return stock;
+    }
+    public void setStock(Long stock) {
+        this.stock = stock;
+    }
+    public Long getSalesVolume() {
+        return salesVolume;
+    }
+    public void setSalesVolume(Long salesVolume) {
+        this.salesVolume = salesVolume;
+    }
+    public boolean isDisplayMain() {
+        return isDisplayMain;
+    }
+    public void setDisplayMain(boolean isDisplayMain) {
+        this.isDisplayMain = isDisplayMain;
+    }
+    public String getGoodInfoHeadImg() {
+        return goodInfoHeadImg;
+    }
+    public void setGoodInfoHeadImg(String goodInfoHeadImg) {
+        this.goodInfoHeadImg = goodInfoHeadImg;
+    }
+    public String getNotice() {
+        return notice;
+    }
+    public void setNotice(String notice) {
+        this.notice = notice;
+    }
+    public String getGoodType() {
+        return goodType;
+    }
+    public void setGoodType(String goodType) {
+        this.goodType = goodType;
+    }
+    public int getTimeLong() {
+        return timeLong;
+    }
+    public void setTimeLong(int timeLong) {
+        this.timeLong = timeLong;
+    }
     public int getRank() {
         return rank;
     }

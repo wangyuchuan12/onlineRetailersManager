@@ -5,13 +5,13 @@
 
 <tiles:insertDefinition name="adminLayout">
 <tiles:putAttribute name="admin_active" cascade="true">active</tiles:putAttribute>
-<tiles:putAttribute name="title">管理员</tiles:putAttribute>
+<tiles:putAttribute name="title">商品管理</tiles:putAttribute>
 <tiles:putAttribute name="body">
 <!-- Page Content -->
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">管理员</h1>
+            <h1 class="page-header">商品管理</h1>
         </div>
      
     </div>
@@ -28,30 +28,47 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-admin">
                             <thead>
                                 <tr>
-                                    <th>用户名</th>
-                                    <th>管理员姓名</th>
-                                    <th>联系电话</th>
-                                    <th>上次登录时间</th>
-                                    <th>创建时间</th>
+                                    <th width="20%">名称</th>
+                                    <th width="30%">标题</th>
+                                    <th>优先级</th>
+                                    <th>组团时长</th>
+                                    <th>类别</th>
+                                    <th>展现</th>
+                                    <th>库存</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${admins}" var="admin" varStatus="">
-                                <tr class="odd gradeX">
-                                    <td>username</td>
-                                    <td>wyc</td>
-                                    <td>13438139702</td>
-                                    <td class="center"><joda:format value="2015-07-14" pattern="yyyy-MM-dd HH:mm"/></td> 
-                                    
+                            	<c:forEach items="${goods}" var="good">
+                            		<tr class="odd gradeX">
+                            			<td>${good.name}</td>
+                            			<td>${good.title}</td>
+                            			<td>${good.rank}</td>
+                            			<td>${good.timeLong}</td>
+                            			<td>${good.goodType}</td>
+                            			<td>${good.isDisplayMain}</td>
+                            			<td>${good.stock}</td>
+                            			<td class="center">
+                            				<a href="/manager/good_del_do?id=${good.id}">删除</a>
+                            				<a href="/manager/good_update_view?id=${good.id}">修改</a>
+                            			</td>
+                            		</tr>
+                            		
+                            	</c:forEach>
+                                <!--  <tr class="odd gradeX">
+                                    <td>${admin.username}</td>
+                                    <td>${admin.realname}</td>
+                                    <td>${admin.mobile}</td>
+                                    <td class="center"><joda:format value="${admin.lastLogin}" pattern="yyyy-MM-dd HH:mm"/></td> 
+                                    <td class="center"><joda:format value="${admin.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
                                     <td class="center">                                   
-                                       <a href="<c:url value="/admin/update?username="/>">修改</a>                       
-                                       <a href="<c:url value="/admin/delete?username="/>">删除</a>                                                             
-                                       <a href="<c:url value="/admin/reset?username="/>">重置密码</a>
+                                       <a href="<c:url value="/admin/update?username=${admin.username}"/>">修改</a>                       
+                                       <a href="<c:url value="/admin/delete?username=${admin.username}"/>">删除</a>                                                             
+                                       <a href="<c:url value="/admin/reset?username=${admin.username}"/>">重置密码</a>
                                
                                     </td>
                                 </tr>
-                                </c:forEach>
+                               -->
                             </tbody>
                         </table>
                     </div>
@@ -81,7 +98,7 @@ $(document).ready(function() {
 	        });
 	 var addButton = $("button[name=addButton]");
 	    addButton.bind("click",function(){
-	    	window.location="<c:url value='/admin/add'/>";
+	    	window.location="<c:url value='/manager/good_add_view'/>";
 	     });
 });
 </script>

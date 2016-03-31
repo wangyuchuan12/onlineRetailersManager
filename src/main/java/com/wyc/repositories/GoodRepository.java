@@ -7,4 +7,6 @@ import com.wyc.domain.Good;
 public interface GoodRepository extends CrudRepository<Good, String>{
 
     Iterable<Good> findAllByStatusOrderByRankAsc(int status);
+
+    Iterable<Good> findAllByAdminId(String adminId);
 }
