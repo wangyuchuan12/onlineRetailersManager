@@ -17,11 +17,11 @@ public class GoodService {
     @Autowired
     private GoodRepository goodRepository;
     
-    public void add(Good good){
+    public Good add(Good good){
         good.setCreateAt(new DateTime());
         good.setUpdateAt(new DateTime());
         good.setId(UUID.randomUUID().toString());
-        goodRepository.save(good);
+        return goodRepository.save(good);
     }
     
     public Iterable<Good> findAll(){

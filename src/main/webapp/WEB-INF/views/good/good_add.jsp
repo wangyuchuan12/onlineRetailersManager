@@ -21,42 +21,50 @@
 					<div class="row">
 						<div class="col-lg-6">
 							<form role="form"
-								action="<c:url value="/manager/good_add_do"/>" method="post"
+								action="<c:url value="/manager/good_update_do?id=${good.id}"/>" method="post" enctype ="multipart/form-data"
 								onsubmit="return addSubmit();">
 								<div class="form-group">
                     					<label>商品标题图片</label>
-                    					<img class="img-thumbnail" src="http://placehold.it/400x400" alt="">
-                    					<input type="file" >
+                    					<img style="display: block;" class="img-thumbnail" src="${good.headImgUrl}">
+                    					<input type="file" name="headImg">
+                    					<p class="help-block">*请选择文件</p>
+                    					<p class="help-block">请选择图片</p>
                 					</div>
                 					
                 					
-								<div class="form-group">
-									<label>商品名称</label> <input class="form-control" name="name" value="">
-									<p class="help-block">输入该商品的名称</p>
+								<div class="form-group" name="nameDiv">
+									<label>商品名称</label> <input class="form-control" name="name" value="${good.name}">
+									<p class="help-block">*输入该商品的名称</p>
+									<p class="help-block" hidden="true">输入的商品名称格式不合法，不能包含特殊字符或者为空</p>
 								</div>
-								<div class="form-group" >
-									<label>商品标题</label> <input class="form-control" name="title">
-									<p class="help-block">请输入商品标题</p>
-								</div>
-								
-								<div class="form-group">
-									<label>通知</label> <input class="form-control"  name="notice">
-									<p class="help-block">请输入商品通知信息</p>
+								<div class="form-group" name="titleDiv" >
+									<label>商品标题</label> <input class="form-control" name="title" value="${good.title}">
+									<p class="help-block">*请输入商品标题</p>
+									<p class="help-block" hidden="true">输入的标题格式不合法，不能包含特殊字符或者为空</p>
 								</div>
 								
-								<div class="form-group">
-									<label>简介</label> <input class="form-control" name="instruction">
-									<p class="help-block">请输入商品简介</p>
+								<div class="form-group" name="noticeDiv">
+									<label>通知</label> <input class="form-control"  name="notice" value="${good.notice}">
+									<p class="help-block">请输入商品通知信息(一般情况下不填，除非真的有需要)</p>
+									<p class="help-block" hidden="true">输入的商品通知信息格式不合法，不能包含特殊字符或者为空</p>
 								</div>
-								<div class="form-group">
+								
+								<div class="form-group" name="instructionDiv">
+									<label>简介</label> <input class="form-control" name="instruction" value="${good.instruction}">
+									<p class="help-block">*请输入商品简介</p>
+									<p class="help-block" hidden="true">输入的商品简介信息格式不合法，不能包含特殊字符或者为空</p>
+								</div>
+								<div class="form-group" name="goodTypeDiv">
 			                                <label>商品类别</label>
-			                                <select class="form-control">
-			                                    <option value="1">家纺</option>
-			                                    <option value="">土鸡</option>
+			                                <select class="form-control" name="goodType">
+			                                	<c:forEach items="${goodTypes}" var="goodType">
+			                                		<option   <c:if test="${goodType.id==good.goodType}">selected="selected"</c:if>value="${goodType.id}">${goodType.name}</option>
+			                                	</c:forEach>
 			                                </select>
-			                                <p class="help-block">请输入商品类别</p>
+			                                <p class="help-block">*请选择商品类别</p>
+			                                
                             			</div>
-								<div class="form-group" id="device_name_div">
+								<div class="form-group" name="statusDiv">
 									<label>状态</label>
 									<div>
 										<div style="display: inline-block;"><input checked="checked" class="form-control" type="radio" name="status" style="width:20px;display: inline-block;" value="0"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">下架</label></div>
@@ -64,73 +72,84 @@
 										<div style="display: inline-block;"><input class="form-control" type="radio" name="status" style="width:20px;display: inline-block;" value="1"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">正常</label></div>
 									
 									</div>
-									<p class="help-block">选择商品状态</p>
+									<p class="help-block">*选择商品状态</p>
 								</div>
 								
-								<div class="form-group"id="device_name_div">
+								<div class="form-group" name="isDisplayDiv">
 									<label>是否展示</label>
 									<div>
-										<div style="display: inline-block;"><input checked="checked" class="form-control" type="radio"  name="isDisplay"  style="width:20px;display: inline-block;" value="0"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">是</label></div>
-										<div style="display: inline-block;"><input class="form-control" type="radio"  name="isDisplay"  style="width:20px;display: inline-block;" value="1"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">否</label></div>
+										<div style="display: inline-block;"><input checked="checked" class="form-control" type="radio"  name="isDisplay"  style="width:20px;display: inline-block;" value="1"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">是</label></div>
+										<div style="display: inline-block;"><input class="form-control" type="radio"  name="isDisplay"  style="width:20px;display: inline-block;" value="0"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">否</label></div>
 									
 									</div>
-									<p class="help-block">选择该商品是否展示</p>
+									<p class="help-block">*选择该商品是否展示</p>
 								</div>
 								
-								<div class="form-group">
-									<label>优先级</label> <input class="form-control"  name="rank">
-									<p class="help-block">请输入该商品排列的优先级</p>
+								<div class="form-group" name="rankDiv">
+									<label>优先级</label> <input class="form-control"  name="rank" value="${good.rank}" type="number">
+									<p class="help-block">*请输入该商品排列的优先级</p>
+									<p class="help-block" hidden="true">输入的优先级不能为空</p>
 								</div>
 								
-								<div class="form-group">
-									<label>组团时长</label> <input class="form-control" name="timeLong">
-									<p class="help-block">请输入该商品组团时长</p>
+								<div class="form-group" name="timeLongDiv">
+									<label>组团时长</label> <input class="form-control" name="timeLong" value="${good.timeLong}" type="number">
+									<p class="help-block">*请输入该商品组团时长</p>
+									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
-								<div class="form-group">
-									<label>组团数量</label> <input class="form-control"  name="groupNum">
-									<p class="help-block">请输入该商品组团需要的人数</p>
+								<div class="form-group" name="groupNumDiv">
+									<label>组团数量</label> <input class="form-control"  name="groupNum" value="${good.groupNum}" type="number">
+									<p class="help-block">*请输入该商品组团需要的人数</p>
+									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
-								<div class="form-group">
-									<label>单卖原价</label> <input class="form-control" name="aloneOriginalCost">
-									<p class="help-block">请输入该商品单卖的原价</p>
+								<div class="form-group" name="aloneOriginalCostDiv">
+									<label>单卖原价</label> <input class="form-control" name="aloneOriginalCost" value="${good.aloneOriginalCost}" type="number">
+									<p class="help-block">*请输入该商品单卖的原价</p>
+									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
-								<div class="form-group">
-									<label>单卖折扣</label> <input class="form-control" name="aloneDiscount">
-									<p class="help-block">请输入该商品单卖折扣,填1表示十折，0.1表示一折</p>
+								<div class="form-group" name="aloneDiscountDiv">
+									<label>单卖折扣</label> <input class="form-control" name="aloneDiscount" value="${good.aloneDiscount}" type="number">
+									<p class="help-block">*请输入该商品单卖折扣,填1表示十折，0.1表示一折</p>
+									<p class="help-block">输入的格式不合法</p>
 								</div>
 								
 								
-								<div class="form-group">
-									<label>组团原价</label> <input class="form-control" name="groupOriginalCost">
-									<p class="help-block">请输入该商品组团的原价</p>
+								<div class="form-group" name="groupOriginalCostDiv">
+									<label>组团原价</label> <input class="form-control" name="groupOriginalCost" value="${good.groupOriginalCost}" type="number">
+									<p class="help-block">*请输入该商品组团的原价</p>
+									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
-								<div class="form-group">
-									<label>组团折扣</label> <input class="form-control" name="groupDiscount">
-									<p class="help-block">请输入该商品组团折扣,填1表示十折，0.1表示一折</p>
+								<div class="form-group" name="groupDiscountDiv">
+									<label>组团折扣</label> <input class="form-control" name="groupDiscount" value="${good.groupDiscount}" type="number">
+									<p class="help-block">*请输入该商品组团折扣,填1表示十折，0.1表示一折</p>
+									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
-								<div class="form-group" >
-									<label>市场价</label> <input class="form-control" name="marketPrice">
-									<p class="help-block">请输入该商品市场价格</p>
+								<div class="form-group" name="marketPriceDiv">
+									<label>市场价</label> <input class="form-control" name="marketPrice" value="${good.marketPrice}" type="number">
+									<p class="help-block">*请输入该商品市场价格</p>
+									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
-								<div class="form-group">
-									<label>物流费用</label> <input class="form-control" name="flowPrice">
-									<p class="help-block">请输入该商品物流费用</p>
+								<div class="form-group" name="flowPriceDiv">
+									<label>物流费用</label> <input class="form-control" name="flowPrice" value="${good.flowPrice}" type="number">
+									<p class="help-block">*请输入该商品物流费用</p>
+									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
-								<div class="form-group">
-									<label>库存数</label> <input class="form-control" name="stock">
-									<p class="help-block">请输入该商品库存数量</p>
+								<div class="form-group" name="stockDiv">
+									<label>库存数</label> <input class="form-control" name="stock" value="${good.stock}" type="number">
+									<p class="help-block">*请输入该商品库存数量</p>
+									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
-								<div class="form-group">
-									<label>库存数</label> <input class="form-control" name="salesVolume">
+								<div class="form-group" name="salesVolumeDiv">
+									<label>已销售</label> <input class="form-control" name="salesVolume" value="${good.salesVolume}" disabled="disabled" type="number">
 									<p class="help-block">请输入该商品已销售数量</p>
+									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
 								
@@ -148,72 +167,55 @@
 <tiles:putAttribute name="footerJavascript">
 <script>
 	$(document).ready(function() {
-//		check('usernameDiv');
+	//	check('usernameDiv');
+		$("input").each(function(){
+			$(this).parent().find("p").eq(1).hide();
+		});
+		$("input").blur(function(outThis){
+			var divObject = $(this).parent();
+			checkDiv(divObject);
+		});
 	});
-	function addSubmit() {
-		return true;
-
-	}
-	function check(name) {
-		var divObject = getJqueryDivObject(name);
+	
+	function checkDiv(divObject){
 		var inputObject = divObject.find("input");
-		if (name == "passwordDiv") {
-			if (!inputObject.val()) {
-				divObject.find("p").text("密码不能为空");
-				addErrorCss(name);
+		var attrName = inputObject.attr("name");
+		if(attrName!="notice"&&attrName!="headImg"&&attrName&&attrName!="status"&&attrName!="isDisplay"&&attrName!="salesVolume"){
+			if(!checkStr(inputObject.val())){
+				divObject.addClass("has-error");
+				divObject.find("p").eq(0).hide();
+				divObject.find("p").eq(1).show();
 				return false;
-			} else {
-				divObject.find("p").text("请输入用户初始密码");
-				remoteErrorCss(name);
+			}else{
+				divObject.removeClass("has-error");
+				divObject.find("p").eq(0).show();
+				divObject.find("p").eq(1).hide();
 				return true;
-			}
-		} else if (name == "affirm_passwordDiv") {
-			var passwordInputObject = getJqueryDivObject("passwordDiv")
-					.find("input");
-			var oldContent = divObject.find("p").text();
-			if (passwordInputObject.val() != inputObject.val()) {
-				divObject.find("p").text("原始密码和确认密码不一致");
-				addErrorCss(name);
-				return false;
-			} else {
-				divObject.find("p").text("请确认密码");
-				remoteErrorCss(name);
-				return true;
-			}
-		} else if (name == "usernameDiv") {
-			var oldContent = divObject.find("p").text();
-			if (!inputObject.val()) {
-				addErrorCss(name);
-				oldContent = divObject.find("p").text("用户名不为空");
-				return false;
-			} else {
-				var htmlobj=$.ajax({url:"<c:url value="/admin/get_admin_json"/>",async:false,data:{username:inputObject.val()}});
-				if(!htmlobj.responseText||!eval("("+htmlobj.responseText+")")||!eval("("+htmlobj.responseText+")").username)
-				{
-					divObject.find("p").text("请输入用户名，用户名唯一，最少4字符");
-					remoteErrorCss(name);
-					return true;
-				}
-				else{
-					addErrorCss(name);
-					oldContent = divObject.find("p").text("用户名不能重复");
-					return false;
-				}
-				
 			}
 		}
 	}
-	function remoteErrorCss(name) {
-		var obj = getJqueryDivObject(name);
-		obj.removeClass("has-error");
+	function addSubmit() {
+		var b = true;
+		$("input").each(function(){
+			if($(this).attr("name")!="notice"&&$(this).attr("name")!="headImg"&&$(this).attr("name")&&$(this).attr("name")!="status"&&$(this).attr("name")!="isDisplay"&&$(this).attr("name")!="salesVolume"){
+				if(!checkDiv($(this).parent())){
+					b = false;
+				}
+			}
+			
+		});
+		if(!b){
+			alert("请输入正确的格式");
+		}
+		return b;
 	}
-	function addErrorCss(name) {
-		var obj = getJqueryDivObject(name);
-		obj.addClass("has-error");
-	}
-	function getJqueryDivObject(name) {
-		var obj = $("div[name=" + name + "]");
-		return obj;
+	function checkStr(str){
+		if(!str){
+			return false;
+		}else{
+			return true;
+		}
+		
 	}
 </script>
 </tiles:putAttribute>
