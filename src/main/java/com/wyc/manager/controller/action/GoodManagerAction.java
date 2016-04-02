@@ -124,6 +124,7 @@ public class GoodManagerAction {
         CommonsMultipartFile commonsMultipartFile = (CommonsMultipartFile) multipartHttpServletRequest.getFile("headImg");
         String id = httpServletRequest.getParameter("id");
         String goodType = httpServletRequest.getParameter("goodType");
+        logger.debug("goodType:{}",goodType);
         String instruction = httpServletRequest.getParameter("instruction");
         String name = httpServletRequest.getParameter("name");
         String notice = httpServletRequest.getParameter("notice");
@@ -139,8 +140,10 @@ public class GoodManagerAction {
         String marketPrice = httpServletRequest.getParameter("marketPrice");
         String rank = httpServletRequest.getParameter("rank");
         String salesVolume = httpServletRequest.getParameter("salesVolume");
-        String isDisplayMain = httpServletRequest.getParameter("isDisplayMain");
+        String isDisplayMain = httpServletRequest.getParameter("isDisplay");
         String status = httpServletRequest.getParameter("status");
+        logger.debug("status:{}",status);
+        logger.debug("isDisplayMain:{}",isDisplayMain);
         String stock = httpServletRequest.getParameter("stock");
         String timeLong = httpServletRequest.getParameter("timeLong");
         
@@ -242,7 +245,6 @@ public class GoodManagerAction {
         good.setName(name);
         good.setNotice(notice);
         good.setRank(Integer.parseInt(rank));
-        good.setSalesVolume(Long.parseLong(salesVolume));
         good.setStatus(Integer.parseInt(status));
         good.setStock(Long.parseLong(stock));
         good.setTimeLong(Integer.parseInt(timeLong));

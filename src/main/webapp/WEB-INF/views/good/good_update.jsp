@@ -56,9 +56,9 @@
 								</div>
 								<div class="form-group" name="goodTypeDiv">
 			                                <label>商品类别</label>
-			                                <select class="form-control">
+			                                <select class="form-control" name="goodType" >
 			                                	<c:forEach items="${goodTypes}" var="goodType">
-			                                		<option  name="goodType" <c:if test="${goodType.id==good.goodType}">selected="selected"</c:if>value="${goodType.id}">${goodType.name}</option>
+			                                		<option  <c:if test="${goodType.id==good.goodType}">selected="selected"</c:if>value="${goodType.id}">${goodType.name}</option>
 			                                	</c:forEach>
 			                                </select>
 			                                <p class="help-block">*请选择商品类别</p>

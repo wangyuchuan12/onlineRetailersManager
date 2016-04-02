@@ -21,7 +21,7 @@
 					<div class="row">
 						<div class="col-lg-6">
 							<form role="form"
-								action="<c:url value="/manager/good_update_do?id=${good.id}"/>" method="post" enctype ="multipart/form-data"
+								action="<c:url value="/manager/good_add_do?id=${good.id}"/>" method="post" enctype ="multipart/form-data"
 								onsubmit="return addSubmit();">
 								<div class="form-group">
                     					<label>商品标题图片</label>
@@ -135,13 +135,13 @@
 								</div>
 								
 								<div class="form-group" name="flowPriceDiv">
-									<label>物流费用</label> <input class="form-control" name="flowPrice" value="${good.flowPrice}" type="number">
+									<label>物流费用</label> <input class="form-control" name="flowPrice" value="${good.flowPrice}" type="number" precision="2">
 									<p class="help-block">*请输入该商品物流费用</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
 								<div class="form-group" name="stockDiv">
-									<label>库存数</label> <input class="form-control" name="stock" value="${good.stock}" type="number">
+									<label>库存数</label> <input class="form-control" name="stock" value="${good.stock}" type="number" onkeyup="checkNum(this)">
 									<p class="help-block">*请输入该商品库存数量</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
@@ -180,7 +180,7 @@
 	function checkDiv(divObject){
 		var inputObject = divObject.find("input");
 		var attrName = inputObject.attr("name");
-		if(attrName!="notice"&&attrName!="headImg"&&attrName&&attrName!="status"&&attrName!="isDisplay"&&attrName!="salesVolume"){
+		if(attrName&&attrName!="status"&&attrName!="isDisplay"&&attrName!="salesVolume"){
 			if(!checkStr(inputObject.val())){
 				divObject.addClass("has-error");
 				divObject.find("p").eq(0).hide();
@@ -197,7 +197,7 @@
 	function addSubmit() {
 		var b = true;
 		$("input").each(function(){
-			if($(this).attr("name")!="notice"&&$(this).attr("name")!="headImg"&&$(this).attr("name")&&$(this).attr("name")!="status"&&$(this).attr("name")!="isDisplay"&&$(this).attr("name")!="salesVolume"){
+			if($(this).attr("name")!="notice"&&$(this).attr("name")&&$(this).attr("name")!="status"&&$(this).attr("name")!="isDisplay"&&$(this).attr("name")!="salesVolume"){
 				if(!checkDiv($(this).parent())){
 					b = false;
 				}
@@ -209,6 +209,21 @@
 		}
 		return b;
 	}
+	
+	function checkNum(obj) {
+	     //检查是否是非数字值
+	     if (isNaN(obj.value)) {
+	         obj.value = "";
+	     }
+	     if (obj != null) {
+	         //检查小数点后是否对于两位http://blog.csdn.net/shanzhizi
+	         if (obj.value.toString().split(".").length > 1 && obj.value.toString().split(".")[1].length > 2) {
+	             alert("小数点后多于两位！");
+	             obj.value = "";
+	         }
+	     }
+	 }
+	
 	function checkStr(str){
 		if(!str){
 			return false;
