@@ -86,62 +86,62 @@
 								</div>
 								
 								<div class="form-group" name="rankDiv">
-									<label>优先级</label> <input class="form-control"  name="rank" value="${good.rank}" type="number">
+									<label>优先级</label> <input class="form-control"  name="rank" value="${good.rank}" type="number" onkeyup="checkNum(this,1,0,50)">
 									<p class="help-block">*请输入该商品排列的优先级</p>
 									<p class="help-block" hidden="true">输入的优先级不能为空</p>
 								</div>
 								
 								<div class="form-group" name="timeLongDiv">
-									<label>组团时长</label> <input class="form-control" name="timeLong" value="${good.timeLong}" type="number">
+									<label>组团时长</label> <input class="form-control" name="timeLong" value="${good.timeLong}" type="number" onkeyup="checkNum(this,1,0,24)">
 									<p class="help-block">*请输入该商品组团时长</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
 								<div class="form-group" name="groupNumDiv">
-									<label>组团数量</label> <input class="form-control"  name="groupNum" value="${good.groupNum}" type="number">
+									<label>组团数量</label> <input class="form-control"  name="groupNum" value="${good.groupNum}" type="number" onkeyup="checkNum(this,1,0,50)">
 									<p class="help-block">*请输入该商品组团需要的人数</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
 								<div class="form-group" name="aloneOriginalCostDiv">
-									<label>单卖原价</label> <input class="form-control" name="aloneOriginalCost" value="${good.aloneOriginalCost}" type="number">
+									<label>单卖原价</label> <input class="form-control" name="aloneOriginalCost" value="${good.aloneOriginalCost}" type="number" onkeyup="checkNum(this,2,0,1000)">
 									<p class="help-block">*请输入该商品单卖的原价</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
 								<div class="form-group" name="aloneDiscountDiv">
-									<label>单卖折扣</label> <input class="form-control" name="aloneDiscount" value="${good.aloneDiscount}" type="number">
+									<label>单卖折扣</label> <input class="form-control" name="aloneDiscount" value="${good.aloneDiscount}" type="number" onkeyup="checkNum(this,3,0,1)">
 									<p class="help-block">*请输入该商品单卖折扣,填1表示十折，0.1表示一折</p>
 									<p class="help-block">输入的格式不合法</p>
 								</div>
 								
 								
 								<div class="form-group" name="groupOriginalCostDiv">
-									<label>组团原价</label> <input class="form-control" name="groupOriginalCost" value="${good.groupOriginalCost}" type="number">
+									<label>组团原价</label> <input class="form-control" name="groupOriginalCost" value="${good.groupOriginalCost}" type="number" onkeyup="checkNum(this,2,0,1000)">
 									<p class="help-block">*请输入该商品组团的原价</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
 								<div class="form-group" name="groupDiscountDiv">
-									<label>组团折扣</label> <input class="form-control" name="groupDiscount" value="${good.groupDiscount}" type="number">
+									<label>组团折扣</label> <input class="form-control" name="groupDiscount" value="${good.groupDiscount}" type="number" onkeyup="checkNum(this,3,0,1)">
 									<p class="help-block">*请输入该商品组团折扣,填1表示十折，0.1表示一折</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
 								<div class="form-group" name="marketPriceDiv">
-									<label>市场价</label> <input class="form-control" name="marketPrice" value="${good.marketPrice}" type="number">
+									<label>市场价</label> <input class="form-control" name="marketPrice" value="${good.marketPrice}" type="number" onkeyup="checkNum(this,2,0,1000)">
 									<p class="help-block">*请输入该商品市场价格</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
 								<div class="form-group" name="flowPriceDiv">
-									<label>物流费用</label> <input class="form-control" name="flowPrice" value="${good.flowPrice}" type="number">
+									<label>物流费用</label> <input class="form-control" name="flowPrice" value="${good.flowPrice}" type="number" readonly="readonly">
 									<p class="help-block">*请输入该商品物流费用</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
 								
 								<div class="form-group" name="stockDiv">
-									<label>库存数</label> <input class="form-control" name="stock" value="${good.stock}" type="number">
+									<label>库存数</label> <input class="form-control" name="stock" value="${good.stock}" type="number" onkeyup="checkNum(this,1,0,9999)">
 									<p class="help-block">*请输入该商品库存数量</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
@@ -196,6 +196,35 @@
 		}
 		
 	}
+	
+	function checkNum(obj,number,minValue,maxValue) {
+	     //检查是否是非数字值
+	     var re = /^[0-9]+.?[0-9]*$/;
+	     if(!re.test(obj.value)){
+	    	 obj.value=obj.value.substr(0,obj.value.length-1);
+	     }
+	     if(obj.value>maxValue){
+	    	 alert("最大值为"+maxValue);
+	    	 obj.value="";
+	     }
+	     if(obj.value<minValue){
+	    	 alert("最小值为"+minValue);
+	    	 obj.value="";
+	     }
+	     if (obj != null) {
+	         //检查小数点后是否对于两位http://blog.csdn.net/shanzhizi
+	         var str = obj.value.toString();
+	         var index = str.indexOf(".");
+			if(index>0){
+	        	 str = str.substr(str.indexOf(".")+1);
+	        	 index = str.length;
+	        	 if(index>number-1){
+	        		 obj.value="";
+	        	 }
+			}
+	     }
+	     
+	 }
 	function addSubmit() {
 		var b = true;
 		$("input").each(function(){
