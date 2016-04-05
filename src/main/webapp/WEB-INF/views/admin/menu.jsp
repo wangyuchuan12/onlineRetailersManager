@@ -70,7 +70,7 @@
                 </shiro:hasRole>
                 
                 <li>
-                     <a href="<c:url value="/remote_manager/list_view"/>"><i class="fa fa-database fa-fw"></i>商品管理</a>
+                     <a href="<c:url value="/manager/goods"/>"><i class="fa fa-database fa-fw"></i>商品管理</a>
                 </li>
                 
                 <li>

@@ -19,10 +19,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.wyc.domain.Good;
+import com.wyc.domain.GoodImg;
 import com.wyc.domain.GoodType;
 import com.wyc.domain.MyResource;
 import com.wyc.manager.domain.Admin;
 import com.wyc.manager.service.AdminService;
+import com.wyc.service.GoodImgService;
 import com.wyc.service.GoodService;
 import com.wyc.service.GoodTypeService;
 import com.wyc.service.MyResourceService;
@@ -40,6 +42,8 @@ public class GoodManagerAction {
     private GoodTypeService goodTypeService;
     @Autowired
     private UploadToQNService uploadToQNService;
+    @Autowired
+    private GoodImgService goodImgService;
     final static Logger logger = LoggerFactory.getLogger(GoodManagerAction.class);
     
     public Map<String, Object> responseGood(Good good){
@@ -48,6 +52,8 @@ public class GoodManagerAction {
         responseGood.put("adminId", good.getAdminId());
         responseGood.put("goodInfoHeadImg", good.getGoodInfoHeadImg());
         responseGood.put("goodType", good.getGoodType());
+        GoodType goodType = goodTypeService.findOne(good.getGoodType());
+        responseGood.put("goodTypeName",goodType.getName());
         responseGood.put("headImg", good.getHeadImg());
         if(good.getHeadImg()!=null){
             MyResource headImgResource = myResourceService.findOne(good.getHeadImg());
@@ -76,6 +82,45 @@ public class GoodManagerAction {
         responseGood.put("updateAt", good.getUpdateAt());
         return responseGood;
     }
+    
+    @RequestMapping("/manager/add_good_img")
+    public String addImgs(MultipartHttpServletRequest httpServletRequest){
+        String goodId = httpServletRequest.getParameter("good_id");
+        GoodImg goodImg = new GoodImg();
+        goodImg.setGoodId(goodId);
+        CommonsMultipartFile commonsMultipartFile = (CommonsMultipartFile) httpServletRequest.getFile("img");
+        MyResource myResource = new MyResource();
+        String resourceId = UUID.randomUUID().toString();
+        myResource.setId(resourceId);
+        if(commonsMultipartFile!=null&&commonsMultipartFile.getOriginalFilename()!=null&&!commonsMultipartFile.getOriginalFilename().trim().equals("")){
+            
+            String fileName = commonsMultipartFile.getOriginalFilename();
+            myResource.setSuffix(fileName.substring(fileName.lastIndexOf(".")+1));
+            myResource.setName(fileName.substring(0,fileName.lastIndexOf(".")));
+            goodImg.setImgId(resourceId);
+            
+        }
+        try {
+            myResourceService.addToWebpath(myResource, commonsMultipartFile.getInputStream());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            return "{'success':false}";
+        }
+        myResourceService.add(myResource);
+        goodImgService.add(goodImg);
+        uploadToQNService.syncResource(myResource);
+        return "redirect:/manager/good_imgs?good_id="+goodId;
+    }
+    
+    @RequestMapping("/manager/delete_img")
+    public Object deleteGoodImg(HttpServletRequest servletRequest){
+        String img_id = servletRequest.getParameter("img_id");
+        String goodId = servletRequest.getParameter("good_id");
+        goodImgService.delete(img_id);
+        return "redirect:/manager/good_imgs?good_id="+goodId;
+    }
+    
     @RequestMapping("/manager/goods")
     public String managerGoods(HttpServletRequest httpServletRequest){
         Subject subject = SecurityUtils.getSubject();
@@ -94,12 +139,32 @@ public class GoodManagerAction {
         return "good/goods";
     }
     
+    @RequestMapping("/manager/good_imgs")
+    public String managerGoodImages(HttpServletRequest httpServletRequest){
+        String goodId = httpServletRequest.getParameter("good_id");
+        List<Map<String, String>> responseImgs = new ArrayList<Map<String,String>>();
+        Iterable<GoodImg> goodImgs = goodImgService.findAllByGoodIdOrderByLevel(goodId);
+        for(GoodImg goodImg:goodImgs){
+            MyResource myResource = myResourceService.findOne(goodImg.getImgId());
+            Map<String, String> responseImg = new HashMap<String, String>();
+            responseImg.put("imgUrl", myResource.getUrl());
+            responseImg.put("imgId", goodImg.getId());
+            responseImgs.add(responseImg);
+        }
+        Map<String, String> responseGood = new HashMap<String, String>();
+        responseGood.put("id", goodId);
+        httpServletRequest.setAttribute("good", responseGood);
+        httpServletRequest.setAttribute("imgs", responseImgs);
+        return "good/good_images";
+    }
+    
     @RequestMapping("/manager/good_add_view")
     public String managerGoodAdd(HttpServletRequest httpServletRequest){
         Iterable<GoodType> goodTypes = goodTypeService.findAll();
         httpServletRequest.setAttribute("goodTypes", goodTypes);
         return "good/good_add";
     }
+    
     
     @RequestMapping("/manager/good_update_view")
     public String managerGoodUpdate(HttpServletRequest httpServletRequest){
@@ -131,7 +196,7 @@ public class GoodManagerAction {
         String title = httpServletRequest.getParameter("title");
         String aloneDiscount = httpServletRequest.getParameter("aloneDiscount");
         String aloneOriginalCost = httpServletRequest.getParameter("aloneOriginalCost");
-        String couponCost = httpServletRequest.getParameter("couponCost");
+//        String couponCost = httpServletRequest.getParameter("couponCost");
         String flowPrice = httpServletRequest.getParameter("flowPrice");
         String groupDiscount = httpServletRequest.getParameter("groupDiscount");
 //        String groupDuration = httpServletRequest.getParameter("groupDuration");
@@ -210,7 +275,7 @@ public class GoodManagerAction {
         String title = httpServletRequest.getParameter("title");
         String aloneDiscount = httpServletRequest.getParameter("aloneDiscount");
         String aloneOriginalCost = httpServletRequest.getParameter("aloneOriginalCost");
-        String couponCost = httpServletRequest.getParameter("couponCost");
+//        String couponCost = httpServletRequest.getParameter("couponCost");
         String flowPrice = httpServletRequest.getParameter("flowPrice");
         String groupDiscount = httpServletRequest.getParameter("groupDiscount");
 //        String groupDuration = httpServletRequest.getParameter("groupDuration");
@@ -218,7 +283,7 @@ public class GoodManagerAction {
         String groupOriginalCost = httpServletRequest.getParameter("groupOriginalCost");
         String marketPrice = httpServletRequest.getParameter("marketPrice");
         String rank = httpServletRequest.getParameter("rank");
-        String salesVolume = httpServletRequest.getParameter("salesVolume");
+//        String salesVolume = httpServletRequest.getParameter("salesVolume");
         String isDisplayMain = httpServletRequest.getParameter("isDisplayMain");
         String status = httpServletRequest.getParameter("status");
         String stock = httpServletRequest.getParameter("stock");
@@ -256,6 +321,7 @@ public class GoodManagerAction {
         myResource.setSuffix(fileName.substring(fileName.lastIndexOf(".")+1));
         myResource.setName(fileName.substring(0,fileName.lastIndexOf(".")));
         good.setHeadImg(resourceId);
+        good.setGoodInfoHeadImg(resourceId);
         goodService.add(good);
         try {
             myResourceService.addToWebpath(myResource, commonsMultipartFile.getInputStream());

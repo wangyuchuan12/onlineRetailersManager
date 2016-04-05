@@ -28,6 +28,7 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-admin">
                             <thead>
                                 <tr>
+                                	 <th>图片</th>
                                     <th width="20%">名称</th>
                                     <th width="30%">标题</th>
                                     <th>优先级</th>
@@ -41,16 +42,24 @@
                             <tbody>
                             	<c:forEach items="${goods}" var="good">
                             		<tr class="odd gradeX">
+                            			<td><img src="${good.headImgUrl}" style="width: 50px;height:50px;"></img></td>
                             			<td>${good.name}</td>
                             			<td>${good.title}</td>
                             			<td>${good.rank}</td>
                             			<td>${good.timeLong}</td>
-                            			<td>${good.goodType}</td>
-                            			<td>${good.isDisplayMain}</td>
+                            			<td>${good.goodTypeName}</td>
+                            			<c:if test="${good.isDisplayMain==true}">
+                            				<td>是</td>
+                            			</c:if>
+                            			<c:if test="${good.isDisplayMain==false}">
+                            				<td>否</td>
+                            			</c:if>
+                            			
                             			<td>${good.stock}</td>
                             			<td class="center">
-                            				<a href="/manager/good_del_do?id=${good.id}">删除</a>
+                            				<a href="/manager/good_del_do?id=${good.id}" style="display: none;">删除</a>
                             				<a href="/manager/good_update_view?id=${good.id}">修改</a>
+                            				<a href="/manager/good_imgs?good_id=${good.id}">图片管理</a>
                             			</td>
                             		</tr>
                             		

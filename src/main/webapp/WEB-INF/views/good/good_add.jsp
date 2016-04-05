@@ -110,7 +110,7 @@
 								</div>
 								
 								<div class="form-group" name="aloneDiscountDiv">
-									<label>单卖折扣</label> <input class="form-control" name="aloneDiscount" value="${good.aloneDiscount}" type="number" onkeyup="checkNum(this,3,0,1)">
+									<label>单卖折扣</label> <input class="form-control" name="aloneDiscount" value="${good.aloneDiscount}" onkeyup="checkNum(this,3,0,1)">
 									<p class="help-block">*请输入该商品单卖折扣,填1表示十折，0.1表示一折</p>
 									<p class="help-block">输入的格式不合法</p>
 								</div>
@@ -123,7 +123,7 @@
 								</div>
 								
 								<div class="form-group" name="groupDiscountDiv">
-									<label>组团折扣</label> <input class="form-control" name="groupDiscount" value="${good.groupDiscount}" type="number" onkeyup="checkNum(this,3,0,1)">
+									<label>组团折扣</label> <input class="form-control" name="groupDiscount" value="${good.groupDiscount}" onkeyup="checkNum(this,3,0,1)">
 									<p class="help-block">*请输入该商品组团折扣,填1表示十折，0.1表示一折</p>
 									<p class="help-block" hidden="true">输入的格式不合法</p>
 								</div>
