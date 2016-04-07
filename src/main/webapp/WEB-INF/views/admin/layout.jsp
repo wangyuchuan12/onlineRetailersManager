@@ -22,6 +22,8 @@
 <%--<link href="<c:url value="/css/plugins/dataTables.editor.min.css"/>" rel="stylesheet">--%>
 <!-- Custom CSS -->
 <link href="<c:url value="/css/sb-admin-2.css"/>" rel="stylesheet">
+<link href="<c:url value="/css/lanrenzhijia.css"/>" rel="stylesheet">
+<link href="<c:url value="/css/jquery.datetimepicker.css"/>" rel="stylesheet">
 <!-- Custom Fonts -->
 <link href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -62,6 +64,8 @@
 <!-- Custom Theme JavaScript -->
 <script src="<c:url value="/js/sb-admin-2.js"/>"></script>
 <script src="<c:url value="/js/init.js"/>"></script>
+<script src="<c:url value="/js/jquery.datetimepicker.js"/>"></script>
+
 <tiles:insertAttribute name="footerJavascript" defaultValue="" />
 </body>
 </html>

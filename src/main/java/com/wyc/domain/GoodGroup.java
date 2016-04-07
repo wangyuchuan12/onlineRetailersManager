@@ -32,6 +32,8 @@ public class GoodGroup {
     private int timeLong;
     @Column(name="good_id")
     private String goodId;
+    @Column(name="admin_id")
+    private String adminId;
     @Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime createAt;
@@ -41,6 +43,12 @@ public class GoodGroup {
     
     
     
+    public String getAdminId() {
+        return adminId;
+    }
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
+    }
     public int getNum() {
 		return num;
 	}

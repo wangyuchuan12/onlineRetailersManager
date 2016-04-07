@@ -47,4 +47,13 @@ public class GoodOrderService {
     public GoodOrder findOne(String orderId) {
         return goodOrderRepository.findOne(orderId);
     }
+
+    public Iterable<GoodOrder> findAllByAdminId(String adminId) {
+        return goodOrderRepository.findAllByAdminId(adminId);
+    }
+
+    public Iterable<GoodOrder> findAllByGroupIdAndAdminId(String groupId,
+            String adminId) {
+        return goodOrderRepository.findAllByGroupIdAndAdminId(groupId,adminId);
+    }
 }

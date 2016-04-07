@@ -74,11 +74,11 @@
                 </li>
                 
                 <li>
-                     <a href="<c:url value="/remote_manager/list_view"/>"><i class="fa fa-database fa-fw"></i>订单管理</a>
+                     <a href="<c:url value="/manager/orders"/>"><i class="fa fa-database fa-fw"></i>订单管理</a>
                 </li>
                 
                 <li>
-                     <a href="<c:url value="/remote_manager/list_view"/>"><i class="fa fa-database fa-fw"></i>组团管理</a>
+                     <a href="<c:url value="/manager/groups"/>"><i class="fa fa-database fa-fw"></i>组团管理</a>
                 </li>
                 
             </ul>

@@ -25,6 +25,7 @@ public class GroupPartakePayment {
     
     //付款时间
     @Column(name="pay_time")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime payTime;
     
     //0表示未付款 1已付款 2已退款 

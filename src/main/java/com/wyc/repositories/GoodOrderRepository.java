@@ -15,4 +15,9 @@ public interface GoodOrderRepository extends CrudRepository<GoodOrder, String>{
     public Iterable<GoodOrder> findAllByStatusInOrderByCreateTimeDesc(
             Collection<Integer> statuses);
 
+    public Iterable<GoodOrder> findAllByAdminId(String adminId);
+
+    public Iterable<GoodOrder> findAllByGroupIdAndAdminId(String groupId,
+            String adminId);
+
 }

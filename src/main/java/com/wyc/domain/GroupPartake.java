@@ -8,6 +8,11 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 @Entity(name = "group_partake")
 public class GroupPartake {
+    public static final int WAIT_STATUS=0;
+    public static final int BEGIN_STATUS=1;
+    public static final int PROGRAM_STATUS=2;
+    public static final int SUCCESS_STATUS=3;
+    public static final int DERELICT_STATUS=4;
     @Id
     private String id;
     @Column(name = "customerid")
@@ -25,6 +30,8 @@ public class GroupPartake {
     private int role;
     @Column
     private  String remarks;
+    @Column
+    private int status=WAIT_STATUS;
     //参加时间
     @Column(name = "date_time")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -39,6 +46,12 @@ public class GroupPartake {
     
     
     
+    public int getStatus() {
+        return status;
+    }
+    public void setStatus(int status) {
+        this.status = status;
+    }
     public String getRemarks() {
         return remarks;
     }
