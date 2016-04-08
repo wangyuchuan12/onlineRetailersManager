@@ -60,16 +60,23 @@
                             				<c:if test="${group.result==3}">
                             					组团超时
                             				</c:if>
+                            				
+                            				<c:if test="${group.result==4}">
+                            					废弃
+                            				</c:if>
                             			</td>
                             			<td>${group.totalPrice}</td>
                             			<td>${group.num}</td>
                             			<td>${group.groupCount}</td>
-                            			<td>${group.startTime}</td>
+                            			<td><joda:format value="${group.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                             			<td>${group.timeLong}</td>
                             			<td>${group.groupHeadUserName}</td>
                             			<td>
                             				<a href="/manager/orders_by_group_id?group_id=${group.id}">订单管理</a>
-                            				<a href="#">查看组团情况</a>
+                            				<a href="/manager/partakes?group_id=${group.id}">查看组团情况</a>
+                            				<!--  
+                            				<a href="javascript:derelect('${group.id}');">废弃</a>
+                            				-->
                             			</td>
                             		</tr>
                             		
@@ -85,6 +92,15 @@
 </tiles:putAttribute>
 <tiles:putAttribute name="footerJavascript">
 <script>
+
+function derelect(groupId){
+	$(document).ready(function() {
+		var a=confirm("是否真的废弃该团并该团所有的订单？");
+		if(a){
+			window.location.href = "/manager/derelect_orders_by_group_id?group_id="+groupId;
+		}
+	});
+}
 
 $(document).ready(function() {
 	 var table = $('#dataTables-admin').dataTable({
@@ -105,7 +121,6 @@ $(document).ready(function() {
 	
 });
 
-}
 </script>
 </tiles:putAttribute>
 </tiles:insertDefinition>

@@ -40,10 +40,10 @@
                     <a href="#"><i class="fa fa-plus fa-fw"></i>系统管理<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="<c:url value="/remote_info/type_list"/>">系统处理类</a>
+                            <a href="<c:url value="/manager/handlers"/>">系统处理类</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/remote_info/code_list"/>">支付活动管理</a>
+                            <a href="<c:url value="/manager/activities"/>">支付活动管理</a>
                         </li>
                         
                         <li>

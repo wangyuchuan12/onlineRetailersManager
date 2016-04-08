@@ -8,9 +8,15 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 @Entity(name = "good_group")
 public class GoodGroup {
+    
+    public static final int FAIL_RESULT = 0;
+    public static final int PROGRAM_RESULT = 1;
+    public static final int SUCCESS_RESULT = 2;
+    public static final int OVERTIME_RESULT = 3;
+    public static final int DERELICT_RESULT = 4;
     @Id
     private String id;
-    //0表示组团失败1表示正在组团 2表示组团成功3表示组团超时
+    //0表示组团失败1表示正在组团 2表示组团成功3表示组团超时4废弃
     @Column(name = "result")
     private int result;
     //团长

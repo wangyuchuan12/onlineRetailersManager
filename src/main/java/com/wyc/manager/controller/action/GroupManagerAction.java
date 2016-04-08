@@ -17,6 +17,7 @@ import com.wyc.domain.Customer;
 import com.wyc.domain.Good;
 import com.wyc.domain.GoodGroup;
 import com.wyc.domain.GoodType;
+import com.wyc.domain.GroupPartake;
 import com.wyc.domain.MyResource;
 import com.wyc.manager.domain.Admin;
 import com.wyc.manager.service.AdminService;
@@ -28,7 +29,6 @@ import com.wyc.service.GroupPartakeService;
 import com.wyc.service.MyResourceService;
 import com.wyc.service.WxUserInfoService;
 import com.wyc.wx.domain.UserInfo;
-import com.wyc.wx.service.UserService;
 
 @Controller
 public class GroupManagerAction {
@@ -85,5 +85,26 @@ public class GroupManagerAction {
         }
         httpServletRequest.setAttribute("groups", responseGroups);
         return "group/groups";
+    }
+    
+    @RequestMapping("/manager/partakes")
+    public String partakes(HttpServletRequest httpServletRequest){
+        String groupId = httpServletRequest.getParameter("group_id");
+        Iterable<GroupPartake> groupPartakes = groupPartakeService.findAllByGroupIdOrderByDateTime(groupId);
+        List<Map<String, Object>> responsePartakes = new ArrayList<Map<String,Object>>();
+        for(GroupPartake groupPartake:groupPartakes){
+            Map<String, Object> responsePartake = new HashMap<String, Object>();
+            Customer customer = customerService.findOne(groupPartake.getCustomerid());
+            UserInfo userInfo = wxUserInfoService.findByOpenid(customer.getOpenId());
+            responsePartake.put("nickname", userInfo.getNickname());
+            responsePartake.put("personName", groupPartake.getPersonName());
+            responsePartake.put("address", groupPartake.getCustomerAddress());
+            responsePartake.put("phonenumber", groupPartake.getPhonenumber());
+            responsePartake.put("role", groupPartake.getRole());
+            responsePartake.put("datetime", groupPartake.getDateTime());
+            responsePartakes.add(responsePartake);
+        }
+        httpServletRequest.setAttribute("partakes", responsePartakes);
+        return "group/groupInfoGrid";
     }
 }

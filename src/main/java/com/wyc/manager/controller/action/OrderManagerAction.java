@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.squareup.okhttp.Address;
 import com.wyc.domain.CustomerAddress;
 import com.wyc.domain.Good;
+import com.wyc.domain.GoodGroup;
 import com.wyc.domain.GoodOrder;
 import com.wyc.domain.GoodType;
 import com.wyc.domain.GroupPartake;
@@ -28,6 +29,7 @@ import com.wyc.domain.OrderRecord;
 import com.wyc.manager.domain.Admin;
 import com.wyc.manager.service.AdminService;
 import com.wyc.service.CustomerAddressService;
+import com.wyc.service.GoodGroupService;
 import com.wyc.service.GoodOrderService;
 import com.wyc.service.GoodService;
 import com.wyc.service.GoodTypeService;
@@ -58,6 +60,8 @@ public class OrderManagerAction {
     private GoodTypeService goodTypeService;
     @Autowired
     private OrderRecordService orderRecordService;
+    @Autowired
+    private GoodGroupService goodGroupService;
     public Map<String, Object> responseOrder (GoodOrder goodOrder , GroupPartake groupPartake){
         Map<String, Object> responseOrder = new HashMap<String, Object>();
         Good good = goodService.findOne(goodOrder.getGoodId());
@@ -72,6 +76,8 @@ public class OrderManagerAction {
         responseOrder.put("payStatus", groupPartakePayment.getStatus());
         responseOrder.put("payTime", groupPartakePayment.getPayTime());
         responseOrder.put("deliverStatus", groupPartakeDeliver.getStatus());
+        responseOrder.put("refundAmount", groupPartakePayment.getRefundAmount());
+        responseOrder.put("refundTime", groupPartakePayment.getRefundTime());
         responseOrder.put("deliverTime", groupPartakeDeliver.getDeviceTime());
         
         responseOrder.put("address",groupPartake.getCustomerAddress());
@@ -136,6 +142,20 @@ public class OrderManagerAction {
 	}
 	httpServletRequest.setAttribute("orders", responseOrders);
         return "order/orders";
+    }
+    
+ //   @RequestMapping("/manager/derelect_orders_by_group_id")
+    public String derelectOrder(HttpServletRequest httpServletRequest){
+        String groupId = httpServletRequest.getParameter("group_id");
+        GoodGroup goodGroup = goodGroupService.findOne(groupId);
+        goodGroup.setResult(GoodGroup.DERELICT_RESULT);
+        goodGroupService.save(goodGroup);
+        Iterable<GroupPartake> groupPartakes = groupPartakeService.findAllByGroupIdOrderByDateTime(groupId);
+        for(GroupPartake groupPartake:groupPartakes){
+            groupPartake.setStatus(GroupPartake.DERELICT_STATUS);
+            groupPartakeService.save(groupPartake);
+        }
+        return "redirect:/manager/orders_by_group_id?group_id="+groupId;
     }
     
     @RequestMapping("/manager/orders_by_group_id")

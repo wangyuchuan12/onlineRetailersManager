@@ -56,6 +56,8 @@
                                     <th>类别</th>
                                     <th>支付状态</th>
                                     <th>支付时间</th>
+                                    <th>退款金额</th>
+                                    <th>退款时间</th>
                                     <th>发货状态</th>
                                     <th>发货时间</th>
                                     <th width="15%">发货地点</th>
@@ -73,15 +75,18 @@
                             			<td>
                             				<c:if test="${order.payStatus==0}">未付款</c:if>
                             				<c:if test="${order.payStatus==1}">已付款</c:if>
+                            				<c:if test="${order.payStatus==2}">已退款</c:if>
                             			
                             			</td>
                             			<td><joda:format value="${order.payTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                            			
+                            			<td>${order.refundAmount}</td>
+                            			<td><joda:format value="${order.refundTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td> 
                             			<td>
                             				<c:if test="${order.deliverStatus==0}">未发货</c:if>
                             				<c:if test="${order.deliverStatus==1}">已发货</c:if>
                             			</td>
                             			<td><joda:format value="${order.deliverTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                            			
                             			<td>${order.address}</td>
                             			<td>${order.cost}</td>
                             			<td>
@@ -89,7 +94,7 @@
                             				<c:if test="${order.status==1}">待结算</c:if>
                             				<c:if test="${order.status==2}">结算中</c:if>
                             				<c:if test="${order.status==3}">结算成功</c:if>
-                            				<c:if test="${order.status==4}">废弃</c:if>
+                            				<c:if test="${order.status==4}"><font color="red">废弃</font></c:if>
                             			
                             			</td>
                             			<td class="center">
