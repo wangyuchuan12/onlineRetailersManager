@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wyc.domain.GoodType;
+import com.wyc.domain.SystemGoodType;
 import com.wyc.domain.PushArticle;
 import com.wyc.manager.domain.Article;
 import com.wyc.manager.service.SendMessageService;
@@ -58,7 +58,7 @@ public class CustomerServiceAction {
         if(goodTypeId==null){
             goodTypeId = "1";
         }
-        GoodType goodTypeEntity = goodTypeService.findOne(goodTypeId);
+        SystemGoodType goodTypeEntity = goodTypeService.findOne(goodTypeId);
         
         
         Article article = new Article();

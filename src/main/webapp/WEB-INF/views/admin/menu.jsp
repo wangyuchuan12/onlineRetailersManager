@@ -81,6 +81,10 @@
                      <a href="<c:url value="/manager/groups"/>"><i class="fa fa-database fa-fw"></i>组团管理</a>
                 </li>
                 
+                <li>
+                     <a href="<c:url value="/manager/activities"/>">支付活动管理</a>
+                </li>
+                
             </ul>
         </div>
     </div>

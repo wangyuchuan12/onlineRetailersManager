@@ -14,18 +14,15 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.squareup.okhttp.Address;
-import com.wyc.domain.CustomerAddress;
 import com.wyc.domain.Good;
 import com.wyc.domain.GoodGroup;
 import com.wyc.domain.GoodOrder;
-import com.wyc.domain.GoodType;
 import com.wyc.domain.GroupPartake;
 import com.wyc.domain.GroupPartakeDeliver;
 import com.wyc.domain.GroupPartakePayment;
 import com.wyc.domain.MyResource;
 import com.wyc.domain.OrderRecord;
+import com.wyc.domain.SystemGoodType;
 import com.wyc.manager.domain.Admin;
 import com.wyc.manager.service.AdminService;
 import com.wyc.service.CustomerAddressService;
@@ -71,7 +68,7 @@ public class OrderManagerAction {
         MyResource myResource = myResourceService.findOne(headImg);
         responseOrder.put("goodHeadImgUrl",myResource.getUrl());
         responseOrder.put("goodName", good.getName());
-        GoodType goodType = goodTypeService.findOne(good.getGoodType());
+        SystemGoodType goodType = goodTypeService.findOne(good.getGoodType());
         responseOrder.put("goodTypeName", goodType.getName());
         responseOrder.put("payStatus", groupPartakePayment.getStatus());
         responseOrder.put("payTime", groupPartakePayment.getPayTime());

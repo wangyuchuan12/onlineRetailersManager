@@ -7,8 +7,8 @@ import javax.persistence.Id;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-@Entity(name = "good_type")
-public class GoodType {
+@Entity(name = "system_good_type")
+public class SystemGoodType {
     @Id
     private String id;
     @Column
