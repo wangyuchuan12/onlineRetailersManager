@@ -284,7 +284,7 @@ public class GoodManagerAction {
         String marketPrice = httpServletRequest.getParameter("marketPrice");
         String rank = httpServletRequest.getParameter("rank");
 //        String salesVolume = httpServletRequest.getParameter("salesVolume");
-        String isDisplayMain = httpServletRequest.getParameter("isDisplayMain");
+        String isDisplayMain = httpServletRequest.getParameter("isDisplay");
         String status = httpServletRequest.getParameter("status");
         String stock = httpServletRequest.getParameter("stock");
         String timeLong = httpServletRequest.getParameter("timeLong");

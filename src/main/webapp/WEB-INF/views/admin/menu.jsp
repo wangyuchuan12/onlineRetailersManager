@@ -84,7 +84,9 @@
                 <li>
                      <a href="<c:url value="/manager/messages"/>"><i class="fa fa-database fa-fw"></i>消息管理</a>
                 </li>
-                
+                <li>
+                	 <a href="<c:url value="/manager/activities"/>">支付活动管理</a>
+                </li>
             </ul>
         </div>
     </div>

@@ -49,10 +49,7 @@
 							<c:if test="${dialogSessionItem.role==0}">
 								<li class="admin">
 									<b style="font-weight: normal;">${dialogSessionItem.content}</b>
-								</li>
-								
-								<li class="admin">
-									<b style="font-weight: normal;">${dialogSessionItem.dateTime}</b>
+									<b><joda:format value="${dialogSessionItem.dateTime}" pattern="yyyy-MM-dd HH:mm"/></b>
 								</li>
 							</c:if>
 						</c:forEach>
@@ -91,7 +88,7 @@ function sendMessage(){
 	 if(message){
 		 var htmlobj=$.ajax({url:"/api/chat/send_message?customer_id=${customerId}&content="+message,async:false});
 		 htmlobj = eval("("+htmlobj.responseText+")");
-		 var dialogDiv = $("<li class='admin'><b style='font-weight: normal;'>"+htmlobj.content+"</b></li>");
+		 var dialogDiv = $("<li class='admin'><b style='font-weight: normal;'>"+htmlobj.content+"</b><b>"+htmlobj.dateTime+"</b></li>");
 		 $(".chat-thread").append(dialogDiv);
 		 $(".chat-thread").animate({scrollTop: 100000}, 300);
 		 $("#messageText").val("");
