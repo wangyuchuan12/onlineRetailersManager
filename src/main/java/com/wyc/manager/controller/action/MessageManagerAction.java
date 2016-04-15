@@ -67,6 +67,7 @@ public class MessageManagerAction {
                     dialogSessionItemRead = new DialogSessionItemRead();
                     dialogSessionItemRead.setDateTime(new DateTime());
                     dialogSessionItemRead.setAdminId(adminId);
+                    dialogSessionItemRead.setCustomerId(customerId);
                     dialogSessionItemRead.setRole(DialogSessionItem.ADMIN_ROLE);
                     dialogSessionItemRead.setCount(1);
                     
