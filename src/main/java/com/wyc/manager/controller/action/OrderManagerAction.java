@@ -20,7 +20,7 @@ import com.wyc.domain.CustomerAddress;
 import com.wyc.domain.Good;
 import com.wyc.domain.GoodGroup;
 import com.wyc.domain.GoodOrder;
-import com.wyc.domain.GoodType;
+import com.wyc.domain.SystemGoodType;
 import com.wyc.domain.GroupPartake;
 import com.wyc.domain.GroupPartakeDeliver;
 import com.wyc.domain.GroupPartakePayment;
@@ -71,7 +71,7 @@ public class OrderManagerAction {
         MyResource myResource = myResourceService.findOne(headImg);
         responseOrder.put("goodHeadImgUrl",myResource.getUrl());
         responseOrder.put("goodName", good.getName());
-        GoodType goodType = goodTypeService.findOne(good.getGoodType());
+        SystemGoodType goodType = goodTypeService.findOne(good.getGoodType());
         responseOrder.put("goodTypeName", goodType.getName());
         responseOrder.put("payStatus", groupPartakePayment.getStatus());
         responseOrder.put("payTime", groupPartakePayment.getPayTime());

@@ -20,7 +20,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.wyc.domain.Good;
 import com.wyc.domain.GoodImg;
-import com.wyc.domain.GoodType;
+import com.wyc.domain.SystemGoodType;
 import com.wyc.domain.MyResource;
 import com.wyc.manager.domain.Admin;
 import com.wyc.manager.service.AdminService;
@@ -52,7 +52,7 @@ public class GoodManagerAction {
         responseGood.put("adminId", good.getAdminId());
         responseGood.put("goodInfoHeadImg", good.getGoodInfoHeadImg());
         responseGood.put("goodType", good.getGoodType());
-        GoodType goodType = goodTypeService.findOne(good.getGoodType());
+        SystemGoodType goodType = goodTypeService.findOne(good.getGoodType());
         responseGood.put("goodTypeName",goodType.getName());
         responseGood.put("headImg", good.getHeadImg());
         if(good.getHeadImg()!=null){
@@ -133,7 +133,7 @@ public class GoodManagerAction {
             responseGoods.add(responseGood);
            
         }
-        Iterable<GoodType> goodTypes = goodTypeService.findAll();
+        Iterable<SystemGoodType> goodTypes = goodTypeService.findAll();
         httpServletRequest.setAttribute("goods", responseGoods);
         httpServletRequest.setAttribute("goodTypes", goodTypes);
         return "good/goods";
@@ -160,7 +160,7 @@ public class GoodManagerAction {
     
     @RequestMapping("/manager/good_add_view")
     public String managerGoodAdd(HttpServletRequest httpServletRequest){
-        Iterable<GoodType> goodTypes = goodTypeService.findAll();
+        Iterable<SystemGoodType> goodTypes = goodTypeService.findAll();
         httpServletRequest.setAttribute("goodTypes", goodTypes);
         return "good/good_add";
     }
@@ -171,7 +171,7 @@ public class GoodManagerAction {
         String goodId = httpServletRequest.getParameter("id");
         Good good = goodService.findOne(goodId);
         httpServletRequest.setAttribute("good",responseGood(good));
-        Iterable<GoodType> goodTypes = goodTypeService.findAll();
+        Iterable<SystemGoodType> goodTypes = goodTypeService.findAll();
         httpServletRequest.setAttribute("goodTypes", goodTypes);
         return "good/good_update";
     }
