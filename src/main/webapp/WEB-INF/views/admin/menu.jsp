@@ -47,7 +47,7 @@
                         </li>
                         
                         <li>
-                            <a href="<c:url value="/remote_info/codec_list"/>">商品类别</a>
+                            <a href="<c:url value="/manager/good_type_view"/>">商品类别</a>
                         </li>
                         
                         <li>
