@@ -27,7 +27,7 @@ public class GoodTypeManagerAction {
     @Autowired
     private MyResourceService myResourceServcie;
     @Autowired
-    private UploadToQNService UploadToQNService;
+    private UploadToQNService uploadToQNService;
     @RequestMapping("/manager/good_type_add_view")
     public String addGoodView(HttpServletRequest httpServletRequest){
         
@@ -75,7 +75,7 @@ public class GoodTypeManagerAction {
             myResource.setSuffix(fileName.substring(fileName.lastIndexOf(".")+1));
             myResource.setName(fileName.substring(0,fileName.lastIndexOf(".")));
             myResourceServcie.addToWebpath(myResource, commonsMultipartFile.getInputStream());
-            UploadToQNService.syncResource(myResource);
+            uploadToQNService.syncResource(myResource);
             goodType.setImg(myResource.getUrl());
         }
         
@@ -102,7 +102,7 @@ public class GoodTypeManagerAction {
             
         }
         myResourceServcie.addToWebpath(myResource, commonsMultipartFile.getInputStream());
-        UploadToQNService.syncResource(myResource);
+        uploadToQNService.syncResource(myResource);
         SystemGoodType goodType = new SystemGoodType();
         goodType.setDefault(Boolean.parseBoolean(idDefault));
         goodType.setImg(myResource.getUrl());
