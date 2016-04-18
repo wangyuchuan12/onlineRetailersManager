@@ -70,19 +70,19 @@
                 </shiro:hasRole>
                 
                 <li>
-                     <a href="<c:url value="/manager/goods"/>"><i class="fa fa-database fa-fw"></i>商品管理</a>
+                     <a href="<c:url value="/manager/goods"/>"><i class="fa fa-cubes fa-fw"></i>商品管理</a>
                 </li>
                 
                 <li>
-                     <a href="<c:url value="/manager/orders"/>"><i class="fa fa-database fa-fw"></i>订单管理</a>
+                     <a href="<c:url value="/manager/orders"/>"><i class="fa fa-reorder fa-fw"></i>订单管理</a>
                 </li>
                 
                 <li>
-                     <a href="<c:url value="/manager/groups"/>"><i class="fa fa-database fa-fw"></i>组团管理</a>
+                     <a href="<c:url value="/manager/groups"/>"><i class="fa fa-group fa-fw"></i>组团管理</a>
                 </li>
                 
                 <li>
-                     <a href="<c:url value="/manager/messages"/>"><i class="fa fa-database fa-fw"></i>消息管理</a>
+                     <a href="<c:url value="/manager/messages"/>"><i class="fa fa-comments fa-fw"></i>消息管理</a>
                 </li>
                 <li>
                 	 <a href="<c:url value="/manager/activities"/>">支付活动管理</a>
