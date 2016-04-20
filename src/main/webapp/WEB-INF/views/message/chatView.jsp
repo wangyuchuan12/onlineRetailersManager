@@ -128,7 +128,7 @@ function showNotRead(){
 }
 $(document).ready(function() {
 	$(".chat-thread").animate({scrollTop: 100000}, 300);
-	setInterval("showNotRead()",1000);
+	setInterval("showNotRead()",5000);
 });
 </script>
 </tiles:putAttribute>
