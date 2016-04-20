@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
@@ -14,9 +17,11 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.wyc.domain.Good;
 import com.wyc.domain.GoodGroup;
 import com.wyc.domain.GoodOrder;
+import com.wyc.domain.LogisticsOrderCompany;
 import com.wyc.domain.SystemGoodType;
 import com.wyc.domain.GroupPartake;
 import com.wyc.domain.GroupPartakeDeliver;
@@ -33,8 +38,11 @@ import com.wyc.service.GoodTypeService;
 import com.wyc.service.GroupPartakeDeliverService;
 import com.wyc.service.GroupPartakePaymentService;
 import com.wyc.service.GroupPartakeService;
+import com.wyc.service.LogisticsOrderCompanyService;
 import com.wyc.service.MyResourceService;
 import com.wyc.service.OrderRecordService;
+import com.wyc.wx.domain.JhOrder;
+import com.wyc.wx.service.JuheOrderService;
 @Controller
 public class OrderManagerAction {
     @Autowired
@@ -59,6 +67,12 @@ public class OrderManagerAction {
     private OrderRecordService orderRecordService;
     @Autowired
     private GoodGroupService goodGroupService;
+    @Autowired
+    private LogisticsOrderCompanyService logisticsOrderCompanyService;
+    @Autowired
+    private JuheOrderService juheOrderService;
+    @Autowired
+    private EntityManagerFactory   entityManagerFactory;
     public Map<String, Object> responseOrder (GoodOrder goodOrder , GroupPartake groupPartake){
         Map<String, Object> responseOrder = new HashMap<String, Object>();
         Good good = goodService.findOne(goodOrder.getGoodId());
@@ -95,30 +109,74 @@ public class OrderManagerAction {
         groupPartakeService.save(groupPartake);
         return "redirect:/manager/orders";
     }
-    
+
     @RequestMapping("/manager/device_handler")
-    public String deviceHandler(HttpServletRequest httpServletRequest){
-        
-        String groupPartakeId = httpServletRequest.getParameter("group_partake_id");
-        String deviceTime = httpServletRequest.getParameter("device_time");
-        GroupPartake groupPartake = groupPartakeService.findOne(groupPartakeId);
-        String remarks = httpServletRequest.getParameter("remarks");
-        groupPartake.setRemarks(remarks);
-        String logisticsNo = httpServletRequest.getParameter("logistics_no");
-        GroupPartakeDeliver groupPartakeDeliver = groupPartakeDeliverService.findByGroupPartakeId(groupPartakeId);
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        DateTime dt = formatter.parseDateTime(deviceTime);
-        groupPartakeDeliver.setDeviceTime(dt);
-        groupPartakeDeliver.setLogisticsNo(logisticsNo);
-        groupPartakeDeliver.setStatus(1);
-        groupPartakeDeliverService.save(groupPartakeDeliver);
-        
-        OrderRecord orderRecord = new OrderRecord();
-        orderRecord.setGroupPartakeId(groupPartakeId);
-        orderRecord.setRemark(remarks);
-        orderRecord.setWay(4);
-        
-        orderRecordService.add(orderRecord);
+    public String deviceHandler(HttpServletRequest httpServletRequest)throws Exception{
+        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        try {
+            String groupPartakeId = httpServletRequest.getParameter("group_partake_id");
+            String com = httpServletRequest.getParameter("com");
+            String deviceTime = httpServletRequest.getParameter("device_time");
+            
+            String remarks = httpServletRequest.getParameter("remarks");
+            
+            String logisticsNo = httpServletRequest.getParameter("logistics_no");
+            JhOrder jhOrder = juheOrderService.getJhOrder(com, logisticsNo);
+            int deliverCountByLogisticsNoAndCom = groupPartakeDeliverService.countByLogisticsNoAndCom(logisticsNo,com);
+            if(deliverCountByLogisticsNoAndCom!=0){
+                httpServletRequest.setAttribute("errorcode", "101");
+                httpServletRequest.setAttribute("errortitle", "订单号填写错误");
+                httpServletRequest.setAttribute("errorMessage", "该订单编号已存在");
+                httpServletRequest.setAttribute("returnUrl", "/manager/orders");
+                transaction.rollback();
+                return "admin/error";
+            }
+            if(jhOrder!=null&&jhOrder.getError_code().equals("0")){
+                GroupPartake groupPartake = groupPartakeService.findOne(groupPartakeId);
+                groupPartake.setRemarks(remarks);
+                GroupPartakeDeliver groupPartakeDeliver = groupPartakeDeliverService.findByGroupPartakeId(groupPartakeId);
+                DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                DateTime dt = formatter.parseDateTime(deviceTime);
+                groupPartakeDeliver.setDeviceTime(dt);
+                groupPartakeDeliver.setLogisticsNo(logisticsNo);
+                groupPartakeDeliver.setCom(com);
+                if(jhOrder.getResult().getStatus().equals("1")){
+                    groupPartakeDeliver.setStatus(2);
+                }else{
+                    groupPartakeDeliver.setStatus(1);
+                }
+                groupPartakeDeliverService.save(groupPartakeDeliver);
+                
+                OrderRecord orderRecord = new OrderRecord();
+                orderRecord.setGroupPartakeId(groupPartakeId);
+                orderRecord.setRemark(remarks);
+                orderRecord.setWay(4);
+                
+                orderRecordService.add(orderRecord);
+                juheOrderService.updateLogistics(jhOrder);
+                
+            }else{
+                httpServletRequest.setAttribute("errorcode", "101");
+                httpServletRequest.setAttribute("errortitle", "订单号填写错误");
+                httpServletRequest.setAttribute("errorMessage", "请输入正确的订单号");
+                httpServletRequest.setAttribute("returnUrl", "/manager/orders");
+                transaction.rollback();
+                return "admin/error";
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            httpServletRequest.setAttribute("errorcode", "501");
+            httpServletRequest.setAttribute("errortitle", "数据发生错误");
+            httpServletRequest.setAttribute("errorMessage", "请输入正确的信息");
+            httpServletRequest.setAttribute("returnUrl", "/manager/orders");
+            transaction.rollback();
+            e.printStackTrace();
+            return "admin/error";
+        }finally{
+            em.close();
+        }
         return "redirect:/manager/orders";
         
     }
@@ -137,6 +195,8 @@ public class OrderManagerAction {
 	        responseOrders.add(responseOrder);
 	    }
 	}
+	Iterable<LogisticsOrderCompany> logisticsOrderCompanys = logisticsOrderCompanyService.findAll();
+	httpServletRequest.setAttribute("companys", logisticsOrderCompanys);
 	httpServletRequest.setAttribute("orders", responseOrders);
         return "order/orders";
     }

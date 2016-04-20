@@ -19,7 +19,11 @@ public class Response {
 		this.charsetName = charsetName;
 	}
 	public String read()throws Exception{
-		byte[] jsonBytes = new byte[this.inputStream.available()];
+	        int avail = this.inputStream.available();
+	        if(avail==0){
+	            avail=2480;
+	        }
+		byte[] jsonBytes = new byte[avail];
 		inputStream.read(jsonBytes);
 		String message = new String(jsonBytes,charsetName);
 		logger.debug("readMessageFromWx:"+message);

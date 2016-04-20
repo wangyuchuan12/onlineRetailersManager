@@ -1,7 +1,6 @@
 package com.wyc.util;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ public class RequestFactory {
 	private Request getRequestByConnection(URL url) throws IOException {
 
 		Request request = new Request(url);
+		System.out.println(url.toString());
 		autowireFactory.autowireBean(request);
 		return request;
 	}
@@ -321,6 +321,12 @@ public class RequestFactory {
 	//获取统一支付接口
 	public Request payUnifiedorder()throws Exception{
 	    URL url = new URL("https://api.mch.weixin.qq.com/pay/unifiedorder");
+	    return getRequestByConnection(url);
+	}
+	
+	//获取查询订单信息的接口
+	public Request getJuhuRequest(String key , String com , String no)throws Exception{
+	    URL url = new URL("http://v.juhe.cn/exp/index?key="+key+"&com="+com+"&no="+no);
 	    return getRequestByConnection(url);
 	}
 }

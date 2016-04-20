@@ -20,6 +20,14 @@
 	                <ol>
 	                     <li><h4>填写发货信息</h4></li>
 	                     <li><strong>发货单号</strong><input class="ipt" type="text" name="logistics_no" value="" size="20" /></li>
+	                     <li><strong>物流公司</strong>
+	                     	<select class="form-control" name="com">
+	                                	<c:forEach items="${companys}" var="company">
+	                                		<option  value="${company.code}">${company.name}</option>
+	                                	</c:forEach>
+			               </select>
+	                     
+	                     </li>
 	                     <li><strong>发货时间</strong><input class="ipt" type="text" name="device_time" value="" size="20" id="datetimepicker"/></li>
 	                     <li><strong>备注</strong><input class="ipt" type="text" name="remarks" value="" size="20" /></li>
 	                     
@@ -83,7 +91,8 @@
                             			<td><joda:format value="${order.refundTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td> 
                             			<td>
                             				<c:if test="${order.deliverStatus==0}">未发货</c:if>
-                            				<c:if test="${order.deliverStatus==1}">已发货</c:if>
+                            				<c:if test="${order.deliverStatus==1}">已发货，未签收</c:if>
+                            				<c:if test="${order.deliverStatus==2}">已签收</c:if>
                             			</td>
                             			<td><joda:format value="${order.deliverTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                             			
@@ -102,7 +111,7 @@
                             					<c:if test="${order.deliverStatus==0}">
                             						<a href="javascript:deviceClick('${order.groupPartakeId}')">发货</a>
                             					</c:if>
-                            					<c:if test="${order.deliverStatus==1}">
+                            					<c:if test="${order.deliverStatus==2}">
                             						<a href="javascript:statement('${order.groupPartakeId}')">申请结算</a>
                             					</c:if>
                             					

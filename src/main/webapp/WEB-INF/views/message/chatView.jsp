@@ -57,12 +57,17 @@
 					</ul>
 				 </div>
                 </div>
-                
-                 <div class="form-group" style="width:80%;display:inline;">
-                                <textarea id="messageText" class="form-control" rows="2" style="width:70%;display:inline;"></textarea>
-                 </div>
                  
-                 <button onclick="javascript:sendMessage();" type="submit" class="btn btn-default" style="float: right;position: relative;right:20%;display:inline;">发送数据</button>
+      			 <div class="panel-footer">
+                      <div class="input-group">
+                          <input id="messageText" type="text" class="form-control input-sm" placeholder="Type your message here...">
+                          <span class="input-group-btn">
+                              <button class="btn btn-warning btn-sm" id="btn-chat" type="submit" onclick="javascript:sendMessage();">
+                                 	 发送
+                              </button>
+                          </span>
+                      </div>
+                  	</div>
             </div>
         </div>
     </div>

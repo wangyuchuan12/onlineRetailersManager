@@ -12,6 +12,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +69,10 @@ public class AppConfig {
     @Bean
     public HttpClient httpGet(ApplicationProperties applicationProperties,WxContext wxc){
         FileInputStream instream = null;
+        boolean b = true;
+        if(b){
+            return new SystemDefaultHttpClient();
+        }
         try {
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
             instream =  new FileInputStream(new File(applicationProperties.getProperty("apiclient_cert_path")));

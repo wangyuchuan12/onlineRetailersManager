@@ -51,11 +51,11 @@
                         </li>
                         
                         <li>
-                            <a href="<c:url value="/remote_info/key_list"/>">广告栏</a>
+                            <a href="<c:url value="/manager/ad_good_header_img"/>">广告栏</a>
                         </li>
                         
                         <li>
-                            <a href="<c:url value="/remote_info/key_list"/>">流动栏</a>
+                            <a href="<c:url value="/manager/quick_entrance"/>">流动栏</a>
                         </li>
                         
                         <li>
