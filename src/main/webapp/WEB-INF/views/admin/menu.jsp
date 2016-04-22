@@ -39,6 +39,11 @@
                 <li>
                     <a href="#"><i class="fa fa-plus fa-fw"></i>系统管理<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
+                    
+                        <li>
+                            <a href="<c:url value="/admin/list"/>">账户管理</a>
+                        </li>
+                        
                         <li>
                             <a href="<c:url value="/manager/handlers"/>">系统处理类</a>
                         </li>
@@ -68,6 +73,10 @@
                     <!-- /.nav-second-level -->
                 </li>
                 </shiro:hasRole>
+                
+                <li>
+                     <a href="<c:url value="/manager/business_info"/>"><i class="fa fa-user fa-fw"></i>个人信息</a>
+                </li>
                 
                 <li>
                      <a href="<c:url value="/manager/goods"/>"><i class="fa fa-cubes fa-fw"></i>商品管理</a>
