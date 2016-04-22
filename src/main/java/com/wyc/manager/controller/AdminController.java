@@ -24,17 +24,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wyc.domain.Business;
 import com.wyc.manager.domain.Admin;
 import com.wyc.manager.service.AdminService;
 import com.wyc.manager.util.DateFormatUtil;
 import com.wyc.manager.util.ValidateUtil;
+import com.wyc.service.BusinessService;
 
 @Controller
 public class AdminController extends BaseController{
     final static Logger logger = LoggerFactory.getLogger(AdminController.class);
     @Autowired
     AdminService adminService;
-
+    @Autowired
+    private BusinessService businessService;
     @RequestMapping("/admin/login")
     public String login(Model m) {
 
@@ -56,7 +59,7 @@ public class AdminController extends BaseController{
 	    admin.setLastLogin(new DateTime());
 	    adminService.save(admin);
 
-	    return "redirect:/manager/goods";
+	    return "redirect:/manager/business_info";
 	} catch (Exception e) {
 	    logger.debug("Login fail: {}", e);
 	}
@@ -240,11 +243,11 @@ public class AdminController extends BaseController{
 	    this.addErrorAttribues("密码必须包含字母或者数字", "用户新增页面信息错误", "/admin/add",
 		    "403", m);
 	    return "admin/error";
-	} else if (!ValidateUtil.validateEmail(email)) {
+	} /*else if (!ValidateUtil.validateEmail(email)) {
 	    this.addErrorAttribues("输入的邮箱不合法", "用户新增页面信息错误", "/admin/add",
 		    "403", m);
 	    return "admin/error";
-	}
+	}*/
 
 	// 对用户名是否重复做验证；
 	if ("".equals(username) || username == null) {
@@ -274,7 +277,14 @@ public class AdminController extends BaseController{
 	// 设置密码过期日期；
 	admin_add.setOver_date(date_over);
 	admin_add.setEmail(email);
-	adminService.save(admin_add);
+	admin_add = adminService.save(admin_add);
+	
+	Business business = new Business();
+	business.setImgUrl("https://mp.weixin.qq.com/misc/getheadimg?token=1009497798&fakeid=3278046159&r=484255");
+	business.setName("晨曦家园-分店");
+	business.setAdminId(admin_add.getId()+"");
+	business.setAccount(0f);
+	businessService.add(business);
 	return "redirect:/admin/list";
 
     }

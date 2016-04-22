@@ -20,6 +20,8 @@ public class Business {
     @Column
     private String name;
     @Column
+    private Float account;
+    @Column
     private String instruction;
     @Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -31,6 +33,12 @@ public class Business {
     private DateTime updateAt;
     
     
+    public Float getAccount() {
+        return account;
+    }
+    public void setAccount(Float account) {
+        this.account = account;
+    }
     public String getInstruction() {
         return instruction;
     }

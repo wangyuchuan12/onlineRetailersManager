@@ -13,6 +13,8 @@ public class GroupPartakeDeliver {
     //物流编号
     @Column(name="logistics_no")
     private String logisticsNo;
+    @Column
+    private String com;
     //0表示未发货，1表示已发货，2表示已签收
     @Column
     private int status;
@@ -34,6 +36,16 @@ public class GroupPartakeDeliver {
     
     @Column
     private String remarks;
+    
+    
+    public String getCom() {
+        return com;
+    }
+
+    public void setCom(String com) {
+        this.com = com;
+    }
+
     public String getRemarks() {
         return remarks;
     }

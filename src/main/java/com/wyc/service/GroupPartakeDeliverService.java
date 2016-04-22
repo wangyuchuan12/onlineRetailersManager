@@ -19,4 +19,12 @@ public class GroupPartakeDeliverService {
         return groupPartakeDeliverRepository.save(groupPartakeDeliver);
         
     }
+
+    public GroupPartakeDeliver findByLogisticsNoAndCom(String no, String com) {
+        return groupPartakeDeliverRepository.findByLogisticsNoAndCom(no,com);
+    }
+
+    public int countByLogisticsNoAndCom(String logisticsNo,String com) {
+        return groupPartakeDeliverRepository.countByLogisticsNoAndCom(logisticsNo,com);
+    }
 }

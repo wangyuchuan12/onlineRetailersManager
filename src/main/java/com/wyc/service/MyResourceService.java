@@ -21,9 +21,9 @@ public class MyResourceService {
     @Autowired
     private ApplicationProperties properties;
     private Logger logger = LoggerFactory.getLogger(MyResourceService.class);
-    public void add(MyResource myResource){
+    public MyResource add(MyResource myResource){
         myResource.setCreateAt(new DateTime());  
-        resourceRepository.save(myResource);
+        return resourceRepository.save(myResource);
     }
     
     public MyResource findOne(String id){

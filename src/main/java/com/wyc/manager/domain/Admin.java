@@ -18,6 +18,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Admin{
     public static final int MANAGER_ROLE = 1;
     public static final int USER_ROLE = 2;
+    public static final int BOY_SEX = 1;
+    public static final int GIRL_SEX = 2 ;
+    public static final int UNSPECIFIED_SEX = 0;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -30,7 +33,8 @@ public class Admin{
     @JsonIgnore
     @Column(name = "salt", length = 50)
     private String salt;
-    
+    @Column
+    private int sex;
     @Column(name = "roles")
     private String roles;
 
@@ -68,6 +72,16 @@ public class Admin{
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime deadline;
     
+    
+    
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
     public DateTime getDeadline() {
         return deadline;
     }

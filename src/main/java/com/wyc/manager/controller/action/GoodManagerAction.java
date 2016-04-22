@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -263,6 +264,7 @@ public class GoodManagerAction {
         return "redirect:/manager/goods";
     }
     @RequestMapping("/manager/good_add_do")
+    @Transactional
     public String managerGoodAddDo(MultipartHttpServletRequest httpServletRequest){
 //        String id = httpServletRequest.getParameter("id");
         
