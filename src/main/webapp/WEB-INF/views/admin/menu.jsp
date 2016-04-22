@@ -39,6 +39,11 @@
                 <li>
                     <a href="#"><i class="fa fa-plus fa-fw"></i>系统管理<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
+                    
+                        <li>
+                            <a href="<c:url value="/admin/list"/>">账户管理</a>
+                        </li>
+                        
                         <li>
                             <a href="<c:url value="/manager/handlers"/>">系统处理类</a>
                         </li>
@@ -47,15 +52,15 @@
                         </li>
                         
                         <li>
-                            <a href="<c:url value="/remote_info/codec_list"/>">商品类别</a>
+                            <a href="<c:url value="/manager/good_type_view"/>">商品类别</a>
                         </li>
                         
                         <li>
-                            <a href="<c:url value="/remote_info/key_list"/>">广告栏</a>
+                            <a href="<c:url value="/manager/ad_good_header_img"/>">广告栏</a>
                         </li>
                         
                         <li>
-                            <a href="<c:url value="/remote_info/key_list"/>">流动栏</a>
+                            <a href="<c:url value="/manager/quick_entrance"/>">流动栏</a>
                         </li>
                         
                         <li>
@@ -70,22 +75,26 @@
                 </shiro:hasRole>
                 
                 <li>
-                     <a href="<c:url value="/manager/goods"/>"><i class="fa fa-database fa-fw"></i>商品管理</a>
+                     <a href="<c:url value="/manager/business_info"/>"><i class="fa fa-user fa-fw"></i>个人信息</a>
                 </li>
                 
                 <li>
-                     <a href="<c:url value="/manager/orders"/>"><i class="fa fa-database fa-fw"></i>订单管理</a>
+                     <a href="<c:url value="/manager/goods"/>"><i class="fa fa-cubes fa-fw"></i>商品管理</a>
                 </li>
                 
                 <li>
-                     <a href="<c:url value="/manager/groups"/>"><i class="fa fa-database fa-fw"></i>组团管理</a>
+                     <a href="<c:url value="/manager/orders"/>"><i class="fa fa-reorder fa-fw"></i>订单管理</a>
                 </li>
                 
                 <li>
-                     <a href="<c:url value="/manager/messages"/>"><i class="fa fa-database fa-fw"></i>消息管理</a>
+                     <a href="<c:url value="/manager/groups"/>"><i class="fa fa-group fa-fw"></i>组团管理</a>
+                </li>
+                
+                <li>
+                     <a href="<c:url value="/manager/messages"/>"><i class="fa fa-comments fa-fw"></i>消息管理</a>
                 </li>
                 <li>
-                	 <a href="<c:url value="/manager/activities"/>">支付活动管理</a>
+                	 <a href="<c:url value="/manager/activities"/>"><i class="fa fa-money fa-fw"></i>支付活动管理</a>
                 </li>
             </ul>
         </div>
