@@ -67,6 +67,10 @@
                             <a href="<c:url value="/remote_info/key_list"/>">商家管理</a>
                         </li>
                         
+                        <li>
+                            <a href="<c:url value="/manager/orders_program"/>">审核订单</a>
+                        </li>
+                        
                         
                         
                     </ul>
