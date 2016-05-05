@@ -17,6 +17,7 @@ import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,7 @@ import com.danga.MemCached.SockIOPool;
 import com.wyc.ApplicationContextProvider;
 import com.wyc.defineBean.ApplicationProperties;
 import com.wyc.defineBean.MySimpleDateFormat;
+import com.wyc.manager.task.StartTask;
 import com.wyc.service.WxContextService;
 import com.wyc.wx.domain.WxContext;
 
@@ -39,6 +41,8 @@ import com.wyc.wx.domain.WxContext;
 public class AppConfig {
     @Autowired
     private WxContextService wxContextService;
+    @Autowired
+    private AutowireCapableBeanFactory factory;
     final static Logger logger = LoggerFactory.getLogger(AppConfig.class);
     @Bean
     public ApplicationContextProvider applicationContextProvider() {
@@ -61,6 +65,14 @@ public class AppConfig {
         return sockIOPool;
     }
    
+    @Bean
+    public StartTask startTask(){
+        StartTask startTask = new StartTask();
+        factory.autowireBean(startTask);
+        startTask.start();
+        return startTask;
+    }
+    
     @Bean
     public MemCachedClient memcachedClient(){
         return new MemCachedClient();

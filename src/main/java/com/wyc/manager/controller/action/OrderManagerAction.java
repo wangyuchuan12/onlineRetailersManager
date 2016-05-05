@@ -132,6 +132,7 @@ public class OrderManagerAction {
     }
     
     @RequestMapping("/manager/apply_settlement")
+    @Transactional
     public String applySettlement(HttpServletRequest httpServletRequest){
         
         Subject subject = SecurityUtils.getSubject();
@@ -153,6 +154,7 @@ public class OrderManagerAction {
     }
 
     @RequestMapping("/manager/device_handler")
+    @Transactional
     public String deviceHandler(HttpServletRequest httpServletRequest)throws Exception{
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
