@@ -46,9 +46,17 @@ public class GoodGroup {
     @Column(name = "update_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime updateAt;
+    @Column(name="is_disused")
+    private int isDisused = 0;
     
     
     
+    public int getIsDisused() {
+        return isDisused;
+    }
+    public void setIsDisused(int isDisused) {
+        this.isDisused = isDisused;
+    }
     public String getAdminId() {
         return adminId;
     }
@@ -56,17 +64,20 @@ public class GoodGroup {
         this.adminId = adminId;
     }
     public int getNum() {
-		return num;
-	}
-	public void setNum(int num) {
-		this.num = num;
-	}
-	public float getTotalPrice() {
+	return num;
+    }
+    public void setNum(int num) {
+	this.num = num;
+    }
+    
+    public float getTotalPrice() {
         return totalPrice;
     }
+    
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
     }
+    
     public String getGoodId() {
         return goodId;
     }

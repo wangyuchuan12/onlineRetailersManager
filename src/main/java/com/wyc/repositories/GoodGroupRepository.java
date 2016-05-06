@@ -14,4 +14,6 @@ public interface GoodGroupRepository extends CrudRepository<GoodGroup, String>{
     public GoodGroup selectLastestGoodGroupByGroupHead(@Param("groupHead") String groupHead);
 
     public Iterable<GoodGroup> findAllByAdminId(String adminId);
+
+    public Iterable<GoodGroup> findAllByIsDisused(int isDisused);
 }

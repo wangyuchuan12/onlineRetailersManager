@@ -18,6 +18,10 @@ public class TokenService {
         return tokenRepository.findByIdAndInvalidDateGreaterThan(id , dateTime);
     }
     
+    public Iterable<Token> findAllByInvalidDateLessThan(DateTime dateTime){
+        return tokenRepository.findAllByInvalidDateLessThan(dateTime);
+    }
+    
     public Token findByKeyAndInvalidDateGreaterThan(String key , DateTime dateTime){
         return tokenRepository.findByTokenKeyAndInvalidDateGreaterThan(key , dateTime);
     }

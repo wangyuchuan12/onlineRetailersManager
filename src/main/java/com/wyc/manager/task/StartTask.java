@@ -24,8 +24,10 @@ public class StartTask extends Thread{
     
     @Autowired
     private AutowireCapableBeanFactory factory;
+    
     final static Logger logger = LoggerFactory.getLogger(StartTask.class);
     public void run(){
+        
         Timer timer = new Timer(true);
         TimerTask timerTask = new TimerTask() {
             
@@ -66,6 +68,7 @@ public class StartTask extends Thread{
                     logger.error("run {} task {} has an error","once",serviceHandler.getClassPath());
                     serviceHandler.setErrorCount(serviceHandler.getErrorCount()+1);
                     serviceHandlerService.save(serviceHandler);
+                    e.printStackTrace();
                 }
                 
             }
@@ -87,6 +90,7 @@ public class StartTask extends Thread{
                     logger.error("run {} task {} has an error","once",serviceHandler.getClassPath());
                     serviceHandler.setErrorCount(serviceHandler.getErrorCount()+1);
                     serviceHandlerService.save(serviceHandler);
+                    e.printStackTrace();
                 }
                 
             }
@@ -111,6 +115,7 @@ public class StartTask extends Thread{
                     logger.error("run task {} has an error",serviceHandler.getClassPath());
                     serviceHandler.setErrorCount(serviceHandler.getErrorCount()+1);
                     serviceHandlerService.save(serviceHandler);
+                    e.printStackTrace();
                 }
                 
              
