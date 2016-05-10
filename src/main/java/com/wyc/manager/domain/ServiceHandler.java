@@ -22,7 +22,7 @@ public class ServiceHandler {
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime startTime;
     @Column
-    private int hour;
+    private Long hour;
     @Column
     private int type;
     
@@ -33,19 +33,43 @@ public class ServiceHandler {
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime updateAt;
     @Column(name="run_count")
-    private int runCount;
+    private Long runCount;
     @Column(name="last_run_time")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastRunTime;
     @Column(name="error_count")
-    private int errorCount;
+    private Long errorCount;
+    @Column
+    private Long counter=0l;
+    @Column(name="aloop")
+    private Long loop = 1l;
     
     
-    public int getErrorCount() {
+    
+    
+    public Long getRunCount() {
+        return runCount;
+    }
+    public void setRunCount(Long runCount) {
+        this.runCount = runCount;
+    }
+    public Long getErrorCount() {
         return errorCount;
     }
-    public void setErrorCount(int errorCount) {
+    public void setErrorCount(Long errorCount) {
         this.errorCount = errorCount;
+    }
+    public Long getCounter() {
+        return counter;
+    }
+    public void setCounter(Long counter) {
+        this.counter = counter;
+    }
+    public Long getLoop() {
+        return loop;
+    }
+    public void setLoop(Long loop) {
+        this.loop = loop;
     }
     public DateTime getLastRunTime() {
         return lastRunTime;
@@ -53,12 +77,7 @@ public class ServiceHandler {
     public void setLastRunTime(DateTime lastRunTime) {
         this.lastRunTime = lastRunTime;
     }
-    public int getRunCount() {
-        return runCount;
-    }
-    public void setRunCount(int runCount) {
-        this.runCount = runCount;
-    }
+  
     public String getId() {
         return id;
     }
@@ -83,10 +102,11 @@ public class ServiceHandler {
     public void setStartTime(DateTime startTime) {
         this.startTime = startTime;
     }
-    public int getHour() {
+   
+    public Long getHour() {
         return hour;
     }
-    public void setHour(int hour) {
+    public void setHour(Long hour) {
         this.hour = hour;
     }
     public int getType() {

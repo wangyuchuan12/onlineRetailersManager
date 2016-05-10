@@ -35,6 +35,7 @@ public class StartTask extends Thread{
             public void run() {
                 Iterable<ServiceHandler> serviceHandlers = serviceHandlerService.findAll();
                 for(ServiceHandler serviceHandler:serviceHandlers){
+                    setIfNum(serviceHandler);
                     if(serviceHandler.getType()==ServiceHandler.ONCE_TYPE){
                         
                         executeOnce(serviceHandler);
@@ -74,17 +75,21 @@ public class StartTask extends Thread{
             }
 
             private void executeLoop(ServiceHandler serviceHandler) {
+                serviceHandler.setCounter(serviceHandler.getCounter()+1);
                 try {
                     DateTime startDateTime = serviceHandler.getStartTime();
                     DateTime now = DateTime.now(DateTimeZone.forID("Asia/Shanghai"));
                     if(startDateTime.toDate().getTime()<now.toDate().getTime()){
-                        Class<?> clazz = Class.forName(serviceHandler.getClassPath());
-                        Object target = clazz.newInstance();
-                        Method method = clazz.getDeclaredMethod("run");
-                        factory.autowireBean(target);
-                        method.setAccessible(true);
-                        method.invoke(target);
-                        afterExecute(serviceHandler);
+                        if(serviceHandler.getCounter()%serviceHandler.getLoop()==0){
+                            Class<?> clazz = Class.forName(serviceHandler.getClassPath());
+                            Object target = clazz.newInstance();
+                            Method method = clazz.getDeclaredMethod("run");
+                            factory.autowireBean(target);
+                            method.setAccessible(true);
+                            method.invoke(target);
+                            afterExecute(serviceHandler);
+                            serviceHandler.setCounter(0l);
+                        }
                     }
                 } catch (Exception e) {
                     logger.error("run {} task {} has an error","once",serviceHandler.getClassPath());
@@ -92,7 +97,7 @@ public class StartTask extends Thread{
                     serviceHandlerService.save(serviceHandler);
                     e.printStackTrace();
                 }
-                
+                serviceHandlerService.save(serviceHandler);
             }
 
             private void executeOnce(ServiceHandler serviceHandler) {
@@ -131,5 +136,27 @@ public class StartTask extends Thread{
             }
         };
         timer.scheduleAtFixedRate(timerTask, 5000, 1000);
+    }
+    
+    private ServiceHandler setIfNum(ServiceHandler serviceHandler){
+        if(serviceHandler.getErrorCount()==null){
+            serviceHandler.setErrorCount(0l);
+        }
+        if(serviceHandler.getHour()==null){
+            serviceHandler.setHour(2l);
+        }
+        if(serviceHandler.getRunCount()==null){
+            serviceHandler.setRunCount(0l);
+        }
+        if(serviceHandler.getStartTime()==null){
+            serviceHandler.setStartTime(new DateTime());
+        }
+        if(serviceHandler.getCounter()==null){
+            serviceHandler.setCounter(0l);
+        }
+        if(serviceHandler.getLoop()==null){
+            serviceHandler.setLoop(1l);
+        }
+        return serviceHandler;
     }
 }

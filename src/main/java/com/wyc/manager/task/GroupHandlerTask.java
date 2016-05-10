@@ -39,11 +39,14 @@ public class GroupHandlerTask {
     }
     
     private GoodGroup checkTimeout(GoodGroup goodGroup){
-        if(goodGroup.getResult()==1){
+        System.out.println("result:"+goodGroup.getResult());
+        if(goodGroup.getResult()==1||goodGroup.getResult()==0){
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(goodGroup.getStartTime().toDate());
             calendar.add(Calendar.HOUR, goodGroup.getTimeLong());
+            System.out.println("isTrue:"+(calendar.getTime().getTime()<new Date().getTime()));
             if(calendar.getTime().getTime()<new Date().getTime()){
+                System.out.println("hour is run");
                 goodGroup.setResult(0);
                 goodGroup = goodGroupService.save(goodGroup);
                 OrderDetail orderDetail = orderDetailService.findByGruopId(goodGroup.getId());

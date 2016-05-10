@@ -81,7 +81,7 @@ public class AppConfig {
     @Bean
     public HttpClient httpGet(ApplicationProperties applicationProperties,WxContext wxc){
         FileInputStream instream = null;
-        boolean b = true;
+        boolean b = false;
         if(b){
             return new SystemDefaultHttpClient();
         }

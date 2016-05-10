@@ -115,7 +115,8 @@ dependencies {
 
 
     compile 'org.apache.shiro:shiro-spring:1.2.3'
-
+	
+    compile 'jdom:jdom:1.1'
     testCompile("junit:junit")
    
 
