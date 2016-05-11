@@ -9,4 +9,6 @@ public interface LogisticsOrderResultRepository extends CrudRepository<Logistics
 
     LogisticsOrderResult findByComAndNo(String com, String no);
 
+    Iterable<LogisticsOrderResult> findAllByStatus(String status);
+
 }
