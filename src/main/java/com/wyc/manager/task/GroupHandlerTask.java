@@ -4,6 +4,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.wyc.domain.GoodGroup;
@@ -17,6 +23,7 @@ import com.wyc.service.GroupPartakeDeliverService;
 import com.wyc.service.GroupPartakePaymentService;
 import com.wyc.service.GroupPartakeService;
 import com.wyc.service.OrderDetailService;
+import com.wyc.wx.service.WxPayService;
 
 public class GroupHandlerTask {
     @Autowired
@@ -31,14 +38,35 @@ public class GroupHandlerTask {
     private GroupPartakePaymentService groupPartakePaymentService;
     @Autowired
     private GroupPartakeDeliverService groupPartakeDeliverService;
+    @Autowired
+    private WxPayService wxPayService;
+    
+    final static Logger logger = LoggerFactory.getLogger(GroupHandlerTask.class);
+    
+    @Autowired
+    private EntityManagerFactory   entityManagerFactory;
+    
+    
     public void run() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
         Iterable<GoodGroup> goodGroups = goodGroupService.findAllByIsDisused(0);
         for(GoodGroup goodGroup:goodGroups){
-            checkTimeout(goodGroup);
+            try {
+                transaction.begin();
+                goodGroup = checkTimeout(goodGroup);
+                goodGroup.setIsDisused(1);
+                goodGroupService.save(goodGroup);
+                transaction.commit();
+            } catch (Exception e) {
+                logger.error("checkTimeOut has an error :{}",e);
+                transaction.rollback();
+            }
         }
+        em.close();
     }
     
-    private GoodGroup checkTimeout(GoodGroup goodGroup){
+    private GoodGroup checkTimeout(GoodGroup goodGroup)throws Exception{
         if((goodGroup.getResult()==1||goodGroup.getResult()==0)&&groupPartakeService.countByGroupId(goodGroup.getId())<goodGroup.getNum()){
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(goodGroup.getStartTime().toDate());
@@ -56,8 +84,10 @@ public class GroupHandlerTask {
                 for(GroupPartake groupPartake:groupPartakes){
                     GroupPartakePayment groupPartakePayment = groupPartakePaymentService.findByGroupPartakeId(groupPartake.getId());
                     
-                    if(groupPartakePayment.getStatus()==1){
-                        groupPartakePayment.setStatus(2);
+                    if(groupPartakePayment.getStatus()==1||groupPartakePayment.getStatus()==2){
+                        groupPartakePayment.setStatus(3);
+                        String outTradeNo = groupPartakePayment.getOutTradeNo();
+                        wxPayService.refund(outTradeNo);
                         groupPartakePaymentService.save(groupPartakePayment);
                     }
                 }
