@@ -17,12 +17,14 @@ import com.wyc.domain.GoodOrder;
 import com.wyc.domain.GroupPartake;
 import com.wyc.domain.GroupPartakePayment;
 import com.wyc.domain.OrderDetail;
+import com.wyc.domain.OrderRecord;
 import com.wyc.service.GoodGroupService;
 import com.wyc.service.GoodOrderService;
 import com.wyc.service.GroupPartakeDeliverService;
 import com.wyc.service.GroupPartakePaymentService;
 import com.wyc.service.GroupPartakeService;
 import com.wyc.service.OrderDetailService;
+import com.wyc.service.OrderRecordService;
 import com.wyc.wx.service.WxPayService;
 
 public class GroupHandlerTask {
@@ -38,6 +40,8 @@ public class GroupHandlerTask {
     private GroupPartakePaymentService groupPartakePaymentService;
     @Autowired
     private GroupPartakeDeliverService groupPartakeDeliverService;
+    @Autowired
+    private OrderRecordService orderRecordService;
     @Autowired
     private WxPayService wxPayService;
     
@@ -89,6 +93,12 @@ public class GroupHandlerTask {
                         String outTradeNo = groupPartakePayment.getOutTradeNo();
                         wxPayService.refund(outTradeNo);
                         groupPartakePaymentService.save(groupPartakePayment);
+                        OrderRecord orderRecord = new OrderRecord();
+                        orderRecord.setGroupPartakeId(groupPartakePayment.getGroupPartakeId());
+                        orderRecord.setHandlerAdmin("system");
+                        orderRecord.setRemark("系统操作，自动完成");
+                        orderRecord.setWay(OrderRecord.REFUND_HANDLER);
+                        orderRecordService.add(orderRecord);
                     }
                 }
             }

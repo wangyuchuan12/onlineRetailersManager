@@ -10,12 +10,16 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity(name="order_record")
 public class OrderRecord {
-   //申请结算
+    //申请结算
     public static int APPLY_PAY = 0;
     //审核结算
     public static int AUDIT_PAY = 1;
     //发货处理
     public static int DELIVER = 2;
+    //申请退款
+    public static int APPLY_REFUND = 3;
+    //退款操作
+    public static int REFUND_HANDLER = 4;
     @Id
     private String id;
     //处理方式
