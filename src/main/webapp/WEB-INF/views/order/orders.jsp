@@ -83,7 +83,8 @@
                             			<td>
                             				<c:if test="${order.payStatus==0}">未付款</c:if>
                             				<c:if test="${order.payStatus==1}">已付款</c:if>
-                            				<c:if test="${order.payStatus==2}">已退款</c:if>
+                            				<c:if test="${order.payStatus==2}">申请退款</c:if>
+                            				<c:if test="${order.payStatus==3}">已退款</c:if>
                             			
                             			</td>
                             			<td><joda:format value="${order.payTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
