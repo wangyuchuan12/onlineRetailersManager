@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import com.wyc.service.GroupPartakePaymentService;
 import com.wyc.service.GroupPartakeService;
 import com.wyc.service.OrderDetailService;
 import com.wyc.service.OrderRecordService;
+import com.wyc.wx.response.domain.PaySuccess;
 import com.wyc.wx.service.WxPayService;
 
 public class GroupHandlerTask {
@@ -94,7 +96,9 @@ public class GroupHandlerTask {
                     if(groupPartakePayment.getStatus()==1||groupPartakePayment.getStatus()==2){
                         groupPartakePayment.setStatus(3);
                         String outTradeNo = groupPartakePayment.getOutTradeNo();
-                        wxPayService.refund(outTradeNo);
+                        PaySuccess paySuccess = wxPayService.refund(outTradeNo);
+                        groupPartakePayment.setRefundTime(new DateTime());
+                        groupPartakePayment.setRefundAmount(Float.parseFloat(paySuccess.getTotalFee()));
                         groupPartakePaymentService.save(groupPartakePayment);
                         OrderRecord orderRecord = new OrderRecord();
                         orderRecord.setGroupPartakeId(groupPartakePayment.getGroupPartakeId());
