@@ -57,11 +57,14 @@ public class GroupHandlerTask {
         Iterable<GoodGroup> goodGroups = goodGroupService.findAllByIsDisused(0);
         for(GoodGroup goodGroup:goodGroups){
             try {
-                transaction.begin();
-                goodGroup = checkTimeout(goodGroup);
-                goodGroup.setIsDisused(1);
-                goodGroupService.save(goodGroup);
-                transaction.commit();
+                
+                boolean flag = checkTimeout(goodGroup);
+                if(flag){
+                    transaction.begin();
+                    goodGroup.setIsDisused(1);
+                    goodGroupService.save(goodGroup);
+                    transaction.commit();
+                }
             } catch (Exception e) {
                 logger.error("checkTimeOut has an error :{}",e);
                 transaction.rollback();
@@ -70,7 +73,7 @@ public class GroupHandlerTask {
         em.close();
     }
     
-    private GoodGroup checkTimeout(GoodGroup goodGroup)throws Exception{
+    private boolean checkTimeout(GoodGroup goodGroup)throws Exception{
         if((goodGroup.getResult()==1||goodGroup.getResult()==0)&&groupPartakeService.countByGroupId(goodGroup.getId())<goodGroup.getNum()){
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(goodGroup.getStartTime().toDate());
@@ -101,8 +104,9 @@ public class GroupHandlerTask {
                         orderRecordService.add(orderRecord);
                     }
                 }
+                return true;
             }
         }
-        return goodGroup;
+        return false;
     }
 }
