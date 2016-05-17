@@ -65,7 +65,7 @@ public class CustomerServiceAction {
         article.setDescription("风靡全国的拼货商城，精美商品提供，快来一起拼货吧");
         article.setPicurl(goodTypeEntity.getImg());
         article.setTitle(goodTypeEntity.getTitle());
-        article.setUrl("http://www.chengxihome.com/main/good_list");
+        article.setUrl("http://www.chengxihome.com/main/good_list?good_type="+goodTypeId);
         List<Article> articles = new ArrayList<Article>();
         articles.add(article);
         return sendMessageService.sendImgMessage(openid, articles);
