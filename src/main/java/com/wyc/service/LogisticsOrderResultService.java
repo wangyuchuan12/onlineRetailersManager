@@ -29,4 +29,8 @@ public class LogisticsOrderResultService {
         logisticsOrderResult.setUpdateAt(new DateTime());
         return logisticsOrderResultRepository.save(logisticsOrderResult);
     }
+
+    public Iterable<LogisticsOrderResult> findAllByStatus(String status) {
+        return logisticsOrderResultRepository.findAllByStatus(status);
+    }
 }

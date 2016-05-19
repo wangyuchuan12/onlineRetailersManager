@@ -67,7 +67,7 @@ def loadConfiguration() {
     else if(environment.equals('win'))
     		sourceSets.main.resources.srcDirs 'src/main/resources/win'
     else
-        sourceSets.main.resources.srcDirs 'src/main/resources/local'
+        sourceSets.main.resources.srcDirs 'src/main/resources/'+environment
 }
 
 dependencies {
@@ -115,7 +115,8 @@ dependencies {
 
 
     compile 'org.apache.shiro:shiro-spring:1.2.3'
-
+	
+    compile 'jdom:jdom:1.1'
     testCompile("junit:junit")
    
 

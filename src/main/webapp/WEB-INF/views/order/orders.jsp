@@ -83,7 +83,8 @@
                             			<td>
                             				<c:if test="${order.payStatus==0}">未付款</c:if>
                             				<c:if test="${order.payStatus==1}">已付款</c:if>
-                            				<c:if test="${order.payStatus==2}">已退款</c:if>
+                            				<c:if test="${order.payStatus==2}">申请退款</c:if>
+                            				<c:if test="${order.payStatus==3}">已退款</c:if>
                             			
                             			</td>
                             			<td><joda:format value="${order.payTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -112,10 +113,15 @@
                             						<a href="javascript:deviceClick('${order.groupPartakeId}')">发货</a>
                             					</c:if>
                             					<c:if test="${order.deliverStatus==2}">
-                            						<a href="javascript:statement('${order.groupPartakeId}')">申请结算</a>
+                            						<a href="javascript:statementApply('${order.groupPartakeId}')">申请结算</a>
                             					</c:if>
                             					
                             				</c:if>
+                            				<shiro:hasRole name="god">
+	                            				<c:if test="${order.status==2}">
+	                            					<a href="javascript:statementDo('${order.groupPartakeId}')">结算处理</a>
+	                            				</c:if>
+                            				</shiro:hasRole>
                             				<!--  
                             				<a href="#">订单详情</a>
                             				<a href="#">商品详情</a>
@@ -185,10 +191,19 @@ $(document).ready(function() {
   	});
 });
 
-function statement(groupPartakeId){
+function statementApply(groupPartakeId){
 	var a=confirm("是否确定申请结算");
 	if(a){
-		window.location.href = "/manager/apply_settlement?group_partake_id="+groupPartakeId;
+		var remark = prompt("请输入备注");
+		window.location.href = "/manager/apply_settlement?group_partake_id="+groupPartakeId+"&remark="+remark;
+	}
+}
+
+function statementDo(groupPartakeId){
+	var a=confirm("是否确定结算");
+	if(a){
+		var remark = prompt("请输入备注");
+		window.location.href = "/manager/do_settlement?group_partake_id="+groupPartakeId+"&remark="+remark;
 	}
 }
 

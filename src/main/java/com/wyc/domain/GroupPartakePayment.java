@@ -6,6 +6,8 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity(name = "group_partake_payment")
 public class GroupPartakePayment {
     @Id
@@ -28,12 +30,23 @@ public class GroupPartakePayment {
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime payTime;
     
-    //0表示未付款 1已付款 2已退款 
+    //0表示未付款 1已付款 2申请退款 3退款完成
     @Column
     private int status;
-    
+    @Column(name="out_trade_no")
+    private String outTradeNo;
     @Column(name="group_partake_id")
     private String groupPartakeId;
+
+    
+    @Column(name = "create_at")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @JsonIgnore
+    private DateTime createAt;
+    @Column(name = "update_at")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @JsonIgnore
+    private DateTime updateAt;
     
     @Column
     private String remarks;
@@ -43,6 +56,30 @@ public class GroupPartakePayment {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public String getOutTradeNo() {
+        return outTradeNo;
+    }
+
+    public void setOutTradeNo(String outTradeNo) {
+        this.outTradeNo = outTradeNo;
+    }
+
+    public DateTime getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(DateTime createAt) {
+        this.createAt = createAt;
+    }
+
+    public DateTime getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(DateTime updateAt) {
+        this.updateAt = updateAt;
     }
 
     public String getId() {

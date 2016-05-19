@@ -40,4 +40,8 @@ public class GoodGroupService {
     public Iterable<GoodGroup> findAllByAdminId(String adminId) {
         return goodGroupRepository.findAllByAdminId(adminId);
     }
+
+    public Iterable<GoodGroup> findAllByIsDisused(int isDisused) {
+        return goodGroupRepository.findAllByIsDisused(isDisused);
+    }
 }

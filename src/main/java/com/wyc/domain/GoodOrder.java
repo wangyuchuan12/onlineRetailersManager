@@ -48,8 +48,19 @@ public class GoodOrder {
     
     
     private String adminId;
+    @Column(name="is_disused")
+    private Integer isDisused = 0;
     
     
+
+    public Integer getIsDisused() {
+        return isDisused;
+    }
+
+    public void setIsDisused(Integer isDisused) {
+        this.isDisused = isDisused;
+    }
+
     public String getGroupId() {
         return groupId;
     }

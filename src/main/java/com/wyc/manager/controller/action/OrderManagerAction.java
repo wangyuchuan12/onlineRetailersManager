@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.wyc.domain.Business;
 import com.wyc.domain.Good;
 import com.wyc.domain.GoodGroup;
 import com.wyc.domain.GoodOrder;
@@ -30,6 +32,7 @@ import com.wyc.domain.MyResource;
 import com.wyc.domain.OrderRecord;
 import com.wyc.manager.domain.Admin;
 import com.wyc.manager.service.AdminService;
+import com.wyc.service.BusinessService;
 import com.wyc.service.CustomerAddressService;
 import com.wyc.service.GoodGroupService;
 import com.wyc.service.GoodOrderService;
@@ -73,6 +76,8 @@ public class OrderManagerAction {
     private JuheOrderService juheOrderService;
     @Autowired
     private EntityManagerFactory   entityManagerFactory;
+    @Autowired
+    private BusinessService businessService;
     public Map<String, Object> responseOrder (GoodOrder goodOrder , GroupPartake groupPartake){
         Map<String, Object> responseOrder = new HashMap<String, Object>();
         Good good = goodService.findOne(goodOrder.getGoodId());
@@ -101,16 +106,55 @@ public class OrderManagerAction {
         return responseOrder;
     }
     
-    @RequestMapping("/manager/apply_settlement")
-    public String applySettlement(HttpServletRequest httpServletRequest){
+    @RequestMapping("/manager/do_settlement")
+    @Transactional
+    public String doSettlement(HttpServletRequest httpServletRequest){
+        Subject subject = SecurityUtils.getSubject();
+        String username = subject.getPrincipal()+"";
+        Admin admin = adminService.findByUsername(username);
         String groupPartakeId = httpServletRequest.getParameter("group_partake_id");
+        String remark = httpServletRequest.getParameter("remark");
+        GroupPartake groupPartake = groupPartakeService.findOne(groupPartakeId);
+        groupPartake.setStatus(GroupPartake.SUCCESS_STATUS);
+        groupPartake = groupPartakeService.save(groupPartake);
+        GoodOrder goodOrder = goodOrderService.findOne(groupPartake.getOrderId());
+        Admin businessAdmin = adminService.findOne(Long.parseLong(goodOrder.getAdminId()));
+        Business business = businessService.findByAdminId(businessAdmin.getId()+"");
+        business.setAccount(business.getAccount()+goodOrder.getCost());
+        businessService.save(business);
+        OrderRecord orderRecord = new OrderRecord();
+        orderRecord.setGroupPartakeId(groupPartakeId);
+        orderRecord.setHandlerAdmin(admin.getId()+"");
+        orderRecord.setRemark(remark);
+        orderRecord.setWay(OrderRecord.AUDIT_PAY);
+        orderRecordService.add(orderRecord);
+        return "redirect:/manager/orders_program";
+    }
+    
+    @RequestMapping("/manager/apply_settlement")
+    @Transactional
+    public String applySettlement(HttpServletRequest httpServletRequest){
+        
+        Subject subject = SecurityUtils.getSubject();
+        String username = subject.getPrincipal()+"";
+        Admin admin = adminService.findByUsername(username);
+        String groupPartakeId = httpServletRequest.getParameter("group_partake_id");
+        String remark = httpServletRequest.getParameter("remark");
         GroupPartake groupPartake = groupPartakeService.findOne(groupPartakeId);
         groupPartake.setStatus(GroupPartake.PROGRAM_STATUS);
-        groupPartakeService.save(groupPartake);
+        groupPartake = groupPartakeService.save(groupPartake);
+        
+        OrderRecord orderRecord = new OrderRecord();
+        orderRecord.setGroupPartakeId(groupPartakeId);
+        orderRecord.setHandlerAdmin(admin.getId()+"");
+        orderRecord.setRemark(remark);
+        orderRecord.setWay(OrderRecord.APPLY_PAY);
+        orderRecordService.add(orderRecord);
         return "redirect:/manager/orders";
     }
 
     @RequestMapping("/manager/device_handler")
+    @Transactional
     public String deviceHandler(HttpServletRequest httpServletRequest)throws Exception{
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
@@ -152,7 +196,7 @@ public class OrderManagerAction {
                 OrderRecord orderRecord = new OrderRecord();
                 orderRecord.setGroupPartakeId(groupPartakeId);
                 orderRecord.setRemark(remarks);
-                orderRecord.setWay(4);
+                orderRecord.setWay(OrderRecord.DELIVER);
                 
                 orderRecordService.add(orderRecord);
                 juheOrderService.updateLogistics(jhOrder);
@@ -179,6 +223,19 @@ public class OrderManagerAction {
         }
         return "redirect:/manager/orders";
         
+    }
+    
+    @RequestMapping("/manager/orders_program")
+    public String ordersOfProgramStatus(HttpServletRequest httpServletRequest){
+        List<Map<String, Object>> responseOrders = new ArrayList<Map<String,Object>>();
+        Iterable<GroupPartake> groupPartakeIterable = groupPartakeService.findAllByStatusOrderByDateTimeAsc(GroupPartake.PROGRAM_STATUS);
+        for(GroupPartake groupPartake:groupPartakeIterable){
+            GoodOrder goodOrder = goodOrderService.findOne(groupPartake.getOrderId());
+            Map<String, Object> responseOrder = responseOrder(goodOrder , groupPartake);
+            responseOrders.add(responseOrder);
+        }
+        httpServletRequest.setAttribute("orders", responseOrders);
+        return "order/orders";
     }
     
     @RequestMapping("/manager/orders")

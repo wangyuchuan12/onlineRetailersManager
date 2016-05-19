@@ -13,6 +13,10 @@ public class GroupPartake {
     public static final int PROGRAM_STATUS=2;
     public static final int SUCCESS_STATUS=3;
     public static final int DERELICT_STATUS=4;
+    public static final int FAILURE_STATUS=5;
+    
+    public static final int APPLY_STATUS=6;
+   
     @Id
     private String id;
     @Column(name = "customerid")
@@ -49,9 +53,6 @@ public class GroupPartake {
     @Column(name = "update_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime updateAt;
-    
-    
-    
     public String getAddressContent() {
         return addressContent;
     }

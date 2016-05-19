@@ -72,7 +72,8 @@ public class SecurityConfig {
 		definitionsMap.put("/admin/add_admin", "authc,roles[god]");
 		// 删除用户
 		definitionsMap.put("/admin/delete", "authc,roles[admin]");
-		
+		//执行退款
+		definitionsMap.put("/manager/api/refund", "authc,roles[god]");
 		definitionsMap.put("/**", "authc,roles[admin,god]");
 		
 		shiroFilter.setFilterChainDefinitionMap(definitionsMap);

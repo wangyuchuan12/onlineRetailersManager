@@ -10,14 +10,25 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity(name="order_record")
 public class OrderRecord {
+    //申请结算
+    public static int APPLY_PAY = 0;
+    //审核结算
+    public static int AUDIT_PAY = 1;
+    //发货处理
+    public static int DELIVER = 2;
+    //申请退款
+    public static int APPLY_REFUND = 3;
+    //退款操作
+    public static int REFUND_HANDLER = 4;
     @Id
     private String id;
     //处理方式
-  //1申请退款 2 退款发货 3 退款签收 4 发货 5 发货签收
     @Column
     private int way;
     @Column(name="group_partake_id")
     private String groupPartakeId;
+    @Column(name="handler_admin")
+    private String handlerAdmin;
     @Column
     private String remark;
     @Column(name = "create_at")
@@ -29,6 +40,12 @@ public class OrderRecord {
     @JsonIgnore
     private DateTime updateAt;
     
+    public String getHandlerAdmin() {
+        return handlerAdmin;
+    }
+    public void setHandlerAdmin(String handlerAdmin) {
+        this.handlerAdmin = handlerAdmin;
+    }
     public String getGroupPartakeId() {
         return groupPartakeId;
     }

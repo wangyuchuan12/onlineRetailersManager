@@ -46,7 +46,9 @@ public class PaySuccess {
     private String tradeType;
     @Column(name="transaction_id")
     private String transactionId;
-    
+    //0表示未退款 1表示退款
+    @Column(name="is_refund")
+    private Integer isRefund;
     @Column(name = "create_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @JsonIgnore
@@ -58,6 +60,13 @@ public class PaySuccess {
     
     
     
+    
+    public Integer getIsRefund() {
+        return isRefund;
+    }
+    public void setIsRefund(Integer isRefund) {
+        this.isRefund = isRefund;
+    }
     public DateTime getCreateAt() {
         return createAt;
     }

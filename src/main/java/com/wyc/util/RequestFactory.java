@@ -329,4 +329,10 @@ public class RequestFactory {
 	    URL url = new URL("http://v.juhe.cn/exp/index?key="+key+"&com="+com+"&no="+no);
 	    return getRequestByConnection(url);
 	}
+	
+	//获取退款接口
+	public Request getRefundRequest()throws Exception{
+	    URL url = new URL("https://api.mch.weixin.qq.com/secapi/pay/refund");
+            return getRequestByConnection(url);
+	}
 }
