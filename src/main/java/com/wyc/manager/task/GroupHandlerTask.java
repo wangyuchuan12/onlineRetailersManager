@@ -98,7 +98,11 @@ public class GroupHandlerTask {
                         String outTradeNo = groupPartakePayment.getOutTradeNo();
                         PaySuccess paySuccess = wxPayService.refund(outTradeNo);
                         groupPartakePayment.setRefundTime(new DateTime());
-                        groupPartakePayment.setRefundAmount(Float.parseFloat(paySuccess.getTotalFee()));
+                        if(paySuccess!=null){
+                            
+                            groupPartakePayment.setRefundAmount(Float.parseFloat(paySuccess.getTotalFee()));
+                            
+                        }
                         groupPartakePaymentService.save(groupPartakePayment);
                         OrderRecord orderRecord = new OrderRecord();
                         orderRecord.setGroupPartakeId(groupPartakePayment.getGroupPartakeId());
