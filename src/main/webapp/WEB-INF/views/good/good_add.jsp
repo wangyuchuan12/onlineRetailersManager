@@ -68,7 +68,7 @@
 									<label>状态</label>
 									<div>
 										<div style="display: inline-block;"><input checked="checked" class="form-control" type="radio" name="status" style="width:20px;display: inline-block;" value="0"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">下架</label></div>
-										<div style="display: inline-block;"><input class="form-control" type="radio" name="status" style="width:20px;display: inline-block;" value="1"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">售完</label></div>
+										<div style="display: inline-block;"><input class="form-control" type="radio" name="status" style="width:20px;display: inline-block;" value="2"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">售完</label></div>
 										<div style="display: inline-block;"><input class="form-control" type="radio" name="status" style="width:20px;display: inline-block;" value="1"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">正常</label></div>
 									
 									</div>
