@@ -109,7 +109,7 @@
                             			</td>
                             			<td class="center">
                             				<c:if test="${order.status==1}">
-                            					<c:if test="${order.deliverStatus==0}">
+                            					<c:if test="${order.deliverStatus==0&&order.payStatus==1}">
                             						<a href="javascript:deviceClick('${order.groupPartakeId}')">发货</a>
                             					</c:if>
                             					<c:if test="${order.deliverStatus==2}">
@@ -121,7 +121,7 @@
                             				
                             				<c:if test="${order.payStatus==1}">
                             					<br/>
-                            					<a href="javascript:refundPayment('${order.groupPartakeId}')">退款</a>
+                            					<a id="refund_a_${order.groupPartakeId}" href="javascript:refundPayment('${order.groupPartakeId}')">退款</a>
                             				</c:if>
                             				<br/>
                             				<a href="javascript:delOrder('${order.groupPartakeId}')">删除</a>
@@ -232,9 +232,18 @@ function statementDo(groupPartakeId){
 }
 
 function refundPayment(groupPartakeId){
-	var a=confirm("是否确定结算");
+	var a=confirm("是否确定退款");
 	if(a){
-		window.location.href = "/manager/api/refund?group_partake_id="+groupPartakeId;
+		$.ajax({
+			url:"/manager/api/refund?group_partake_id="+groupPartakeId,
+			success:function(resp){
+				var obj = eval("("+resp+")");
+				if(obj.id){
+					alert("退款成功");
+					$("#refund_a"+groupPartakeId).remove();
+				}
+			}
+		});
 	}
 }
 

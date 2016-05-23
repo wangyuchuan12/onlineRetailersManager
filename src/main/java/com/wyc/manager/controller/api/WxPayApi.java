@@ -17,6 +17,7 @@ import com.wyc.manager.service.AdminService;
 import com.wyc.service.GoodOrderService;
 import com.wyc.service.GroupPartakePaymentService;
 import com.wyc.service.GroupPartakeService;
+import com.wyc.wx.response.domain.PaySuccess;
 import com.wyc.wx.service.WxPayService;
 @RestController
 public class WxPayApi {
@@ -43,10 +44,10 @@ public class WxPayApi {
             return null;
         }
         GroupPartakePayment groupPartakePayment = groupPartakePaymentService.findByGroupPartakeId(groupPartakeId);
-        
         String outTradeNo = groupPartakePayment.getOutTradeNo();
-        wxPayService.refund(outTradeNo);
-        groupPartakePayment.setStatus(2);
+        PaySuccess paySuccess = wxPayService.refund(outTradeNo);
+        groupPartakePayment.setRefundAmount(Float.parseFloat(paySuccess.getTotalFee()));
+        groupPartakePayment.setStatus(3);
         groupPartakePaymentService.save(groupPartakePayment);
         return groupPartakePayment;
     }
