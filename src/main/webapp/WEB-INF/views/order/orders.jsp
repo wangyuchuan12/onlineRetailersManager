@@ -124,7 +124,7 @@
                             					<a id="refund_a_${order.groupPartakeId}" href="javascript:refundPayment('${order.groupPartakeId}')">退款</a>
                             				</c:if>
                             				<br/>
-                            				<c:if test="${order.deliverStatus==0&&order.payStatus==3}">
+                            				<c:if test="${order.deliverStatus==2||order.payStatus==3}">
                             					<a href="javascript:delOrder('${order.groupPartakeId}')">删除</a>
                             				</c:if>
                             				<shiro:hasRole name="god">

@@ -46,7 +46,11 @@ public class WxPayApi {
         GroupPartakePayment groupPartakePayment = groupPartakePaymentService.findByGroupPartakeId(groupPartakeId);
         String outTradeNo = groupPartakePayment.getOutTradeNo();
         PaySuccess paySuccess = wxPayService.refund(outTradeNo);
-        groupPartakePayment.setRefundAmount(Float.parseFloat(paySuccess.getTotalFee()));
+        if(paySuccess!=null){
+            groupPartakePayment.setRefundAmount(Float.parseFloat(paySuccess.getTotalFee()));
+        }else{
+            groupPartakePayment.setRefundAmount(0f);  
+        }
         groupPartakePayment.setStatus(3);
         groupPartakePaymentService.save(groupPartakePayment);
         return groupPartakePayment;
