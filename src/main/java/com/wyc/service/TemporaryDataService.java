@@ -33,4 +33,13 @@ public class TemporaryDataService {
     public TemporaryData findByMyKeyAndName(String key , String name){
         return temporaryDataRespository.findByMykeyAndName(key, name);
     }
+
+    public Iterable<TemporaryData> findAllByUpdateAtLessThan(DateTime dateTime) {
+        return temporaryDataRespository.findAllByUpdateAtLessThan(dateTime);
+    }
+
+    public void delete(TemporaryData temporaryData) {
+        temporaryDataRespository.delete(temporaryData);
+        
+    }
 }
