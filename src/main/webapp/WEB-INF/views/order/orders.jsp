@@ -113,12 +113,19 @@
                             						<a href="javascript:deviceClick('${order.groupPartakeId}')">发货</a>
                             					</c:if>
                             					<c:if test="${order.deliverStatus==2}">
+                            						<br/>
                             						<a href="javascript:statementApply('${order.groupPartakeId}')">申请结算</a>
                             					</c:if>
                             					
                             				</c:if>
+                            				
+                            				<c:if test="${order.payStatus==1}">
+                            					<br/>
+                            					<a href="javascript:refundPayment('${order.groupPartakeId}')">退款</a>
+                            				</c:if>
                             				<shiro:hasRole name="god">
 	                            				<c:if test="${order.status==2}">
+	                            					<br/>
 	                            					<a href="javascript:statementDo('${order.groupPartakeId}')">结算处理</a>
 	                            				</c:if>
                             				</shiro:hasRole>
@@ -204,6 +211,13 @@ function statementDo(groupPartakeId){
 	if(a){
 		var remark = prompt("请输入备注");
 		window.location.href = "/manager/do_settlement?group_partake_id="+groupPartakeId+"&remark="+remark;
+	}
+}
+
+function refundPayment(groupPartakeId){
+	var a=confirm("是否确定结算");
+	if(a){
+		window.location.href = "/manager/api/refund?group_partake_id="+groupPartakeId;
 	}
 }
 
