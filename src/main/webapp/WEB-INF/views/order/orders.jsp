@@ -80,7 +80,7 @@
                             			<td><img src="${order.goodHeadImgUrl}" style="width: 50px;height:50px;"></img></td>
                             			<td>${order.goodName}</td>
                             			<td>${order.goodTypeName}</td>
-                            			<td>
+                            			<td id = "pay_status_${order.groupPartakeId}">
                             				<c:if test="${order.payStatus==0}">未付款</c:if>
                             				<c:if test="${order.payStatus==1}">已付款</c:if>
                             				<c:if test="${order.payStatus==2}">申请退款</c:if>
@@ -124,7 +124,9 @@
                             					<a id="refund_a_${order.groupPartakeId}" href="javascript:refundPayment('${order.groupPartakeId}')">退款</a>
                             				</c:if>
                             				<br/>
-                            				<a href="javascript:delOrder('${order.groupPartakeId}')">删除</a>
+                            				<c:if test="${order.deliverStatus==0&&order.payStatus==3}">
+                            					<a href="javascript:delOrder('${order.groupPartakeId}')">删除</a>
+                            				</c:if>
                             				<shiro:hasRole name="god">
 	                            				<c:if test="${order.status==2}">
 	                            					<br/>
@@ -237,10 +239,10 @@ function refundPayment(groupPartakeId){
 		$.ajax({
 			url:"/manager/api/refund?group_partake_id="+groupPartakeId,
 			success:function(resp){
-				var obj = eval("("+resp+")");
-				if(obj.id){
+				if(resp.id){
 					alert("退款成功");
-					$("#refund_a"+groupPartakeId).remove();
+					$("#refund_a_"+groupPartakeId).remove();
+					$("#pay_status_"+groupPartakeId).html("已退款");
 				}
 			}
 		});
