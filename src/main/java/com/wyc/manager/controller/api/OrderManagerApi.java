@@ -67,6 +67,16 @@ public class OrderManagerApi {
     @Autowired
     private CustomerAddressService customerAddressService;
     final static Logger logger = LoggerFactory.getLogger(OrderManagerApi.class);
+    
+    @RequestMapping("/manager/api/del_order")
+    public Object delHandle(HttpServletRequest httpServletRequest){
+        String groupPartakeId = httpServletRequest.getParameter("group_partake_id");
+        GroupPartake groupPartake = groupPartakeService.findOne(groupPartakeId);
+        groupPartake.setIsDel(1);
+        groupPartakeService.save(groupPartake);
+        return "{success:true}";
+    }
+    
     @RequestMapping("/manager/api/order_handle")
     public Object orderHandle(HttpServletRequest httpServletRequest)throws Exception{
         String groupPartakeId = httpServletRequest.getParameter("group_partake_id");

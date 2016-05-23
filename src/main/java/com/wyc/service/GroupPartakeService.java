@@ -59,4 +59,9 @@ public class GroupPartakeService {
             int status) {
         return groupPartakeRepository.findAllByStatusOrderByDateTimeAsc(status);
     }
+
+    public Iterable<GroupPartake> findAllByOrderIdAndIsDelOrderByDateTimeAsc(
+            String orderId, int isDel) {
+        return groupPartakeRepository.findAllByOrderIdAndIsDelOrderByDateTimeAsc(orderId,isDel);
+    }
 }

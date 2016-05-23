@@ -42,6 +42,8 @@ public class GroupPartake {
     private  String remarks;
     @Column
     private int status=WAIT_STATUS;
+    @Column(name="is_del")
+    private int isDel = 1;
     //参加时间
     @Column(name = "date_time")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -53,6 +55,14 @@ public class GroupPartake {
     @Column(name = "update_at")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime updateAt;
+    
+    
+    public int getIsDel() {
+        return isDel;
+    }
+    public void setIsDel(int isDel) {
+        this.isDel = isDel;
+    }
     public String getAddressContent() {
         return addressContent;
     }

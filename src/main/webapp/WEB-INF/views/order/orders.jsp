@@ -76,7 +76,7 @@
                             </thead>
                             <tbody>
                             	<c:forEach items="${orders}" var="order">
-                            		<tr class="odd gradeX">
+                            		<tr class="odd gradeX" id ="${order.groupPartakeId}" >
                             			<td><img src="${order.goodHeadImgUrl}" style="width: 50px;height:50px;"></img></td>
                             			<td>${order.goodName}</td>
                             			<td>${order.goodTypeName}</td>
@@ -123,6 +123,8 @@
                             					<br/>
                             					<a href="javascript:refundPayment('${order.groupPartakeId}')">退款</a>
                             				</c:if>
+                            				<br/>
+                            				<a href="javascript:delOrder('${order.groupPartakeId}')">删除</a>
                             				<shiro:hasRole name="god">
 	                            				<c:if test="${order.status==2}">
 	                            					<br/>
@@ -197,6 +199,21 @@ $(document).ready(function() {
         todayButton:true    //关闭选择今天按钮
   	});
 });
+
+function delOrder(groupPartakeId){
+	var a=confirm("是否确定删除");
+	if(a){		
+		$.ajax({
+			url:"/manager/api/del_order?group_partake_id="+groupPartakeId,
+			success:function(resp){
+				var obj = eval("("+resp+")");
+				if(obj.success){
+					$("#"+groupPartakeId).remove();
+				}
+			}
+		});
+	}
+}
 
 function statementApply(groupPartakeId){
 	var a=confirm("是否确定申请结算");

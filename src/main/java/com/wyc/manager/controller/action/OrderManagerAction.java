@@ -246,7 +246,7 @@ public class OrderManagerAction {
 	Iterable<GoodOrder> goodOrders = goodOrderService.findAllByAdminId(admin.getId()+"");
 	List<Map<String, Object>> responseOrders = new ArrayList<Map<String,Object>>();
 	for(GoodOrder goodOrder:goodOrders){
-	    Iterable<GroupPartake> groupPartakeIterable = groupPartakeService.findAllByOrderIdOrderByDateTimeAsc(goodOrder.getId());
+	    Iterable<GroupPartake> groupPartakeIterable = groupPartakeService.findAllByOrderIdAndIsDelOrderByDateTimeAsc(goodOrder.getId(),0);
 	    for(GroupPartake groupPartake:groupPartakeIterable){
 	        Map<String, Object> responseOrder = responseOrder(goodOrder , groupPartake);
 	        responseOrders.add(responseOrder);
