@@ -29,6 +29,7 @@
                             <thead>
                                 <tr>
                                 	 <th>图片</th>
+                                	 <th>id</th>
                                     <th width="20%">名称</th>
                                     <th width="30%">标题</th>
                                     <th>优先级</th>
@@ -43,6 +44,7 @@
                             	<c:forEach items="${goods}" var="good">
                             		<tr class="odd gradeX">
                             			<td><img src="${good.headImgUrl}" style="width: 50px;height:50px;"></img></td>
+                            			<td>${good.id}</td>
                             			<td>${good.name}</td>
                             			<td>${good.title}</td>
                             			<td>${good.rank}</td>

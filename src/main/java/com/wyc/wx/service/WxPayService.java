@@ -41,6 +41,7 @@ public class WxPayService {
                     +"-"+now.get(Calendar.HOUR_OF_DAY)
                     +"-"+now.get(Calendar.MINUTE)
                     +"-"+now.get(Calendar.SECOND)
+                    +"-"+now.get(Calendar.MILLISECOND)
                     +"-"+new Random().nextInt(1000)+"";
             TreeMap<String, String> map = new TreeMap<String, String>();
             map.put("appid", appid);
