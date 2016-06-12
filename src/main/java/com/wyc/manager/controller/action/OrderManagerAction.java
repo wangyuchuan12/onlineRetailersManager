@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.wyc.domain.Business;
+import com.wyc.domain.Customer;
 import com.wyc.domain.Good;
 import com.wyc.domain.GoodGroup;
 import com.wyc.domain.GoodOrder;
@@ -34,6 +35,7 @@ import com.wyc.manager.domain.Admin;
 import com.wyc.manager.service.AdminService;
 import com.wyc.service.BusinessService;
 import com.wyc.service.CustomerAddressService;
+import com.wyc.service.CustomerService;
 import com.wyc.service.GoodGroupService;
 import com.wyc.service.GoodOrderService;
 import com.wyc.service.GoodService;
@@ -78,6 +80,8 @@ public class OrderManagerAction {
     private EntityManagerFactory   entityManagerFactory;
     @Autowired
     private BusinessService businessService;
+    @Autowired
+    private CustomerService customerService;
     public Map<String, Object> responseOrder (GoodOrder goodOrder , GroupPartake groupPartake){
         Map<String, Object> responseOrder = new HashMap<String, Object>();
         Good good = goodService.findOne(goodOrder.getGoodId());
@@ -103,6 +107,7 @@ public class OrderManagerAction {
         responseOrder.put("type", groupPartake.getType());
         responseOrder.put("role", groupPartake.getRole());
         responseOrder.put("dataTime", groupPartake.getDateTime());
+        responseOrder.put("customerId", groupPartake.getCustomerid());
         return responseOrder;
     }
     
@@ -255,6 +260,7 @@ public class OrderManagerAction {
 	Iterable<LogisticsOrderCompany> logisticsOrderCompanys = logisticsOrderCompanyService.findAll();
 	httpServletRequest.setAttribute("companys", logisticsOrderCompanys);
 	httpServletRequest.setAttribute("orders", responseOrders);
+	httpServletRequest.setAttribute("adminId", admin.getId());
         return "order/orders";
     }
     
