@@ -103,6 +103,7 @@ public class OrderManagerAction {
         responseOrder.put("type", groupPartake.getType());
         responseOrder.put("role", groupPartake.getRole());
         responseOrder.put("dataTime", groupPartake.getDateTime());
+        responseOrder.put("customerId", groupPartake.getCustomerid());
         return responseOrder;
     }
     
@@ -255,6 +256,7 @@ public class OrderManagerAction {
 	Iterable<LogisticsOrderCompany> logisticsOrderCompanys = logisticsOrderCompanyService.findAll();
 	httpServletRequest.setAttribute("companys", logisticsOrderCompanys);
 	httpServletRequest.setAttribute("orders", responseOrders);
+	httpServletRequest.setAttribute("adminId", admin.getId());
         return "order/orders";
     }
     
