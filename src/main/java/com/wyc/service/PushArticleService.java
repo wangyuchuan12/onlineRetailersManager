@@ -1,5 +1,7 @@
 package com.wyc.service;
 
+import java.util.UUID;
+
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,4 +28,10 @@ public class PushArticleService {
 		return pushArticleRepository.save(pushArticle);
 		
 	}
+	public PushArticle add(PushArticle pushArticle) {
+            pushArticle.setCreateAt(new DateTime());
+            pushArticle.setUpdateAt(new DateTime());
+            pushArticle.setId(UUID.randomUUID().toString());
+            return pushArticleRepository.save(pushArticle);
+    }
 }

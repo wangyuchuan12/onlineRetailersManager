@@ -20,6 +20,9 @@ import com.wyc.domain.Customer;
 import com.wyc.domain.DialogSession;
 import com.wyc.domain.DialogSessionItem;
 import com.wyc.domain.DialogSessionItemRead;
+import com.wyc.domain.MyResource;
+import com.wyc.domain.NewsArticleItem;
+import com.wyc.domain.PushArticle;
 import com.wyc.manager.domain.Admin;
 import com.wyc.manager.service.AdminService;
 import com.wyc.service.BusinessService;
@@ -27,6 +30,8 @@ import com.wyc.service.CustomerService;
 import com.wyc.service.DialogSessionItemReadService;
 import com.wyc.service.DialogSessionItemService;
 import com.wyc.service.DialogSessionService;
+import com.wyc.service.NewsArticleItemService;
+import com.wyc.service.PushArticleService;
 import com.wyc.service.WxUserInfoService;
 
 @RestController
@@ -46,6 +51,11 @@ public class ChatApi {
     private WxUserInfoService wxUserInfoService;
     @Autowired
     private BusinessService businessService;
+    
+    @Autowired
+    private PushArticleService pushArticleService;
+    @Autowired
+    private NewsArticleItemService newsArticleItemService;
     @RequestMapping("/api/chat/select_not_read")
     public Object selectNotRead(HttpServletRequest httpServletRequest){
         Subject subject = SecurityUtils.getSubject();
@@ -139,6 +149,29 @@ public class ChatApi {
         
         responseObj.put("dateTime", mySimpleDateFormat.format(dialogSessionItem.getDateTime().toDate()));
         responseObj.put("role", dialogSessionItem.getRole()+"");
+        try {
+            PushArticle pushArticle = new PushArticle();
+            pushArticle.setFromUser("System:games");
+            pushArticle.setMsgtype(PushArticle.NEWS_TYPE);
+            pushArticle.setPushTime(new DateTime());
+            pushArticle.setStatus(PushArticle.NOT_SENT_STATUS);
+            pushArticle.setTouser(customer.getOpenId());
+            
+            pushArticle = pushArticleService.add(pushArticle);
+            
+            NewsArticleItem newsArticleItem = new NewsArticleItem();
+            newsArticleItem.setArticleId(pushArticle.getId());
+            newsArticleItem.setDescription(content);
+            newsArticleItem.setPicurl(headImg);
+            newsArticleItem.setUrl("http://www.chengxihome.com/info/chat_list");
+            newsArticleItem.setTitle("您收到一条消息");
+            newsArticleItem = newsArticleItemService.add(newsArticleItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        
         return responseObj;
     }
 }
