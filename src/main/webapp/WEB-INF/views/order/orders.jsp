@@ -133,7 +133,6 @@
 	                            					<a href="javascript:statementDo('${order.groupPartakeId}')">结算处理</a>
 	                            				</c:if>
                             				</shiro:hasRole>
-                            				<a href="/manager/chat_view?admin_id=${adminId}&customer_id=${order.customerId}">发送消息</a>
                             				<!--  
                             				<a href="#">订单详情</a>
                             				<a href="#">商品详情</a>
