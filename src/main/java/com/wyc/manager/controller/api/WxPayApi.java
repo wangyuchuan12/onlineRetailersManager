@@ -40,7 +40,7 @@ public class WxPayApi {
         String groupPartakeId = httpServletRequest.getParameter("group_partake_id");
         GroupPartake groupPartake = groupPartakeServcie.findOne(groupPartakeId);
         GoodOrder goodOrder = goodOrderService.findOne(groupPartake.getOrderId());
-        if(!goodOrder.getAdminId().equals(admin.getId()+"")&&!subject.hasRole("god")){
+        if(!goodOrder.getAdminId().equals(admin.getId()+"")||!subject.hasRole("god")){
             return null;
         }
         GroupPartakePayment groupPartakePayment = groupPartakePaymentService.findByGroupPartakeId(groupPartakeId);
