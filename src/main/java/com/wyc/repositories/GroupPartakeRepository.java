@@ -24,7 +24,7 @@ public interface GroupPartakeRepository extends CrudRepository<GroupPartake, Str
 
     public Iterable<GroupPartake> findAllByStatusOrderByDateTimeAsc(int status);
 
-    public Iterable<GroupPartake> findAllByOrderIdAndIsDelOrderByDateTimeAsc(
-            String orderId, int isDel);
+    public Iterable<GroupPartake> findAllByOrderIdAndIsDelAndTypeOrderByDateTimeAsc(
+            String orderId, int isDel,int type);
 
 }

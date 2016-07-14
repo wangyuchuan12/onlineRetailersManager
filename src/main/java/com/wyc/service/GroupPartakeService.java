@@ -60,8 +60,8 @@ public class GroupPartakeService {
         return groupPartakeRepository.findAllByStatusOrderByDateTimeAsc(status);
     }
 
-    public Iterable<GroupPartake> findAllByOrderIdAndIsDelOrderByDateTimeAsc(
-            String orderId, int isDel) {
-        return groupPartakeRepository.findAllByOrderIdAndIsDelOrderByDateTimeAsc(orderId,isDel);
+    public Iterable<GroupPartake> findAllByOrderIdAndIsDelAndTypeOrderByDateTimeAsc(
+            String orderId, int isDel,int type) {
+        return groupPartakeRepository.findAllByOrderIdAndIsDelAndTypeOrderByDateTimeAsc(orderId,isDel,type);
     }
 }

@@ -62,6 +62,7 @@
                                 	 <th>图片</th>
                                     <th width="10%">商品名称</th>
                                     <th>类别</th>
+                                    <th>订单类别</th>
                                     <th>支付状态</th>
                                     <th>支付时间</th>
                                     <th>退款金额</th>
@@ -80,6 +81,7 @@
                             			<td><img src="${order.goodHeadImgUrl}" style="width: 50px;height:50px;"></img></td>
                             			<td>${order.goodName}</td>
                             			<td>${order.goodTypeName}</td>
+                            			<td>${order.type}</td>
                             			<td id = "pay_status_${order.groupPartakeId}">
                             				<c:if test="${order.payStatus==0}">未付款</c:if>
                             				<c:if test="${order.payStatus==1}">已付款</c:if>
