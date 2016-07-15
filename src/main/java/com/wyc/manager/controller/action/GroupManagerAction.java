@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -74,12 +75,22 @@ public class GroupManagerAction {
     }
     @RequestMapping("/manager/groups")
     public String groups(HttpServletRequest httpServletRequest){
+        String pageParam = httpServletRequest.getParameter("page");
+        String sizeParam = httpServletRequest.getParameter("size");
+        int page = 1;
+        int size = 10;
+        if(pageParam!=null){
+            page = Integer.parseInt(pageParam);
+        }
+        if(sizeParam!=null){
+            size = Integer.parseInt(sizeParam);
+        }
         Subject subject = SecurityUtils.getSubject();
         String username = subject.getPrincipal()+"";
         Admin admin = adminService.findByUsername(username);
-        Iterable<GoodGroup> goodGroups = goodGroupService.findAllByAdminIdOrderByUpdateAtDesc(admin.getId()+"");
+        Page<GoodGroup> goodGroups = goodGroupService.findAllByAdminIdOrderByUpdateAtDesc(admin.getId()+"",page,size);
         List<Map<String, Object>> responseGroups = new ArrayList<Map<String,Object>>();
-        for(GoodGroup goodGroup:goodGroups){
+        for(GoodGroup goodGroup:goodGroups.getContent()){
             Map<String, Object> responseGroup = responseGroup(goodGroup);
             responseGroups.add(responseGroup);
         }
