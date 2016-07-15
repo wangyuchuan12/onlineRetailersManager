@@ -77,7 +77,7 @@ public class GroupManagerAction {
         Subject subject = SecurityUtils.getSubject();
         String username = subject.getPrincipal()+"";
         Admin admin = adminService.findByUsername(username);
-        Iterable<GoodGroup> goodGroups = goodGroupService.findAllByAdminId(admin.getId()+"");
+        Iterable<GoodGroup> goodGroups = goodGroupService.findAllByAdminIdOrderByUpdateAtDesc(admin.getId()+"");
         List<Map<String, Object>> responseGroups = new ArrayList<Map<String,Object>>();
         for(GoodGroup goodGroup:goodGroups){
             Map<String, Object> responseGroup = responseGroup(goodGroup);

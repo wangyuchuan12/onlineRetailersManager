@@ -37,8 +37,8 @@ public class GoodGroupService {
         return goodGroupRepository.selectLastestGoodGroupByGroupHead(groupHead);
     }
 
-    public Iterable<GoodGroup> findAllByAdminId(String adminId) {
-        return goodGroupRepository.findAllByAdminId(adminId);
+    public Iterable<GoodGroup> findAllByAdminIdOrderByUpdateAtDesc(String adminId) {
+        return goodGroupRepository.findAllByAdminIdOrderByUpdateAtDesc(adminId);
     }
 
     public Iterable<GoodGroup> findAllByIsDisused(int isDisused) {
