@@ -28,7 +28,8 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-admin">
                             <thead>
                                 <tr>
-                                	 <th>图片</th>
+                                	<th>id</th> 
+                                	<th>图片</th>
                                     <th width="10%">商品名称</th>
                                     <th>类别</th>
                                     <th>组团状态</th>
@@ -44,6 +45,7 @@
                             <tbody>
                             	<c:forEach items="${groups}" var="group">
                             		<tr class="odd gradeX">
+                            			<td>${group.id}</td>
                             			<td><img src="${group.goodHeadImgUrl}" style="width: 50px;height:50px;"></img></td>
                             			<td>${group.goodName}</td>
                             			<td>${group.goodTypeName}</td>
