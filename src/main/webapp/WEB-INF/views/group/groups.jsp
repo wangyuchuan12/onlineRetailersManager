@@ -43,8 +43,8 @@
 												<label>状态 <select name="menu_table_status"
 													aria-controls="dataTables-admin" class="input-sm">
 														<option value="1">正在组团</option>
-														<option value="2">组团失败</option>
-														<option value="0">组团成功</option>
+														<option value="0">组团失败</option>
+														<option value="2">组团成功</option>
 														<option value="3">组团超时</option>
 														<option value="4">废弃</option>
 														
