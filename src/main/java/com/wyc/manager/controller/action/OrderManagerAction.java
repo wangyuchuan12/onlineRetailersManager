@@ -293,6 +293,8 @@ public class OrderManagerAction {
                 responseOrders.add(responseOrder);
             }
         }
+        Iterable<LogisticsOrderCompany> logisticsOrderCompanys = logisticsOrderCompanyService.findAll();
+    	httpServletRequest.setAttribute("companys", logisticsOrderCompanys);
         httpServletRequest.setAttribute("orders", responseOrders);
         return "order/orders";
     }
