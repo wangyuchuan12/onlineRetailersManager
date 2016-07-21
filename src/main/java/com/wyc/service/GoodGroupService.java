@@ -47,4 +47,9 @@ public class GoodGroupService {
     public Iterable<GoodGroup> findAllByIsDisused(int isDisused) {
         return goodGroupRepository.findAllByIsDisused(isDisused);
     }
+
+	public Page<GoodGroup> findAllByAdminIdAndResultOrderByUpdateAtDesc(String adminId, int status, int page, int size) {
+		PageRequest pageRequest = new PageRequest(page-1, size);
+		return goodGroupRepository.findAllByAdminIdAndResultOrderByUpdateAtDesc(adminId,status,pageRequest);
+	}
 }

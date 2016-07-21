@@ -17,4 +17,6 @@ public interface GoodGroupRepository extends CrudRepository<GoodGroup, String>{
     public Page<GoodGroup> findAllByAdminIdOrderByUpdateAtDesc(String adminId,Pageable pageable);
 
     public Iterable<GoodGroup> findAllByIsDisused(int isDisused);
+
+	public Page<GoodGroup> findAllByAdminIdAndResultOrderByUpdateAtDesc(String adminId, int status, Pageable pageable);
 }

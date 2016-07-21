@@ -77,24 +77,39 @@ public class GroupManagerAction {
     public String groups(HttpServletRequest httpServletRequest){
         String pageParam = httpServletRequest.getParameter("page");
         String sizeParam = httpServletRequest.getParameter("size");
+        String statusParam = httpServletRequest.getParameter("status");
         int page = 1;
         int size = 10;
+        int status = 1;
         if(pageParam!=null){
             page = Integer.parseInt(pageParam);
         }
         if(sizeParam!=null){
             size = Integer.parseInt(sizeParam);
         }
+        
+        if(statusParam!=null){
+        	status = Integer.parseInt(statusParam);
+        }
+        System.out.println("status:"+status);
+        System.out.println("statusParam:"+statusParam);
         Subject subject = SecurityUtils.getSubject();
         String username = subject.getPrincipal()+"";
         Admin admin = adminService.findByUsername(username);
-        Page<GoodGroup> goodGroups = goodGroupService.findAllByAdminIdOrderByUpdateAtDesc(admin.getId()+"",page,size);
+        Page<GoodGroup> goodGroups = goodGroupService.findAllByAdminIdAndResultOrderByUpdateAtDesc(admin.getId()+"",status,page,size);
         List<Map<String, Object>> responseGroups = new ArrayList<Map<String,Object>>();
         for(GoodGroup goodGroup:goodGroups.getContent()){
             Map<String, Object> responseGroup = responseGroup(goodGroup);
             responseGroups.add(responseGroup);
         }
         httpServletRequest.setAttribute("groups", responseGroups);
+
+        httpServletRequest.setAttribute("totalElements", goodGroups.getTotalElements());
+        httpServletRequest.setAttribute("isFirst", goodGroups.isFirst());
+        httpServletRequest.setAttribute("totalPage", goodGroups.getTotalPages());
+        httpServletRequest.setAttribute("page", page);
+        httpServletRequest.setAttribute("count", goodGroups.getSize());
+        httpServletRequest.setAttribute("status", status);
         return "group/groups";
     }
     
