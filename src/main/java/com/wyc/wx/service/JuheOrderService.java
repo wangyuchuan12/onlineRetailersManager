@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,7 @@ public class JuheOrderService {
 
     private SimpleDateFormat mySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     
+    final static Logger logger = LoggerFactory.getLogger(JuheOrderService.class);
     public JhOrder getJhOrder(String com , String no){
         try {
             Request request = requestFactory.getJuhuRequest(key, com, no);
@@ -40,6 +43,7 @@ public class JuheOrderService {
             JhOrder jhOrder = response.readObject(JhOrder.class);
             return jhOrder;
         } catch (Exception e) {
+        	logger.error("run juheorder task has an error {}",e);
             return null;
         }
         
@@ -92,7 +96,7 @@ public class JuheOrderService {
         }else if (logisticsOrderResult.getStatus().equals("1")) {
             GroupPartakeDeliver groupPartakeDeliver = groupPartakeDeliverService.findByLogisticsNoAndCom(no,com);
             if(groupPartakeDeliver!=null){
-                JhOrderResultRecord jhOrderResultRecord = jhOrderResultRecords.get(jhOrderResultRecords.size());
+                JhOrderResultRecord jhOrderResultRecord = jhOrderResultRecords.get(jhOrderResultRecords.size()-1);
                 Date date = mySimpleDateFormat.parse(jhOrderResultRecord.getDatetime());
                 groupPartakeDeliver.setSignTime(new DateTime(date));
                 groupPartakeDeliver.setStatus(2);
