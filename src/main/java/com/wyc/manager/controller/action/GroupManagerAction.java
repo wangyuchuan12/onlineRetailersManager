@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.sun.net.httpserver.HttpsConfigurator;
 import com.wyc.domain.Customer;
 import com.wyc.domain.Good;
 import com.wyc.domain.GoodGroup;
@@ -73,6 +74,33 @@ public class GroupManagerAction {
         responseGroup.put("groupCount", groupCount+"");
         return responseGroup;
     }
+    
+    @RequestMapping("/manager/derelect_group")
+    public String derelectGroup(HttpServletRequest httpServletRequest){
+    	String pageParam = httpServletRequest.getParameter("page");
+        String sizeParam = httpServletRequest.getParameter("size");
+        String statusParam = httpServletRequest.getParameter("status");
+        String groupId = httpServletRequest.getParameter("group_id");
+        int page = 1;
+        int size = 10;
+        int status = 1;
+        if(pageParam!=null){
+            page = Integer.parseInt(pageParam);
+        }
+        if(sizeParam!=null){
+            size = Integer.parseInt(sizeParam);
+        }
+        
+        if(statusParam!=null){
+        	status = Integer.parseInt(statusParam);
+        }
+        GoodGroup goodGroup = goodGroupService.findOne(groupId);
+        goodGroup.setResult(GoodGroup.DERELICT_RESULT);
+        goodGroup = goodGroupService.save(goodGroup);
+        return "redirect:/manager/groups?page="+page+"&size="+size+"&status="+status;
+        		
+    }
+    
     @RequestMapping("/manager/groups")
     public String groups(HttpServletRequest httpServletRequest){
         String pageParam = httpServletRequest.getParameter("page");

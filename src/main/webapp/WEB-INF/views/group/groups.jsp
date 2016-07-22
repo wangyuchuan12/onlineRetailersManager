@@ -110,9 +110,9 @@
                             			<td>
                             				<a href="/manager/orders_by_group_id?group_id=${group.id}">订单管理</a>
                             				<a href="/manager/partakes?group_id=${group.id}">查看组团情况</a>
-                            				<!--  
+                            		
                             				<a href="javascript:derelect('${group.id}');">废弃</a>
-                            				-->
+                            				
                             			</td>
                             		</tr>
                             		
@@ -259,10 +259,21 @@ function init(){
 
 
 function derelect(groupId){
+	var page = $("input[name=page]").val();
+	var total = $("input[name=totalPage]").val();
+	 if(parseInt(page)>parseInt(total))
+	 {
+		 page = total;
+	 }
+	 var menu = $("select[name=dataTables-admin_length]");
+	 var menuTableStatus = $("select[name=menu_table_status]");
+	 if(page==0){
+		 page=1;
+	 }
 	$(document).ready(function() {
 		var a=confirm("是否真的废弃该团并该团所有的订单？");
 		if(a){
-			window.location.href = "/manager/derelect_orders_by_group_id?group_id="+groupId;
+			window.location.href = "<c:url value='/manager/derelect_group?group_id="+groupId+"&status="+menuTableStatus.val()+"&size="+menu.val()+"&page="+page+"'/>"
 		}
 	});
 }
