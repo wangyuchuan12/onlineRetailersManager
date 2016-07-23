@@ -1,5 +1,6 @@
 package com.wyc.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -33,4 +34,8 @@ public class LogisticsOrderResultService {
     public Iterable<LogisticsOrderResult> findAllByStatus(String status) {
         return logisticsOrderResultRepository.findAllByStatus(status);
     }
+
+	public Iterable<LogisticsOrderResult> findAllByStatusIn(List<String> statuses) {
+		return logisticsOrderResultRepository.findAllByStatusIn(statuses);
+	}
 }

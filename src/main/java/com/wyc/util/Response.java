@@ -32,9 +32,7 @@ public class Response {
 	}
 	
 	public <T>T readObject(Class<T> t)throws Exception{
-	    String message = read();
-	    System.out.println("..........message:"+message);
 	    ObjectMapper objectMapper = new ObjectMapper();
-	    return objectMapper.readValue(message, t);
+	    return objectMapper.readValue(inputStream, t);
 	}
 }

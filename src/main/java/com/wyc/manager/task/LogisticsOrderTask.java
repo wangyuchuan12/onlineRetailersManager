@@ -1,5 +1,8 @@
 package com.wyc.manager.task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -24,7 +27,10 @@ public class LogisticsOrderTask {
     public void run(){
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-        Iterable<LogisticsOrderResult> logisticsOrderResults = logisticsOrderResultService.findAllByStatus("0");
+        List<String> statuses = new ArrayList<>();
+        statuses.add("0");
+        statuses.add("1");
+        Iterable<LogisticsOrderResult> logisticsOrderResults = logisticsOrderResultService.findAllByStatusIn(statuses);
         for(LogisticsOrderResult logisticsOrderResult:logisticsOrderResults){
             try {
                 transaction.begin();
