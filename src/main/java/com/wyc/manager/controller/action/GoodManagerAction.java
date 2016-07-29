@@ -109,6 +109,7 @@ public class GoodManagerAction {
             return "{'success':false}";
         }
         myResourceService.add(myResource);
+        goodImg.setLevel(goodImgService.selectMaxLevelByGoodId(goodId)+1);
         goodImgService.add(goodImg);
         uploadToQNService.syncResource(myResource);
         return "redirect:/manager/good_imgs?good_id="+goodId;

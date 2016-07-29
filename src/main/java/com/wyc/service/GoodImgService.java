@@ -34,4 +34,7 @@ public class GoodImgService {
         goodImgRepository.delete(img_id);
         
     }
+	public int selectMaxLevelByGoodId(String goodId) {
+		return goodImgRepository.selectMaxLevelByGoodId(goodId);
+	}
 }
