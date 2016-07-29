@@ -109,7 +109,12 @@ public class GoodManagerAction {
             return "{'success':false}";
         }
         myResourceService.add(myResource);
-        goodImg.setLevel(goodImgService.selectMaxLevelByGoodId(goodId)+1);
+        int maxLevel = 0;
+        Object selectMaxLevel = goodImgService.selectMaxLevelByGoodId(goodId);
+        if(selectMaxLevel!=null){
+        	maxLevel = (Integer)selectMaxLevel;
+        }
+        goodImg.setLevel(maxLevel+1);
         goodImgService.add(goodImg);
         uploadToQNService.syncResource(myResource);
         return "redirect:/manager/good_imgs?good_id="+goodId;
@@ -145,7 +150,7 @@ public class GoodManagerAction {
     public String managerGoodImages(HttpServletRequest httpServletRequest){
         String goodId = httpServletRequest.getParameter("good_id");
         List<Map<String, String>> responseImgs = new ArrayList<Map<String,String>>();
-        Iterable<GoodImg> goodImgs = goodImgService.findAllByGoodIdOrderByLevel(goodId);
+        List<GoodImg> goodImgs = goodImgService.findAllByGoodIdOrderByLevel(goodId);
         for(GoodImg goodImg:goodImgs){
             MyResource myResource = myResourceService.findOne(goodImg.getImgId());
             Map<String, String> responseImg = new HashMap<String, String>();
