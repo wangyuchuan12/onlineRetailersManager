@@ -42,6 +42,7 @@ public class GoodTypeManagerAction {
         responseType.put("title", goodType.getTitle());
         responseType.put("id",goodType.getId());
         responseType.put("isDefault", goodType.isDefault());
+        responseType.put("isDisplay", goodType.getIsDisplay());
         return responseType;
     }
     
@@ -62,10 +63,12 @@ public class GoodTypeManagerAction {
         String title = multipartHttpServletRequest.getParameter("title");
         String idDefault = multipartHttpServletRequest.getParameter("idDefault");
         String id = multipartHttpServletRequest.getParameter("id");
+        String isDisplay = multipartHttpServletRequest.getParameter("isDisplay");
         SystemGoodType goodType = goodTypeService.findOne(id);
         goodType.setName(name);
         goodType.setTitle(title);
         goodType.setDefault(Boolean.parseBoolean(idDefault));
+        goodType.setIsDisplay(Integer.parseInt(isDisplay));
         MyResource myResource = new MyResource();
         String resourceId = UUID.randomUUID().toString();
         myResource.setId(resourceId);

@@ -60,6 +60,7 @@
 									<input value="${count}" name="count" type="hidden" />
 									<input value="${page}" name="page" type="hidden" />
 									<input value="${status}" name="status" type="hidden" />
+									<input value="${groupId}" name="groupId" type="hidden" />
                             <thead>
                                 <tr>
                                 	<th>id</th> 
@@ -108,7 +109,7 @@
                             			<td>${group.timeLong}</td>
                             			<td>${group.groupHeadUserName}</td>
                             			<td>
-                            				<a href="/manager/orders_by_group_id?group_id=${group.id}">订单管理</a>
+                            				<a href="javascript:flushTableByGroupId('${group.id}')">订单管理</a>
                             				<a href="/manager/partakes?group_id=${group.id}">查看组团情况</a>
                             		
                             				<a href="javascript:derelect('${group.id}');">废弃</a>
@@ -214,22 +215,183 @@
 										</div>
 									</div>
 								</div>
-                        
-                        
-                        
-                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    
+    
+
+	<div class="theme-popover" id="deviceCommitId">
+	     <div class="theme-poptit">
+	          <a href="javascript:;" title="关闭" class="close">×</a>
+	          <h3>发货</h3>
+	     </div>
+	     <div class="theme-popbod dform">
+	           <form class="theme-signin" name="loginform" action="/manager/device_handler" method="post">
+	           	<input type="hidden" name="group_partake_id">
+	                <ol>
+	                     <li><h4>填写发货信息</h4></li>
+	                     <li><strong>发货单号</strong><input class="ipt" type="text" name="logistics_no" value="" size="20" /></li>
+	                     <li><strong>物流公司</strong>
+	                     	<select class="form-control" name="com">
+	                                	<c:forEach items="${companys}" var="company">
+	                                		<option  value="${company.code}">${company.name}</option>
+	                                	</c:forEach>
+			               </select>
+	                     
+	                     </li>
+	                     <li><strong>发货时间</strong><input class="ipt" type="text" name="device_time" value="" size="20" id="datetimepicker"/></li>
+	                     <li><strong>备注</strong><input class="ipt" type="text" name="remarks" value="" size="20" /></li>
+	                     
+	                     <li><input class="btn btn-primary" type="submit" name="submit" value="确定" /></li>
+	                </ol>
+	           </form>
+	     </div>
+	</div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">订单管理</h1>
+        </div>
+     
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+            
+                <div class="panel-body">
+                
+                 
+                    <div class="table-responsive">
+                   
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-admin">
+                            <thead>
+                                <tr>
+                                	 <th>图片</th>
+                                    <th width="10%">商品名称</th>
+                                    <th>类别</th>
+                                    <th>订单类别</th>
+                                    <th>支付状态</th>
+                                    <th>支付时间</th>
+                                    <th>退款金额</th>
+                                    <th>退款时间</th>
+                                    <th>发货状态</th>
+                                    <th>发货时间</th>
+                                    <th width="15%">发货地点</th>
+                                    <th>支付金额</th>
+                                    <th>订单状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<c:forEach items="${orders}" var="order">
+                            		<tr class="odd gradeX" id ="${order.groupPartakeId}" >
+                            			<td><img src="${order.goodHeadImgUrl}" style="width: 50px;height:50px;"></img></td>
+                            			<td>${order.goodName}</td>
+                            			<td>${order.goodTypeName}</td>
+                            			<td>${order.type}</td>
+                            			<td id = "pay_status_${order.groupPartakeId}">
+                            				<c:if test="${order.payStatus==0}">未付款</c:if>
+                            				<c:if test="${order.payStatus==1}">已付款</c:if>
+                            				<c:if test="${order.payStatus==2}">申请退款</c:if>
+                            				<c:if test="${order.payStatus==3}">已退款</c:if>
+                            			
+                            			</td>
+                            			<td><joda:format value="${order.payTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                            			<td>${order.refundAmount}</td>
+                            			<td><joda:format value="${order.refundTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td> 
+                            			<td>
+                            				<c:if test="${order.deliverStatus==0}">未发货</c:if>
+                            				<c:if test="${order.deliverStatus==1}">已发货，未签收</c:if>
+                            				<c:if test="${order.deliverStatus==2}">已签收</c:if>
+                            			</td>
+                            			<td><joda:format value="${order.deliverTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                            			
+                            			<td>${order.address}</td>
+                            			<td>${order.cost}</td>
+                            			<td>
+                            				<c:if test="${order.status==0}">游离</c:if>
+                            				<c:if test="${order.status==1}">待结算</c:if>
+                            				<c:if test="${order.status==2}">结算中</c:if>
+                            				<c:if test="${order.status==3}">结算成功</c:if>
+                            				<c:if test="${order.status==4}"><font color="red">废弃</font></c:if>
+                            			
+                            			</td>
+                            			<td class="center">
+                            				<c:if test="${order.status==1}">
+                            					<c:if test="${order.deliverStatus==0&&order.payStatus==1}">
+                            						<a href="javascript:deviceClick('${order.groupPartakeId}')">发货</a>
+                            					</c:if>
+                            					<c:if test="${order.deliverStatus==2}">
+                            						<br/>
+                            						<a href="javascript:statementApply('${order.groupPartakeId}')">申请结算</a>
+                            					</c:if>
+                            					
+                            				</c:if>
+                            				
+                            				<c:if test="${order.payStatus==1}">
+                            					<br/>
+                            					<a id="refund_a_${order.groupPartakeId}" href="javascript:refundPayment('${order.groupPartakeId}')">退款</a>
+                            				</c:if>
+                            				<br/>
+                            				<c:if test="${order.deliverStatus==2||order.payStatus==3}">
+                            					<a href="javascript:delOrder('${order.groupPartakeId}')">删除</a>
+                            				</c:if>
+                            				<shiro:hasRole name="god">
+	                            				<c:if test="${order.status==2}">
+	                            					<br/>
+	                            					<a href="javascript:statementDo('${order.groupPartakeId}')">结算处理</a>
+	                            				</c:if>
+                            				</shiro:hasRole>
+                            				<a href="/manager/chat_view?admin_id=${adminId}&customer_id=${order.customerId}">发送消息</a>
+                            				<!--  
+                            				<a href="#">订单详情</a>
+                            				<a href="#">商品详情</a>
+                            				<a href="#">客户详情</a>
+                            				-->
+                            			</td>
+                            		</tr>
+                            		
+                            	</c:forEach>
+                                <!--  <tr class="odd gradeX">
+                                    <td>${admin.username}</td>
+                                    <td>${admin.realname}</td>
+                                    <td>${admin.mobile}</td>
+                                    <td class="center"><joda:format value="${admin.lastLogin}" pattern="yyyy-MM-dd HH:mm"/></td> 
+                                    <td class="center"><joda:format value="${admin.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                                    <td class="center">                                   
+                                       <a href="<c:url value="/admin/update?username=${admin.username}"/>">修改</a>                       
+                                       <a href="<c:url value="/admin/delete?username=${admin.username}"/>">删除</a>                                                             
+                                       <a href="<c:url value="/admin/reset?username=${admin.username}"/>">重置密码</a>
+                               
+                                    </td>
+                                </tr>
+                               -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
 </div>
 </tiles:putAttribute>
 <tiles:putAttribute name="footerJavascript">
 <script>
 
-function flushTable(page){
+function flushTableByGroupId(groupId){
+	var page = $("input[name=page]").val();
+	flushTable(page,groupId);
+}
+function flushTable(page,groupId){
 	 var total = $("input[name=totalPage]").val();
+	 var groupId = $("input[name=groupId]").val();
 	 if(parseInt(page)>parseInt(total))
 	 {
 		 page = total;
@@ -239,7 +401,12 @@ function flushTable(page){
 	 if(page==0){
 		 page=1;
 	 }
-	 window.location.href="<c:url value='/manager/groups?status="+menuTableStatus.val()+"&size="+menu.val()+"&page="+page+"'/>"
+	 if(!groupId){
+		 window.location.href="<c:url value='/manager/groups?status="+menuTableStatus.val()+"&size="+menu.val()+"&page="+page+"'/>"
+
+	 }else{
+		 window.location.href="<c:url value='/manager/groups?group_id="+groupId+"&status="+menuTableStatus.val()+"&size="+menu.val()+"&page="+page+"'/>"
+	 }
 }
 function init(){
 	var paginateDiv = $("#dataTables-admin_paginate");

@@ -54,6 +54,16 @@
 									<p class="help-block">是否默认以该商品类别显示商品列表</p>
 								</div>
 								
+								<div class="form-group">
+									<label>是否展示</label>
+									<div>
+										<div style="display: inline-block;"><input <c:if test="${goodType.isDisplay==1}">checked="checked" </c:if> class="form-control" type="radio" name="isDisplay" style="width:20px;display: inline-block;" value="1"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">是</label></div>
+										<div style="display: inline-block;"><input <c:if test="${goodType.isDisplay==0}">checked="checked" </c:if> class="form-control" type="radio" name="isDisplay" style="width:20px;display: inline-block;" value="0"><label style="font-size: 10px;line-height: -20px;display: inline-block;text-align: justify;">否</label></div>
+									</div>
+									<p class="help-block">是否展示该商品</p>
+								</div>
+								
+								
 								
 								
 								

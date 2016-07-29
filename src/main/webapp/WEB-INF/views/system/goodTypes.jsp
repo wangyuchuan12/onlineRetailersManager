@@ -33,6 +33,7 @@
                                     <th>名称</th>
                                     <th>标题</th>
                                     <th>是否默认</th>
+                                    <th>是否展示</th>
                                     <th>创建日期</th>
                                     <th>操作</th>
                                 </tr>
@@ -46,6 +47,12 @@
                             			<td>${goodType.title}</td>
                             			<td>
 	                            			<c:if test="${goodType.isDefault}">
+	                            				是
+	                            			</c:if>
+                            			</td>
+                            			
+                            			<td>
+	                            			<c:if test="${goodType.isDisplay==1}">
 	                            				是
 	                            			</c:if>
                             			</td>
