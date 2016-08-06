@@ -520,7 +520,17 @@ $(document).ready(function() {
 	    	window.location="<c:url value='/admin/video/add'/>";
 	     });
 	
-	
+	    $('.theme-poptit .close').click(function(){
+			$('#deviceCommitId').slideUp(200);
+		});
+	$('#datetimepicker').datetimepicker({
+        lang:"ch",           //语言选择中文
+        format:"Y-m-d h:i:s",      //格式化日期
+        timepicker:true,    //关闭时间选项
+        yearStart:2000,     //设置最小年份
+        yearEnd:2050,        //设置最大年份
+        todayButton:true    //关闭选择今天按钮
+  	});
 	/* var table = $('#dataTables-admin').dataTable({
 	    	"oLanguage": {
 	    	
