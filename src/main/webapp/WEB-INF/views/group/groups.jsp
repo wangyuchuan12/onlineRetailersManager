@@ -385,6 +385,30 @@
 <tiles:putAttribute name="footerJavascript">
 <script>
 
+
+function refundPayment(groupPartakeId){
+	var a=confirm("是否确定退款");
+	if(a){
+		$.ajax({
+			url:"/manager/api/refund?group_partake_id="+groupPartakeId,
+			success:function(resp){
+				if(resp.id){
+					alert("退款成功");
+					$("#refund_a_"+groupPartakeId).remove();
+					$("#pay_status_"+groupPartakeId).html("已退款");
+				}
+			}
+		});
+	}
+}
+
+function deviceClick(groupPartakeId){
+	$(document).ready(function() {
+		$("input[name=group_partake_id]").val(groupPartakeId);
+		$('#deviceCommitId').slideDown(200);
+	});
+}
+
 function flushTableByGroupId(groupId){
 	var page = $("input[name=page]").val();
 	flushTable(page,groupId);
